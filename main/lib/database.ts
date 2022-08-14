@@ -1,10 +1,13 @@
 import sqlite3 from 'sqlite3';
 import {ipcMain} from "electron";
+import {DatabaseQuery, DatabaseQueryError, DatabaseQuerySuccess} from "../../lib/ipc-channels";
 
 export function createDatabase(): sqlite3.Database {
     const database = new sqlite3.Database('./timetracking.db', (err) => {
         if (err) {
             console.error('Unable to open database: ', err);
+        } else {
+            console.log('Database was successfully created');
         }
     });
 
@@ -76,12 +79,12 @@ function createTimeRecordsTable(database) {
 
 
 export function listenForQueries(database: sqlite3.Database) {
-    ipcMain.on('database-query-request', (event, sql) => {
+    ipcMain.on(DatabaseQuery, (event, sql) => {
         database.all(sql, (err, rows) => {
             if (!err) {
-                event.reply('database-query-success', rows);
+                event.reply(DatabaseQuerySuccess, rows);
             } else {
-                event.reply('database-query-error', err.message);
+                event.reply(DatabaseQueryError, err.message);
             }
         })
     })

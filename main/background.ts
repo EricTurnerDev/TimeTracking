@@ -1,6 +1,7 @@
 import { app } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
+import {createDatabase, listenForQueries} from "./lib/database";
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
@@ -12,6 +13,10 @@ if (isProd) {
 
 (async () => {
   await app.whenReady();
+
+  // Create the sqlite database if it doesn't exist, and listen for queries from the renderer process.
+  const database = createDatabase();
+  listenForQueries(database);
 
   const mainWindow = createWindow('main', {
     width: 1000,

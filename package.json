@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "time-tracking",
+  "description": "Application for tracking time spent working on projects for clients",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "Eric Turner <eric@ericturner.dev>",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",

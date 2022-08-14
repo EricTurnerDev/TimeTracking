@@ -5,11 +5,6 @@ import {
     ipcMain,
 } from 'electron';
 import Store from 'electron-store';
-import {createDatabase, listenForQueries} from "./database";
-
-const database = createDatabase();
-// Listen for messages from the renderer process, and respond to them.
-listenForQueries(database);
 
 export default (windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow => {
     const key = 'window-state';
