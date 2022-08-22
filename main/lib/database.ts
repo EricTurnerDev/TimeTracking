@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
-import {ipcMain} from "electron";
-import {DatabaseQuery, DatabaseQueryError, DatabaseQuerySuccess} from "../../lib/ipc-channels";
+import {ipcMain} from 'electron';
+import {DatabaseQuery, DatabaseQueryError, DatabaseQuerySuccess} from '../../lib/ipc-channels';
 
 export function createDatabase(): sqlite3.Database {
     const database = new sqlite3.Database('./timetracking.db', (err) => {

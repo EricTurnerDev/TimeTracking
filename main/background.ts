@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
-import {createDatabase, listenForQueries} from "./lib/database";
+import {createDatabase, listenForQueries} from './lib/database';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
