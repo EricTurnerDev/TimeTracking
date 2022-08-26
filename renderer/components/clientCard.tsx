@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {addClient, deleteClient, IClientTableProps} from '../lib/database';
+import {createClient, deleteClient, IClientTableProps} from '../lib/database';
 import classNames from 'classnames';
 import {useState} from 'react';
 import {isBlank} from '../lib/isBlank';
@@ -49,7 +49,7 @@ export function AddClientForm({className, onClientAdded}: IAddClientFormProps) {
 
     const buttonClicked = (e) => {
         setAdding(true);
-        addClient(formData).
+        createClient(formData).
         then(() => {
             onClientAdded();
             setFormData(initialFormState);

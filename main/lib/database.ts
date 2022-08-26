@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 import {ipcMain} from 'electron';
-import {DatabaseQuery, DatabaseQueryError, DatabaseQuerySuccess} from '../../lib/ipc-channels';
+import * as IpcChannel from '../../lib/ipc-channels';
 
 export function createDatabase(): sqlite3.Database {
     const database = new sqlite3.Database('./timetracking.db', (err) => {
@@ -79,13 +79,49 @@ function createTimeRecordsTable(database) {
 
 
 export function listenForQueries(database: sqlite3.Database) {
-    ipcMain.on(DatabaseQuery, (event, sql) => {
+
+    ipcMain.on(IpcChannel.GetClients, (event) => {
+        const sql = 'SELECT * FROM clients ORDER BY client_name COLLATE NOCASE';
+
         database.all(sql, (err, rows) => {
             if (!err) {
-                event.reply(DatabaseQuerySuccess, rows);
+                event.reply(IpcChannel.GetClientsSuccess, rows);
             } else {
-                event.reply(DatabaseQueryError, err.message);
+                event.reply(IpcChannel.GetClientsError, err.message);
             }
         })
     })
+
+    ipcMain.on(IpcChannel.CreateClient, (event, client) => {
+        const keys = Object.keys(client).map(quoteValue);
+
+        const values = Object.values(client).map(quoteValue);
+
+        // TODO: This doesn't handle ' in the values (e.g. Bob's Burgers & Brew). Use something like knex so we aren't
+        // building SQL strings through concatenation.
+        const sql = `INSERT INTO clients (${keys.join()}) VALUES (${values.join()})`;
+
+        database.all(sql, (err, rows) => {
+            if (!err) {
+                event.reply(IpcChannel.CreateClientSuccess, rows);
+            } else {
+                event.reply(IpcChannel.CreateClientError, err.message);
+            }
+        })
+    });
+
+    ipcMain.on(IpcChannel.DeleteClient, (event, client) => {
+        const sql = `DELETE FROM clients WHERE id=${client.id}`;
+        database.all(sql, (err, rows) => {
+            if (!err) {
+                event.reply(IpcChannel.DeleteClientSuccess, rows);
+            } else {
+                event.reply(IpcChannel.DeleteClientError, err.message);
+            }
+        })
+    });
+}
+
+function quoteValue(val) {
+    return typeof val === 'string' ? `'${val}'` : val;
 }
