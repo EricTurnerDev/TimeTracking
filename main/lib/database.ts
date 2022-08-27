@@ -1,133 +1,72 @@
-import sqlite3 from 'sqlite3';
 import {ipcMain} from 'electron';
 import * as IpcChannel from '../../lib/ipc-channels';
+import Knex from 'knex';
 
-export function createDatabase(): sqlite3.Database {
-    const database = new sqlite3.Database('./timetracking.db', (err) => {
-        if (err) {
-            console.error('Unable to open database: ', err);
-        } else {
-            console.log('Database was successfully created');
-        }
-    });
+// Code in modules only executes once (the first time a module is imported somewhere), so we won't be creating multiple
+// knex objects.
+const knex = Knex({
+   client: 'sqlite3',
+   connection: {
+       filename: './timetracking.sqlite'
+   }
+});
 
-    if (database) {
-        createDatabaseSchema(database);
+export async function up() {
+    await createClientsTable();
+    await createProjectsTable();
+    await createTimeRecordsTable();
+}
+
+async function createClientsTable() {
+    const exists = await knex.schema.hasTable('clients');
+    if (!exists) {
+        await knex.schema.createTable('clients', (table) => {
+            table.increments('id').primary();
+            table.string('client_name').unique().notNullable();
+        })
     }
-
-    return database;
 }
 
-function createDatabaseSchema(database: sqlite3.Database) {
-    database.serialize(() => {
-        createClientsTable(database);
-        createProjectsTable(database);
-        createTimeRecordsTable(database);
-    });
-}
-
-function createClientsTable(database) {
-    database.run(`CREATE TABLE IF NOT EXISTS clients (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       client_name TEXT NOT NULL UNIQUE
-    )`, (err) => {
-        if (err) {
-            // Error creating table
-            console.error(err);
-        }
-    });
-}
-
-function createProjectsTable(database) {
-    database.run(`CREATE TABLE IF NOT EXISTS projects (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        project_name TEXT NOT NULL UNIQUE,
-        client_id INTEGER NOT NULL,
-        FOREIGN KEY (client_id)
-            REFERENCES clients (id),
-        UNIQUE(project_name,client_id)
-    )`, (err) => {
-        if (err) {
-                // Error creating table
-                console.error(err);
-            }
+async function createProjectsTable() {
+    const exists = await knex.schema.hasTable('projects');
+    if (!exists) {
+        await knex.schema.createTable('projects', (table) => {
+            table.increments('id').primary();
+            table.string('project_name').unique().notNullable();
+            table.integer('client_id').references('clients.id').notNullable();
+            table.unique(['project_name', 'client_id']);
         })
+    }
 }
 
-function createTimeRecordsTable(database) {
-    database.run(`CREATE TABLE IF NOT EXISTS time_records (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        billable INTEGER NOT NULL DEFAULT 0,
-        start_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        end_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        hours DECIMAL(4,2) GENERATED ALWAYS AS (ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24.0), 2)) STORED,
-        adjustment DECIMAL(4,2) NOT NULL DEFAULT 0.00,
-        invoice_activity TEXT,
-        work_description TEXT,
-        notes TEXT,
-        project_id INTEGER NOT NULL,
-        FOREIGN KEY (project_id)
-            REFERENCES projects (id),
-        CHECK (JULIANDAY(end_ts) >= JULIANDAY(start_ts))
-    )`, (err) => {
-        if (err) {
-            // Error creating table
-            console.error(err);
-        }
-    })
+async function createTimeRecordsTable() {
+    const exists = await knex.schema.hasTable('time_records');
+    if (!exists) {
+        await knex.schema.createTable('time_records', (table) => {
+            table.increments('id').primary();
+            table.boolean('billable').notNullable().defaultTo(false);
+            table.timestamp('start_ts').notNullable().defaultTo(knex.fn.now());
+            table.timestamp('end_ts').notNullable().defaultTo(knex.fn.now());
+            table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0);
+            table.text('invoice_activity');
+            table.text('work_description');
+            table.text('notes');
+            table.integer('project_id').references('projects.id').notNullable();
+            table.check('?? >= ??', ['end_ts', 'start_ts']);
+        });
+    }
 }
 
-
-export function listenForQueries(database: sqlite3.Database) {
-
+export function listen() {
     ipcMain.handle(IpcChannel.GetClients, (event, ...args) => {
-        const sql = 'SELECT * FROM clients ORDER BY client_name COLLATE NOCASE';
-
-        return new Promise((resolve, reject) => {
-            database.all(sql, (err, rows) => {
-                if (!err) {
-                    resolve(rows);
-                } else {
-                    reject(err);
-                }
-            })
-        })
+        return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
     });
 
     ipcMain.handle(IpcChannel.CreateClient, (event, client) => {
-        const keys = Object.keys(client).map(quoteValue);
-
-        const values = Object.values(client).map(quoteValue);
-
-        // TODO: This doesn't handle ' in the values (e.g. Bob's Burgers & Brew). Use something like knex so we aren't
-        // building SQL strings through concatenation.
-        const sql = `INSERT INTO clients (${keys.join()}) VALUES (${values.join()})`;
-
-        return new Promise((resolve, reject) => {
-            database.all(sql, (err, rows) => {
-                if (!err) {
-                    resolve(rows)
-                } else {
-                    reject(err);
-                }
-            })
-        });
+        return knex.insert(client).into('clients');
     });
 
     ipcMain.handle(IpcChannel.DeleteClient, (event, client) => {
-        const sql = `DELETE FROM clients WHERE id=${client.id}`;
-        return new Promise((resolve, reject) => {
-            database.all(sql, (err, rows) => {
-                if (!err) {
-                    resolve(rows);
-                } else {
-                    reject(err);
-                }
-            })
-        })
+        return knex('clients').where('id', client.id).del();
     });
-}
-
-function quoteValue(val) {
-    return typeof val === 'string' ? `'${val}'` : val;
 }

@@ -3,6 +3,6 @@ node_modules
 .next
 app
 dist
-timetracking.db
+*.sqlite
 .idea/
 .vscode/
