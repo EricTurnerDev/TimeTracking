@@ -2,16 +2,19 @@ import {ipcMain} from 'electron';
 import * as IpcChannel from '../../lib/ipc-channels';
 import Knex from 'knex';
 
-// Code in modules only executes once (the first time a module is imported somewhere), so we won't be creating multiple
-// knex objects.
-const knex = Knex({
-   client: 'sqlite3',
-   connection: {
-       filename: './timetracking.sqlite'
-   }
-});
+let knex;
 
-export async function up() {
+export async function up(dbLocation) {
+    console.log(`Database file location: ${dbLocation}`);
+
+    knex = Knex({
+        client: 'sqlite3',
+        connection: {
+            filename: dbLocation
+        },
+        useNullAsDefault: true // Knex doesn't support default values with sqlite3 yet, so this suppresses that warning.
+    });
+
     await createClientsTable();
     await createProjectsTable();
     await createTimeRecordsTable();
@@ -44,10 +47,10 @@ async function createTimeRecordsTable() {
     if (!exists) {
         await knex.schema.createTable('time_records', (table) => {
             table.increments('id').primary();
-            table.boolean('billable').notNullable().defaultTo(false);
-            table.timestamp('start_ts').notNullable().defaultTo(knex.fn.now());
-            table.timestamp('end_ts').notNullable().defaultTo(knex.fn.now());
-            table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0);
+            table.boolean('billable').notNullable().defaultTo(false); // defaultTo doesn't work with sqlite3
+            table.timestamp('start_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
+            table.timestamp('end_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
+            table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0); // defaultTo doesn't work with sqlite3
             table.text('invoice_activity');
             table.text('work_description');
             table.text('notes');

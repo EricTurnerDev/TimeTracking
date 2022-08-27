@@ -2,6 +2,7 @@ import { app } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
 import * as db from './lib/database';
+import path from "path";
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
@@ -16,7 +17,8 @@ if (isProd) {
 
   // Create the sqlite database if it doesn't exist, and register listeners to handle requests from the renderer process.
   try {
-    await db.up();
+    const dbLocation = path.join(app.getPath('userData'), 'timetracking.sqlite');
+    await db.up(dbLocation);
     db.listen();
   } catch (err) {
     console.error(err);
