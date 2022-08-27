@@ -1,13 +1,7 @@
 import {
     CreateClient,
-    CreateClientSuccess,
-    CreateClientError,
     DeleteClient,
-    DeleteClientSuccess,
-    DeleteClientError,
     GetClients,
-    GetClientsSuccess,
-    GetClientsError,
 } from '../../lib/ipc-channels';
 
 import {send} from './ipc';
@@ -18,13 +12,13 @@ export interface IClientTableProps {
 }
 
 export async function createClient(client: IClientTableProps): Promise<void> {
-    await send(CreateClient, CreateClientSuccess, CreateClientError, client);
+    return await send(CreateClient, client);
 }
 
 export async function deleteClient(client: IClientTableProps): Promise<void> {
-    await send(DeleteClient, DeleteClientSuccess, DeleteClientError, client);
+    return await send(DeleteClient, client);
 }
 
 export async function getClients(): Promise<IClientTableProps[]> {
-    return await send(GetClients, GetClientsSuccess, GetClientsError, {});
+    return await send(GetClients, {});
 }

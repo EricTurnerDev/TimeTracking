@@ -80,19 +80,21 @@ function createTimeRecordsTable(database) {
 
 export function listenForQueries(database: sqlite3.Database) {
 
-    ipcMain.on(IpcChannel.GetClients, (event) => {
+    ipcMain.handle(IpcChannel.GetClients, (event, ...args) => {
         const sql = 'SELECT * FROM clients ORDER BY client_name COLLATE NOCASE';
 
-        database.all(sql, (err, rows) => {
-            if (!err) {
-                event.reply(IpcChannel.GetClientsSuccess, rows);
-            } else {
-                event.reply(IpcChannel.GetClientsError, err.message);
-            }
+        return new Promise((resolve, reject) => {
+            database.all(sql, (err, rows) => {
+                if (!err) {
+                    resolve(rows);
+                } else {
+                    reject(err);
+                }
+            })
         })
-    })
+    });
 
-    ipcMain.on(IpcChannel.CreateClient, (event, client) => {
+    ipcMain.handle(IpcChannel.CreateClient, (event, client) => {
         const keys = Object.keys(client).map(quoteValue);
 
         const values = Object.values(client).map(quoteValue);
@@ -101,23 +103,27 @@ export function listenForQueries(database: sqlite3.Database) {
         // building SQL strings through concatenation.
         const sql = `INSERT INTO clients (${keys.join()}) VALUES (${values.join()})`;
 
-        database.all(sql, (err, rows) => {
-            if (!err) {
-                event.reply(IpcChannel.CreateClientSuccess, rows);
-            } else {
-                event.reply(IpcChannel.CreateClientError, err.message);
-            }
-        })
+        return new Promise((resolve, reject) => {
+            database.all(sql, (err, rows) => {
+                if (!err) {
+                    resolve(rows)
+                } else {
+                    reject(err);
+                }
+            })
+        });
     });
 
-    ipcMain.on(IpcChannel.DeleteClient, (event, client) => {
+    ipcMain.handle(IpcChannel.DeleteClient, (event, client) => {
         const sql = `DELETE FROM clients WHERE id=${client.id}`;
-        database.all(sql, (err, rows) => {
-            if (!err) {
-                event.reply(IpcChannel.DeleteClientSuccess, rows);
-            } else {
-                event.reply(IpcChannel.DeleteClientError, err.message);
-            }
+        return new Promise((resolve, reject) => {
+            database.all(sql, (err, rows) => {
+                if (!err) {
+                    resolve(rows);
+                } else {
+                    reject(err);
+                }
+            })
         })
     });
 }

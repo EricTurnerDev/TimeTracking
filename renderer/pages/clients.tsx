@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import React, {useEffect, useState} from 'react';
 import * as db from '../lib/database';
-import {AddClientForm, ClientCard} from '../components/clientCard';
+import ClientCard from '../components/clientCard';
+import AddClientForm from "../components/addClientForm";
 import Head from 'next/head';
 import Grid from '../components/grid';
 
-export default function Clients() {
+export default function Clients(props) {
     const [clients, setClients] = useState<db.IClientTableProps[]>([]);
 
     const showClients = async () => {
@@ -14,16 +15,16 @@ export default function Clients() {
     };
 
     const clientAdded = () => {
-        showClients().catch(e => console.error(e));
+        showClients().catch(err => console.error(err));
     };
 
     const clientDeleted = () => {
-        showClients().catch(e => console.error(e));
+        showClients().catch(err => console.error(err));
     }
 
     useEffect(() => {
-        showClients().catch(e => console.error(e));
-    }, [showClients])
+        showClients().catch(err => console.error(err));
+    }, [])
 
     return (
         <div className={classNames('clients')}>
