@@ -7,7 +7,7 @@ import {ipcRenderer} from "electron";
  * The promise can also reject with an error when attempting to use this function in a context that does not support
  * Electron's IPC (e.g. SSR with getServerSideProps in a Next.js page).
  */
-export async function send(channel, data): Promise<any> {
+export async function send(channel: string, data?: any): Promise<any> {
     if (ipcRenderer) {
         return await ipcRenderer.invoke(channel, data)
     } else {

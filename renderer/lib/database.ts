@@ -1,7 +1,9 @@
 import {
     CreateClient,
+    GetClient,
     DeleteClient,
     GetClients,
+    GetProjects,
 } from '../../lib/ipc-channels';
 
 import {send} from './ipc';
@@ -11,12 +13,26 @@ export interface IClientTableProps {
     client_name?: string;
 }
 
+export interface IProjectTableProps {
+    id?: number;
+    project_name?: string,
+    client_id?: number;
+}
+
 /**
  * Requests the main process to create a client.
  * @returns a promise that resolves when the client is created, or rejects with an error.
  */
 export async function createClient(client: IClientTableProps): Promise<void> {
     return await send(CreateClient, client);
+}
+
+/**
+ * Requests the main process to get a client.
+ * @returns a promise that resolves with the client, or rejects with an error.
+ */
+export async function getClient(client: IClientTableProps): Promise<IClientTableProps> {
+    return await send(GetClient, client);
 }
 
 /**
@@ -29,8 +45,16 @@ export async function deleteClient(client: IClientTableProps): Promise<void> {
 
 /**
  * Requests a list of all the clients from the main process.
- * @returns a promise that resolves to a list of clients, or rejects with an error.
+ * @returns a promise that resolves with a list of clients, or rejects with an error.
  */
 export async function getClients(): Promise<IClientTableProps[]> {
-    return await send(GetClients, {});
+    return await send(GetClients);
+}
+
+/**
+ * Requests a list of projects for a client from the main process.
+ * @returns a promise that resolves with a list of projects, or rejects with an error.
+ */
+export async function getProjects(client: IClientTableProps): Promise<IProjectTableProps[]> {
+    return await send(GetProjects, client);
 }

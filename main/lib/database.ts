@@ -61,15 +61,23 @@ async function createTimeRecordsTable() {
 }
 
 export function listen() {
-    ipcMain.handle(IpcChannel.GetClients, (event, ...args) => {
-        return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
-    });
-
     ipcMain.handle(IpcChannel.CreateClient, (event, client) => {
         return knex.insert(client).into('clients');
     });
 
+    ipcMain.handle(IpcChannel.GetClient, (event, client) => {
+        return knex.select('*').from('clients').where('id', client.id).first();
+    })
+
     ipcMain.handle(IpcChannel.DeleteClient, (event, client) => {
         return knex('clients').where('id', client.id).del();
     });
+
+    ipcMain.handle(IpcChannel.GetClients, (event, ...args) => {
+        return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
+    });
+
+    ipcMain.handle(IpcChannel.GetProjects, (event, client) => {
+        return knex.select('projects.*').from('projects').join('clients', 'projects.client_id', 'clients.id').where('projects.client_id', client.id);
+    })
 }
