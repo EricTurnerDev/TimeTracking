@@ -3,6 +3,8 @@ import {
     GetClient,
     DeleteClient,
     GetClients,
+    CreateProject,
+    DeleteProject,
     GetProjects,
 } from '../../lib/ipc-channels';
 
@@ -49,6 +51,22 @@ export async function deleteClient(client: IClientTableProps): Promise<void> {
  */
 export async function getClients(): Promise<IClientTableProps[]> {
     return await send(GetClients);
+}
+
+/**
+ * Requests the main process to create a project.
+ * @returns a promise that resolves when the project is created, or rejects with an error.
+ */
+export async function createProject(project: IProjectTableProps): Promise<void> {
+    return await send(CreateProject, project);
+}
+
+/**
+ * Requests the main process to delete a project.
+ * @returns a promise that resolves when the project is deleted, or rejects with an error.
+ */
+export async function deleteProject(project: IProjectTableProps): Promise<void> {
+    return await send(DeleteProject, project);
 }
 
 /**

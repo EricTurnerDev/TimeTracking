@@ -8,7 +8,7 @@ export default function Timekeeping() {
                 <title>Timekeeping - TimeTracking</title>
             </Head>
 
-            <p>Timekeeping</p>
+            <h1>Timekeeping</h1>
         </div>
     )
 }

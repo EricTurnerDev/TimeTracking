@@ -6,7 +6,7 @@ export default function Home() {
             <Head>
                 <title>Home - TimeTracking</title>
             </Head>
-            <p>Home</p>
+            <h1>Home</h1>
         </div>
     );
 }

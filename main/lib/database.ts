@@ -77,6 +77,14 @@ export function listen() {
         return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
     });
 
+    ipcMain.handle(IpcChannel.CreateProject, (event, project) => {
+        return knex.insert(project).into('projects');
+    });
+
+    ipcMain.handle(IpcChannel.DeleteProject, (event, project) => {
+       return knex('projects').where('id', project.id).del();
+    });
+
     ipcMain.handle(IpcChannel.GetProjects, (event, client) => {
         return knex.select('projects.*').from('projects').join('clients', 'projects.client_id', 'clients.id').where('projects.client_id', client.id);
     })

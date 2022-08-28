@@ -32,13 +32,14 @@ export default function Clients(props) {
                 <title>Clients - TimeTracking</title>
             </Head>
 
-            <AddClientForm className="mb-4" onClientAdded={clientAdded}/>
+            <h1 className='mb-4'>Clients & Projects</h1>
+
+            <AddClientForm className='mb-4' onClientAdded={clientAdded}/>
 
             <Grid>
                 {clients && clients.map((client: db.IClientTableProps) => {
                     return (
-                        <ClientCard key={client.id} id={client.id} name={client.client_name}
-                                    onClientDeleted={clientDeleted}/>
+                        <ClientCard key={client.id} client={client} onClientDeleted={clientDeleted}/>
                     )
                 })}
             </Grid>
