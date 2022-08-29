@@ -2,7 +2,8 @@ import {createProject, IClientTableProps, IProjectTableProps} from '../lib/datab
 import {useEffect, useState} from 'react';
 import {isBlank} from '../lib/isBlank';
 import classNames from 'classnames';
-import {Button, Input} from './form';
+import BaseInput from './form/BaseInput';
+import Button from './form/Button';
 
 export const initialFormState: IProjectTableProps = {
     project_name: '',
@@ -46,11 +47,12 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
 
     return (
         <form className={classNames('add-project-form flex flex-row', className)}>
-            <Input type='text'
-                   id='project-name'
-                   placeholder='New project name'
-                   value={formData.project_name}
-                   onChange={(e) => setFormData(prevFormData => ({...prevFormData, project_name: e.target.value}))}/>
+            <BaseInput
+                className="w-full"
+                id='project-name'
+                placeholder='New project name'
+                value={formData.project_name}
+                onChange={(e) => setFormData(prevFormData => ({...prevFormData, project_name: e.target.value}))}/>
 
             <Button disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Project</Button>
         </form>

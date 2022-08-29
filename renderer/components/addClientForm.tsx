@@ -1,8 +1,10 @@
-import {createClient, IClientTableProps} from "../lib/database";
-import {useState} from "react";
-import {isBlank} from "../lib/isBlank";
-import classNames from "classnames";
-import {Button, Input} from "./form";
+import classNames from 'classnames';
+import {useState} from 'react';
+
+import BaseInput from './form/BaseInput';
+import Button from './form/Button';
+import {createClient, IClientTableProps} from '../lib/database';
+import {isBlank} from '../lib/isBlank';
 
 export const initialFormState: IClientTableProps = {
     client_name: '',
@@ -38,11 +40,12 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
 
     return (
         <form className={classNames('add-client-form flex flex-row', className)}>
-            <Input type='text'
-                   id='client-name'
-                   placeholder='New client name'
-                   value={formData.client_name}
-                   onChange={(e) => setFormData({...formData, client_name: e.target.value})}/>
+            <BaseInput
+                id='client-name'
+                className='w-full'
+                placeholder='New client name'
+                value={formData.client_name}
+                onChange={(e) => setFormData({...formData, client_name: e.target.value})}/>
 
             <Button disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Client</Button>
         </form>
