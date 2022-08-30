@@ -8,7 +8,7 @@ interface ICardProps {
 
 const Card = ({ className, children }: ICardProps) => {
     return (
-        <div className={classNames('flex flex-col overflow-hidden bg-gray-50 rounded shadow', className)}>
+        <div className={classNames('flex flex-col overflow-hidden bg-gray-50 rounded shadow-md', className)}>
             {children}
         </div>
     )

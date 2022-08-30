@@ -15,7 +15,9 @@ module.exports = {
       red: colors.red,
       green: colors.green,
     },
-    extend: {},
+    extend: {
+      '3xl': '1600px',
+    },
   },
   plugins: [
       require('@tailwindcss/forms'),

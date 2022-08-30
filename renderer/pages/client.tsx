@@ -4,9 +4,9 @@ import {useRouter} from 'next/router';
 
 import * as db from '../lib/database';
 import {IClientTableProps, IProjectTableProps} from '../lib/database';
-import Grid from '../components/grid';
-import ProjectCard from '../components/projectCard';
-import AddProjectForm from '../components/addProjectForm';
+import Grid from '../components/Grid';
+import ProjectCard from '../components/ProjectCard';
+import AddProjectForm from '../components/AddProjectForm';
 import H1 from '../components/ui/text/H1';
 import H2 from '../components/ui/text/H2';
 

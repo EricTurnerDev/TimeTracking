@@ -23,14 +23,14 @@ interface ITextProps {
     variant?: 'dark' | 'medium' | 'light';
 }
 
-const BaseText = ({as = 'p', size, variant = 'light', className, children}: ITextProps) => {
+const BaseText = ({as = 'p', size, variant, className, children}: ITextProps) => {
     const Tag = as;
     return (
         <Tag className={classNames(
             'text',
             styles.base,
             size && styles.size[size],
-            styles.variant[variant],
+            variant && styles.variant[variant],
             className)}>
             {children}
         </Tag>

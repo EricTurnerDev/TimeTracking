@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import {ReactNode, forwardRef, ForwardedRef} from 'react';
 
 const styles = {
-    base: 'min-w-fit max-w-fit px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded',
+    base: 'min-w-fit max-w-fit px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded shadow-md',
     disabled: 'opacity-50 cursor-not-allowed',
     pill: 'rounded-3xl',
     variant: {

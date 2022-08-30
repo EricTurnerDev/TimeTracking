@@ -4,7 +4,7 @@ import BaseLabel from './BaseLabel';
 import P from '../text/P';
 
 const styles = {
-    base: 'form-control border-transparent flex-1 appearance-none border w-full py-2 px-4 bg-white text-gray-700 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent',
+    base: 'appearance-none border w-full py-2 px-4 bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent',
     state: {
         normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
         error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -52,7 +52,7 @@ const BaseInput = ({
 
     return (
         <div className={classNames('base-input', className)}>
-            {label && (<BaseLabel id={id}>{label} {required && '*'}</BaseLabel>)}
+            {label && (<BaseLabel id={id}>{label}{required && ' *'}</BaseLabel>)}
             <input
                 id={id}
                 type={type}

@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import * as db from '../lib/database';
-import AddClientForm from "../components/addClientForm";
-import ClientCard from '../components/clientCard';
-import Grid from '../components/grid';
+import AddClientForm from "../components/AddClientForm";
+import ClientCard from '../components/ClientCard';
+import Grid from '../components/Grid';
 import H1 from '../components/ui/text/H1';
 
 export default function Clients(props) {
