@@ -1,8 +1,10 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {deleteProject, IProjectTableProps} from '../lib/database';
 import classNames from 'classnames';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+import {deleteProject, IProjectTableProps} from '../lib/database';
+import H3 from './ui/H3';
 
 export interface IProjectCardProps {
     project: IProjectTableProps,
@@ -26,7 +28,7 @@ export default function ProjectCard({project, onProjectDeleted, className}: IPro
 
             <Link href={{pathname: `/project`, query: {id: project.id}}}>
                 <a className='block flex-grow p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-blue-500'>
-                    <h3 className='font-medium'>{project.project_name}</h3>
+                    <H3 className='font-medium'>{project.project_name}</H3>
                 </a>
             </Link>
             <div className='min-h-fit p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-gray-50 text-black'>

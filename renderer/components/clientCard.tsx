@@ -1,9 +1,12 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {deleteClient, getProjects, IClientTableProps} from '../lib/database';
 import classNames from 'classnames';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+import {deleteClient, getProjects, IClientTableProps} from '../lib/database';
+import H3 from './ui/H3';
+import P from './ui/P';
 import pluralize from '../lib/pluralize';
 
 export interface IClientCardProps {
@@ -40,11 +43,11 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
         <div className={classNames('client-card flex flex-col', className)}>
             <Link href={{pathname: `/client`, query: {id: client.id}}}>
                 <a className='block flex-grow p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-blue-500'>
-                    <h3 className='font-medium'>{client.client_name}</h3>
+                    <H3 className='font-medium'>{client.client_name}</H3>
                 </a>
             </Link>
             <div className='min-h-fit p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-gray-50 text-black'>
-                {numProjects > -1 && <p className='mb-4'>{numProjects} {pluralize('project', numProjects)}</p>}
+                {numProjects > -1 && <P variant='dark' className='mb-4'>{numProjects} {pluralize('project', numProjects)}</P>}
                 <FontAwesomeIcon icon={faTrash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
             </div>
         </div>

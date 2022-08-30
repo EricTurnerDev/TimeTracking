@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import {useId} from 'react';
 import BaseLabel from './BaseLabel';
+import P from '../P';
 
 const styles = {
     base: 'form-control border-transparent flex-1 appearance-none border w-full py-2 px-4 bg-white text-gray-700 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent',
@@ -66,7 +67,7 @@ const BaseInput = ({
                 required={required}
                 {...rest}
             />
-            {error && <p className={classNames('base-input-error', styles.errorText)}>{errorText}</p>}
+            {error && <P className={classNames('base-input-error', styles.errorText)}>{errorText}</P>}
         </div>
     )
 }

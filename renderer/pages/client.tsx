@@ -1,27 +1,33 @@
 import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
+
 import * as db from '../lib/database';
 import {IClientTableProps, IProjectTableProps} from '../lib/database';
 import Grid from '../components/grid';
 import ProjectCard from '../components/projectCard';
 import AddProjectForm from '../components/addProjectForm';
+import H1 from '../components/ui/H1';
+import H2 from '../components/ui/H2';
 
 export default function Client() {
-    const {query} = useRouter();
+    const router = useRouter();
+    const {id: clientId} = router.query;
     const [client, setClient] = useState<IClientTableProps>();
     const [projects, setProjects] = useState<IProjectTableProps[]>();
 
     useEffect(() => {
-        const id = parseId(query.id);
-        db.getClient({id})
-            .then((cl: IClientTableProps) => {
-                setClient(cl)
-            })
-            .catch(err => {
-                console.error(err)
-            });
-    }, [query.id])
+        if (clientId) {
+            const id = parseIntQueryParam(clientId);
+            db.getClient({id})
+                .then((cl: IClientTableProps) => {
+                    setClient(cl)
+                })
+                .catch(err => {
+                    console.error(err)
+                });
+        }
+    }, [clientId])
 
     useEffect(() => {
         if (client) {
@@ -54,12 +60,12 @@ export default function Client() {
                 <title>Client - TimeTracking</title>
             </Head>
 
-            {client && <h1 className='mb-4'>{client.client_name}</h1>}
+            {client && <H1 className='mb-4'>{client.client_name}</H1>}
 
             <AddProjectForm className='mb-4' client={client} onProjectAdded={projectAdded} />
 
-            {hasProjects(projects) && <h2 className="mb-4">Projects</h2>}
-            {!hasProjects(projects) && <h2>There are no projects for this client.</h2>}
+            {hasProjects(projects) && <H2 className="mb-4">Projects</H2>}
+            {!hasProjects(projects) && <H2>There are no projects for this client.</H2>}
 
             <Grid>
                 {projects && projects.map((project: db.IProjectTableProps) => {
@@ -72,7 +78,11 @@ export default function Client() {
     )
 }
 
-function parseId(id: string | string[]) {
+/**
+ * Query param can be a string or an array of strings. Convert the string to an integer, or convert the first
+ * element of the array from a string to an integer.
+ */
+function parseIntQueryParam(id: string | string[]) {
     return parseInt(typeof id === 'string' ? id : id[0]);
 }
 

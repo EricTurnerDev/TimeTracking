@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import {useState} from 'react';
 
-import BaseInput from './form/BaseInput';
-import Button from './form/Button';
+import BaseInput from './ui/form/BaseInput';
+import Button from './ui/Button';
 import {createClient, IClientTableProps} from '../lib/database';
 import {isBlank} from '../lib/isBlank';
 
@@ -47,7 +47,7 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}/>
 
-            <Button disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Client</Button>
+            <Button type='submit' disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Client</Button>
         </form>
     )
 }

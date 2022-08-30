@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import H1 from '../components/ui/H1';
 
 export default function Project() {
     return (
@@ -6,7 +7,7 @@ export default function Project() {
             <Head>
                 <title>Project - TimeKeeping</title>
             </Head>
-            <p>Project page</p>
+            <H1>Project page</H1>
         </div>
     )
 }

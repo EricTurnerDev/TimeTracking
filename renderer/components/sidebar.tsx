@@ -4,13 +4,17 @@ import Link from 'next/link';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faClock, faHome, faPeopleGroup} from '@fortawesome/free-solid-svg-icons';
 
+const styles = {
+    base: 'flex flex-col p-3 bg-black',
+};
+
 interface ISidebarProps {
     className?: string;
 }
 
 export default function Sidebar({className}: ISidebarProps) {
     return (
-        <aside className={classNames('sidebar flex flex-col p-3 bg-black', className)}>
+        <aside className={classNames('sidebar', styles.base, className)}>
             <SidebarItem href='/home'>
                 <FontAwesomeIcon icon={faHome} /> Home
             </SidebarItem>

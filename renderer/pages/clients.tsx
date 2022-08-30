@@ -1,10 +1,11 @@
 import classNames from 'classnames';
+import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import * as db from '../lib/database';
-import ClientCard from '../components/clientCard';
 import AddClientForm from "../components/addClientForm";
-import Head from 'next/head';
+import ClientCard from '../components/clientCard';
 import Grid from '../components/grid';
+import H1 from '../components/ui/H1';
 
 export default function Clients(props) {
     const [clients, setClients] = useState<db.IClientTableProps[]>([]);
@@ -32,7 +33,7 @@ export default function Clients(props) {
                 <title>Clients - TimeTracking</title>
             </Head>
 
-            <h1 className='mb-4'>Clients & Projects</h1>
+            <H1 className='mb-4'>Clients & Projects</H1>
 
             <AddClientForm className='mb-4' onClientAdded={clientAdded}/>
 

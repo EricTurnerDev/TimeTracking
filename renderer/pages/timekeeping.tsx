@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import Head from 'next/head';
+import H1 from '../components/ui/H1';
 
 export default function Timekeeping() {
     return (
@@ -8,7 +9,7 @@ export default function Timekeeping() {
                 <title>Timekeeping - TimeTracking</title>
             </Head>
 
-            <h1>Timekeeping</h1>
+            <H1>Timekeeping</H1>
         </div>
     )
 }

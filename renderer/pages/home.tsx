@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import H1 from '../components/ui/H1';
 
 export default function Home() {
     return (
@@ -6,7 +7,7 @@ export default function Home() {
             <Head>
                 <title>Home - TimeTracking</title>
             </Head>
-            <h1>Home</h1>
+            <H1>Home</H1>
         </div>
     );
 }
