@@ -7,8 +7,8 @@ import {IClientTableProps, IProjectTableProps} from '../lib/database';
 import Grid from '../components/grid';
 import ProjectCard from '../components/projectCard';
 import AddProjectForm from '../components/addProjectForm';
-import H1 from '../components/ui/H1';
-import H2 from '../components/ui/H2';
+import H1 from '../components/ui/text/H1';
+import H2 from '../components/ui/text/H2';
 
 export default function Client() {
     const router = useRouter();

@@ -4,7 +4,9 @@ import Link from 'next/link';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {deleteProject, IProjectTableProps} from '../lib/database';
-import H3 from './ui/H3';
+import H3 from './ui/text/H3';
+import P from './ui/text/P';
+import Card from './ui/Card';
 
 export interface IProjectCardProps {
     project: IProjectTableProps,
@@ -24,16 +26,17 @@ export default function ProjectCard({project, onProjectDeleted, className}: IPro
     }
 
     return (
-        <div className={classNames('project-card flex flex-col', className)}>
-
-            <Link href={{pathname: `/project`, query: {id: project.id}}}>
-                <a className='block flex-grow p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-blue-500'>
-                    <H3 className='font-medium'>{project.project_name}</H3>
-                </a>
-            </Link>
-            <div className='min-h-fit p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 bg-gray-50 text-black'>
-                <FontAwesomeIcon icon={faTrash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
-            </div>
-        </div>
+        <Card className={classNames('project-card', className)}>
+            <Card.Header>
+                <Link href={{pathname: `/project`, query: {id: project.id}}}>
+                    <a><H3 className='font-medium'>{project.project_name}</H3></a>
+                </Link>
+            </Card.Header>
+            <Card.Footer>
+                <P variant='dark'>
+                    <FontAwesomeIcon icon={faTrash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
+                </P>
+            </Card.Footer>
+        </Card>
     )
 }

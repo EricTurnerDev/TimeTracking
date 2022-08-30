@@ -5,7 +5,7 @@ import * as db from '../lib/database';
 import AddClientForm from "../components/addClientForm";
 import ClientCard from '../components/clientCard';
 import Grid from '../components/grid';
-import H1 from '../components/ui/H1';
+import H1 from '../components/ui/text/H1';
 
 export default function Clients(props) {
     const [clients, setClients] = useState<db.IClientTableProps[]>([]);

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {useId} from 'react';
 import BaseLabel from './BaseLabel';
-import P from '../P';
+import P from '../text/P';
 
 const styles = {
     base: 'form-control border-transparent flex-1 appearance-none border w-full py-2 px-4 bg-white text-gray-700 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent',
