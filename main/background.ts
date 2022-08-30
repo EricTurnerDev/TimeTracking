@@ -18,7 +18,7 @@ if (isProd) {
   // Create the sqlite database if it doesn't exist, and register listeners to handle requests from the renderer process.
   try {
     const dbLocation = path.join(app.getPath('userData'), 'timetracking.sqlite');
-    await db.up(dbLocation);
+    await db.initialize(dbLocation);
     db.listen();
   } catch (err) {
     console.error(err);
