@@ -1,81 +1,15 @@
 import {ipcMain} from 'electron';
-import Knex from 'knex';
+import Knex from '../db/knex';
 import {ITimeRecordTableProps} from "../../renderer/lib/database";
 import {IpcChannels} from "timetracking-common";
 
 let knex;
 
-export async function initialize(dbLocation) {
-    console.log(`Database file location: ${dbLocation}`);
-
-    knex = Knex({
-        client: 'sqlite3',
-        connection: {
-            filename: dbLocation
-        },
-        useNullAsDefault: true // Knex doesn't support default values with sqlite3 yet, so this suppresses that warning.
-    });
-
-    // This enables foreign key support in SQLite
-    await knex.raw('PRAGMA foreign_keys = ON');
-
-    await createClientsTable();
-    await createProjectsTable();
-    await createTimeRecordsTable();
-}
-
-async function createClientsTable() {
-    const exists = await knex.schema.hasTable('clients');
-    if (!exists) {
-        await knex.schema.createTable('clients', (table) => {
-            table.increments('id').primary();
-            table.string('client_name').unique().notNullable();
-        })
-    }
-}
-
-async function createProjectsTable() {
-    const exists = await knex.schema.hasTable('projects');
-    if (!exists) {
-        await knex.schema.createTable('projects', (table) => {
-            table.increments('id').primary();
-            table.string('project_name').unique().notNullable(); // TODO: project name does not need to be unique
-            table.integer('client_id')
-                .references('clients.id')
-                .onUpdate('CASCADE')
-                .onDelete('CASCADE')
-                .notNullable();
-            table.unique(['project_name', 'client_id']);
-        });
-    }
-}
-
-// TODO: Figure out how to enforce the project for the time record to be one of the client's projects. Otherwise
-//       we could mistakenly assign a project from a different client.
-
-async function createTimeRecordsTable() {
-    const exists = await knex.schema.hasTable('time_records');
-    if (!exists) {
-        await knex.schema.createTable('time_records', (table) => {
-            table.increments('id').primary();
-            table.boolean('billable').notNullable().defaultTo(false); // defaultTo doesn't work with sqlite3
-            table.timestamp('start_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
-            table.timestamp('end_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
-            table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0); // defaultTo doesn't work with sqlite3
-            table.text('invoice_activity');
-            table.text('work_description');
-            table.text('notes');
-            table.integer('client_id')
-                .references('clients.id')
-                .onUpdate('CASCADE')
-                .onDelete('CASCADE')
-                .notNullable();
-            table.integer('project_id')
-                .references('projects.id')
-                .onDelete('SET NULL');
-            table.check('?? >= ??', ['end_ts', 'start_ts']);
-        });
-    }
+export async function initialize() {
+    knex = await Knex.create();
+    await knex.migrate.latest()
+        .then(() => console.log('database migration completed'))
+        .catch(err => console.error(err));
 }
 
 export function listen() {
