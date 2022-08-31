@@ -1,13 +1,4 @@
-import {
-    CreateClient,
-    GetClient,
-    DeleteClient,
-    GetClients,
-    CreateProject,
-    GetProject,
-    DeleteProject,
-    GetProjects, GetTimeRecords,
-} from '../../lib/ipc-channels';
+import {IpcChannels} from "timetracking-common";
 
 import {send} from './ipc';
 
@@ -40,7 +31,7 @@ export interface ITimeRecordTableProps {
  * @returns a promise that resolves when the client is created, or rejects with an error.
  */
 export async function createClient(client: IClientTableProps): Promise<void> {
-    return await send(CreateClient, client);
+    return await send(IpcChannels.CreateClient, client);
 }
 
 /**
@@ -48,7 +39,7 @@ export async function createClient(client: IClientTableProps): Promise<void> {
  * @returns a promise that resolves with the client, or rejects with an error.
  */
 export async function getClient(client: IClientTableProps): Promise<IClientTableProps> {
-    return await send(GetClient, client);
+    return await send(IpcChannels.GetClient, client);
 }
 
 /**
@@ -56,7 +47,7 @@ export async function getClient(client: IClientTableProps): Promise<IClientTable
  * @returns a promise that resolves when the client is deleted, or rejects with an error.
  */
 export async function deleteClient(client: IClientTableProps): Promise<void> {
-    return await send(DeleteClient, client);
+    return await send(IpcChannels.DeleteClient, client);
 }
 
 /**
@@ -64,7 +55,7 @@ export async function deleteClient(client: IClientTableProps): Promise<void> {
  * @returns a promise that resolves with a list of clients, or rejects with an error.
  */
 export async function getClients(): Promise<IClientTableProps[]> {
-    return await send(GetClients);
+    return await send(IpcChannels.GetClients);
 }
 
 /**
@@ -72,7 +63,7 @@ export async function getClients(): Promise<IClientTableProps[]> {
  * @returns a promise that resolves when the project is created, or rejects with an error.
  */
 export async function createProject(project: IProjectTableProps): Promise<void> {
-    return await send(CreateProject, project);
+    return await send(IpcChannels.CreateProject, project);
 }
 
 /**
@@ -80,7 +71,7 @@ export async function createProject(project: IProjectTableProps): Promise<void> 
  * @returns a promise that resolves with the project, or rejects with an error.
  */
 export async function getProject(project: IProjectTableProps): Promise<IProjectTableProps> {
-    return await send(GetProject, project);
+    return await send(IpcChannels.GetProject, project);
 }
 
 
@@ -89,7 +80,7 @@ export async function getProject(project: IProjectTableProps): Promise<IProjectT
  * @returns a promise that resolves when the project is deleted, or rejects with an error.
  */
 export async function deleteProject(project: IProjectTableProps): Promise<void> {
-    return await send(DeleteProject, project);
+    return await send(IpcChannels.DeleteProject, project);
 }
 
 /**
@@ -97,7 +88,7 @@ export async function deleteProject(project: IProjectTableProps): Promise<void> 
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */
 export async function getProjects(client: IClientTableProps): Promise<IProjectTableProps[]> {
-    return await send(GetProjects, client);
+    return await send(IpcChannels.GetProjects, client);
 }
 
 /**
@@ -105,5 +96,5 @@ export async function getProjects(client: IClientTableProps): Promise<IProjectTa
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */
 export async function getTimeRecords(client: IClientTableProps, project: IProjectTableProps): Promise<ITimeRecordTableProps[]> {
-    return await send(GetTimeRecords, {client, project});
+    return await send(IpcChannels.GetTimeRecords, {client, project});
 }

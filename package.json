@@ -6,7 +6,9 @@
   "author": "Eric Turner <eric@ericturner.dev>",
   "main": "app/background.js",
   "scripts": {
+    "predev": "cd timetracking-common && npm run tsc",
     "dev": "nextron",
+    "prebuild": "cd timetracking-common && npm run tsc",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -18,7 +20,8 @@
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.1",
     "knex": "^2.2.0",
-    "sqlite3": "^5.0.11"
+    "sqlite3": "^5.0.11",
+    "timetracking-common": "file:timetracking-common"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.2",

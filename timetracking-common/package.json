@@ -1,0 +1,23 @@
+{
+  "name": "timetracking-common",
+  "version": "0.0.1",
+  "description": "Code used in both the main and rendering processes of the TimeTracking app.",
+  "private": "true",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/cjs/index.js",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "prepublish": "npm run tsc"
+  },
+  "keywords": [],
+  "author": "Eric Turner",
+  "email": "info@ericturner.dev",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}

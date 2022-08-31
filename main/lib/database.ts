@@ -1,7 +1,7 @@
 import {ipcMain} from 'electron';
-import * as IpcChannel from '../../lib/ipc-channels';
 import Knex from 'knex';
 import {ITimeRecordTableProps} from "../../renderer/lib/database";
+import {IpcChannels} from "timetracking-common";
 
 let knex;
 
@@ -39,7 +39,7 @@ async function createProjectsTable() {
     if (!exists) {
         await knex.schema.createTable('projects', (table) => {
             table.increments('id').primary();
-            table.string('project_name').unique().notNullable();
+            table.string('project_name').unique().notNullable(); // TODO: project name does not need to be unique
             table.integer('client_id')
                 .references('clients.id')
                 .onUpdate('CASCADE')
@@ -79,39 +79,39 @@ async function createTimeRecordsTable() {
 }
 
 export function listen() {
-    ipcMain.handle(IpcChannel.CreateClient, (event, client) => {
+    ipcMain.handle(IpcChannels.CreateClient, (event, client) => {
         return knex.insert(client).into('clients');
     });
 
-    ipcMain.handle(IpcChannel.GetClient, (event, client) => {
+    ipcMain.handle(IpcChannels.GetClient, (event, client) => {
         return knex.select('*').from('clients').where('id', client.id).first();
     });
 
-    ipcMain.handle(IpcChannel.DeleteClient, (event, client) => {
+    ipcMain.handle(IpcChannels.DeleteClient, (event, client) => {
         return knex('clients').where('id', client.id).del();
     });
 
-    ipcMain.handle(IpcChannel.GetClients, (event, ...args) => {
+    ipcMain.handle(IpcChannels.GetClients, (event, ...args) => {
         return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
     });
 
-    ipcMain.handle(IpcChannel.CreateProject, (event, project) => {
+    ipcMain.handle(IpcChannels.CreateProject, (event, project) => {
         return knex.insert(project).into('projects');
     });
 
-    ipcMain.handle(IpcChannel.GetProject, (event, project) => {
+    ipcMain.handle(IpcChannels.GetProject, (event, project) => {
         return knex.select('*').from('projects').where('id', project.id).first();
     });
 
-    ipcMain.handle(IpcChannel.DeleteProject, (event, project) => {
+    ipcMain.handle(IpcChannels.DeleteProject, (event, project) => {
         return knex('projects').where('id', project.id).del();
     });
 
-    ipcMain.handle(IpcChannel.GetProjects, (event, client) => {
+    ipcMain.handle(IpcChannels.GetProjects, (event, client) => {
         return knex.select('projects.*').from('projects').join('clients', 'projects.client_id', 'clients.id').where('projects.client_id', client.id);
     });
 
-    ipcMain.handle(IpcChannel.GetTimeRecords, (event, ...args) => {
+    ipcMain.handle(IpcChannels.GetTimeRecords, (event, ...args) => {
         // GetTimeRecords supports querying by client_id, project_id, or both. Build the query object
         // based on the arguments received on the IPC channel.
 

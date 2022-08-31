@@ -1,0 +1,9 @@
+export var CreateClient = "client:create";
+export var GetClient = 'client:get';
+export var DeleteClient = 'client:delete';
+export var GetClients = 'clients:get';
+export var CreateProject = 'project:create';
+export var GetProject = 'project:get';
+export var DeleteProject = 'project:delete';
+export var GetProjects = 'projects:get';
+export var GetTimeRecords = 'time-records:get';
