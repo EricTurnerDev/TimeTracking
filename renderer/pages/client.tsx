@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 
 import * as db from '../lib/database';
-import {IClientTableProps, IProjectTableProps} from '../lib/database';
+import {parseIntQueryParam} from '../lib/parseQueryParam';
 import Grid from '../components/Grid';
 import ProjectCard from '../components/ProjectCard';
 import AddProjectForm from '../components/AddProjectForm';
@@ -13,19 +13,21 @@ import H2 from '../components/ui/text/H2';
 export default function Client() {
     const router = useRouter();
     const {id: clientId} = router.query;
-    const [client, setClient] = useState<IClientTableProps>();
-    const [projects, setProjects] = useState<IProjectTableProps[]>();
+    const [client, setClient] = useState<db.IClientTableProps>();
+    const [projects, setProjects] = useState<db.IProjectTableProps[]>();
 
     useEffect(() => {
         if (clientId) {
-            const id = parseIntQueryParam(clientId);
-            db.getClient({id})
-                .then((cl: IClientTableProps) => {
-                    setClient(cl)
-                })
-                .catch(err => {
-                    console.error(err)
-                });
+            const id:number[] = parseIntQueryParam(clientId);
+            if (id.length > 0) {
+                db.getClient({id: id[0]})
+                    .then((cl: db.IClientTableProps) => {
+                        setClient(cl)
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    });
+            }
         }
     }, [clientId])
 
@@ -76,14 +78,6 @@ export default function Client() {
             </Grid>
         </div>
     )
-}
-
-/**
- * Query param can be a string or an array of strings. Convert the string to an integer, or convert the first
- * element of the array from a string to an integer.
- */
-function parseIntQueryParam(id: string | string[]) {
-    return parseInt(typeof id === 'string' ? id : id[0]);
 }
 
 function hasProjects(projects: db.IProjectTableProps[]) {

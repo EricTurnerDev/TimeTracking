@@ -4,8 +4,9 @@ import {
     DeleteClient,
     GetClients,
     CreateProject,
+    GetProject,
     DeleteProject,
-    GetProjects,
+    GetProjects, GetTimeRecords,
 } from '../../lib/ipc-channels';
 
 import {send} from './ipc';
@@ -19,6 +20,19 @@ export interface IProjectTableProps {
     id?: number;
     project_name?: string,
     client_id?: number;
+}
+
+export interface ITimeRecordTableProps {
+    id?: number;
+    billable?: boolean;
+    start_ts?: string;
+    end_ts?: string;
+    adjustment?: number;
+    invoice_activity?: string;
+    work_description?: string;
+    notes?: string;
+    client_id?: number;
+    project_id?: number;
 }
 
 /**
@@ -62,6 +76,15 @@ export async function createProject(project: IProjectTableProps): Promise<void> 
 }
 
 /**
+ * Requests the main process to get a project.
+ * @returns a promise that resolves with the project, or rejects with an error.
+ */
+export async function getProject(project: IProjectTableProps): Promise<IProjectTableProps> {
+    return await send(GetProject, project);
+}
+
+
+/**
  * Requests the main process to delete a project.
  * @returns a promise that resolves when the project is deleted, or rejects with an error.
  */
@@ -75,4 +98,12 @@ export async function deleteProject(project: IProjectTableProps): Promise<void> 
  */
 export async function getProjects(client: IClientTableProps): Promise<IProjectTableProps[]> {
     return await send(GetProjects, client);
+}
+
+/**
+ * Request a list of time records for a client and/or project from the main process.
+ * @returns a promise that resolves with a list of time records, or rejects with an error.
+ */
+export async function getTimeRecords(client: IClientTableProps, project: IProjectTableProps): Promise<ITimeRecordTableProps[]> {
+    return await send(GetTimeRecords, {client, project});
 }
