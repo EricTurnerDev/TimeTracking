@@ -3,15 +3,16 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {Database} from 'timetracking-common';
 
-import {deleteClient, getProjects, IClientTableProps} from '../lib/database';
+import {deleteClient, getProjects} from '../lib/database';
 import H3 from './ui/text/H3';
 import P from './ui/text/P';
 import pluralize from '../lib/pluralize';
 import Card from './ui/Card';
 
 export interface IClientCardProps {
-    client: IClientTableProps,
+    client: Database.IClientsTable,
     onClientDeleted?: () => void;
     className?: string;
 }

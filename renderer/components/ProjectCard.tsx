@@ -2,14 +2,15 @@ import classNames from 'classnames';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {Database} from 'timetracking-common';
 
-import {deleteProject, IProjectTableProps} from '../lib/database';
+import {deleteProject} from '../lib/database';
 import H3 from './ui/text/H3';
 import P from './ui/text/P';
 import Card from './ui/Card';
 
 export interface IProjectCardProps {
-    project: IProjectTableProps,
+    project: Database.IProjectsTable,
     onProjectDeleted?: () => void;
     className?: string;
 }

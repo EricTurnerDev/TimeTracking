@@ -2,7 +2,6 @@ import {
     screen,
     BrowserWindow,
     BrowserWindowConstructorOptions,
-    ipcMain,
 } from 'electron';
 import Store from 'electron-store';
 

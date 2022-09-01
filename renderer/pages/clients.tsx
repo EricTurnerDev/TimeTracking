@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
+import {Database} from 'timetracking-common';
+
 import * as db from '../lib/database';
 import AddClientForm from "../components/AddClientForm";
 import ClientCard from '../components/ClientCard';
@@ -8,10 +10,10 @@ import Grid from '../components/Grid';
 import H1 from '../components/ui/text/H1';
 
 export default function Clients(props) {
-    const [clients, setClients] = useState<db.IClientTableProps[]>([]);
+    const [clients, setClients] = useState<Database.IClientsTable[]>([]);
 
     const showClients = async () => {
-        const result: db.IClientTableProps[] = await db.getClients();
+        const result: Database.IClientsTable[] = await db.getClients();
         setClients(result);
     };
 
@@ -38,7 +40,7 @@ export default function Clients(props) {
             <AddClientForm className='mb-4' onClientAdded={clientAdded}/>
 
             <Grid>
-                {clients && clients.map((client: db.IClientTableProps) => {
+                {clients && clients.map((client: Database.IClientsTable) => {
                     return (
                         <ClientCard key={client.id} client={client} onClientDeleted={clientDeleted}/>
                     )

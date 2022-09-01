@@ -23,8 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QueryInterfaces = exports.IpcChannels = void 0;
+exports.Database = exports.IpcChannels = void 0;
 var IpcChannels = __importStar(require("./channels.js"));
 exports.IpcChannels = IpcChannels;
-var QueryInterfaces = __importStar(require("./queryInterfaces"));
-exports.QueryInterfaces = QueryInterfaces;
+var Database = __importStar(require("./database"));
+exports.Database = Database;

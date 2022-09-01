@@ -1,18 +1,20 @@
-import {createProject, IClientTableProps, IProjectTableProps} from '../lib/database';
-import {useEffect, useState} from 'react';
-import {isBlank} from '../lib/isBlank';
 import classNames from 'classnames';
+import {useEffect, useState} from 'react';
+import {Database} from 'timetracking-common';
+
 import BaseInput from './ui/form/BaseInput';
 import Button from './ui/Button';
+import {createProject} from '../lib/database';
+import {isBlank} from '../lib/isBlank';
 
-export const initialFormState: IProjectTableProps = {
+export const initialFormState: Database.IProjectsTable = {
     project_name: '',
     client_id: -1,
 };
 
 export interface IAddProjectFormProps {
     className?: string;
-    client: IClientTableProps,
+    client: Database.IClientsTable,
     onProjectAdded: () => void;
 }
 
@@ -45,7 +47,7 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
         setFormData(prevFormData => ({...prevFormData, project_name: e.target.value}));
     }
 
-    const isValid = (formData: IProjectTableProps): boolean => {
+    const isValid = (formData: Database.IProjectsTable): boolean => {
         return !isBlank(formData.project_name);
     }
 

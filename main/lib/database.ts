@@ -1,7 +1,7 @@
 import {ipcMain} from 'electron';
+import {IpcChannels, Database} from 'timetracking-common';
+
 import Knex from '../db/knex';
-import {ITimeRecordTableProps} from "../../renderer/lib/database";
-import {IpcChannels, QueryInterfaces} from "timetracking-common";
 
 let knex;
 
@@ -45,11 +45,11 @@ export function listen() {
         return knex.select().from('projects').where('projects.client_id', clientId);
     });
 
-    ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: QueryInterfaces.ITimeRecordsQuery) => {
+    ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
         // GetTimeRecords supports querying by client id, project id, or both. Build the query object
         // based on the arguments received on the IPC channel.
 
-        const query: ITimeRecordTableProps = {};
+        const query: Database.ITimeRecordTable = {};
         if (clientId) {
             query.client_id = clientId;
         }

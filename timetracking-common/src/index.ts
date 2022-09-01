@@ -1,7 +1,7 @@
-import * as IpcChannels from "./channels.js";
-import * as QueryInterfaces from "./queryInterfaces";
+import * as IpcChannels from './channels.js';
+import * as Database from './database';
 
 export {
     IpcChannels,
-    QueryInterfaces,
+    Database,
 }

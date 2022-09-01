@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import {useState} from 'react';
+import {Database} from 'timetracking-common';
 
 import BaseInput from './ui/form/BaseInput';
 import Button from './ui/Button';
-import {createClient, IClientTableProps} from '../lib/database';
+import {createClient} from '../lib/database';
 import {isBlank} from '../lib/isBlank';
 
-export const initialFormState: IClientTableProps = {
+export const initialFormState: Database.IClientsTable = {
     client_name: '',
 };
 
@@ -19,7 +20,7 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
     const [adding, setAdding] = useState(false);
     const [formData, setFormData] = useState(initialFormState);
 
-    const buttonClicked = (e) => {
+    const buttonClicked = () => {
         setAdding(true);
         createClient(formData).
         then(() => {
@@ -34,7 +35,7 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
         });
     }
 
-    const isValid = (formData: IClientTableProps): boolean => {
+    const isValid = (formData: Database.IClientsTable): boolean => {
         return !isBlank(formData.client_name);
     }
 
