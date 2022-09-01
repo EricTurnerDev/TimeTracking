@@ -16,11 +16,12 @@ export default function Client() {
     const [client, setClient] = useState<db.IClientTableProps>();
     const [projects, setProjects] = useState<db.IProjectTableProps[]>();
 
+    // Get the client
     useEffect(() => {
         if (clientId) {
             const id:number[] = parseIntQueryParam(clientId);
             if (id.length > 0) {
-                db.getClient({id: id[0]})
+                db.getClient(id[0])
                     .then((cl: db.IClientTableProps) => {
                         setClient(cl)
                     })
@@ -31,20 +32,24 @@ export default function Client() {
         }
     }, [clientId])
 
+    // Get the projects for a client
     useEffect(() => {
-        if (client) {
-            db.getProjects(client)
-                .then((projects) => {
-                    setProjects(projects);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+        if (clientId) {
+            const id:number[] = parseIntQueryParam(clientId);
+            if (id.length > 0) {
+                db.getProjects(id[0])
+                    .then((projects) => {
+                        setProjects(projects);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
         }
-    }, [client]);
+    }, [clientId]);
 
     const showProjects = async () => {
-        const result: db.IProjectTableProps[] = await db.getProjects(client);
+        const result: db.IProjectTableProps[] = await db.getProjects(client.id);
         setProjects(result);
     };
 

@@ -13,11 +13,12 @@ export default function Project() {
     const [client, setClient] = useState<db.IClientTableProps>();
     const [timeRecords, setTimeRecords] = useState<db.ITimeRecordTableProps[]>([]);
 
+    // Get the project
     useEffect(() => {
         if (projectId) {
             const ids: number[] = parseIntQueryParam(projectId);
             if (ids.length > 0) {
-                db.getProject({id: ids[0]})
+                db.getProject(ids[0])
                     .then((prj: IProjectTableProps) => {
                         setProject(prj);
                     })
@@ -28,9 +29,10 @@ export default function Project() {
         }
     }, [projectId]);
 
+    // Get client of this project
     useEffect(() => {
         if (project) {
-            db.getClient({id: project.client_id})
+            db.getClient(project.client_id)
                 .then((cl: IClientTableProps) => {
                     setClient(cl);
                 })
@@ -40,9 +42,10 @@ export default function Project() {
         }
     }, [project]);
 
+    // Get the time records for the project.
     useEffect(() => {
-        if (client || project) {
-            db.getTimeRecords(client, project)
+        if (project) {
+            db.getTimeRecords({projectId: project?.id})
                 .then((trs: ITimeRecordTableProps[]) => {
                     setTimeRecords(trs);
                 })
@@ -50,7 +53,7 @@ export default function Project() {
                     console.error(err);
                 })
         }
-    }, [client, project]);
+    }, [project]);
 
     return (
         <div className='project'>

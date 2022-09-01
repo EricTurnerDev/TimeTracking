@@ -16,7 +16,7 @@ export interface IProjectCardProps {
 
 export default function ProjectCard({project, onProjectDeleted, className}: IProjectCardProps) {
     const trashIconClicked = () => {
-        deleteProject(project).then(() => {
+        deleteProject(project.id).then(() => {
             if (onProjectDeleted) {
                 onProjectDeleted();
             }

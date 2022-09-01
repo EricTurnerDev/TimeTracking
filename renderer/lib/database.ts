@@ -1,4 +1,4 @@
-import {IpcChannels} from "timetracking-common";
+import {IpcChannels, QueryInterfaces} from "timetracking-common";
 
 import {send} from './ipc';
 
@@ -38,16 +38,16 @@ export async function createClient(client: IClientTableProps): Promise<void> {
  * Requests the main process to get a client.
  * @returns a promise that resolves with the client, or rejects with an error.
  */
-export async function getClient(client: IClientTableProps): Promise<IClientTableProps> {
-    return await send(IpcChannels.GetClient, client);
+export async function getClient(id:number): Promise<IClientTableProps> {
+    return await send(IpcChannels.GetClient, id);
 }
 
 /**
  * Requests the main process to delete a client.
  * @returns a promise that resolves when the client is deleted, or rejects with an error.
  */
-export async function deleteClient(client: IClientTableProps): Promise<void> {
-    return await send(IpcChannels.DeleteClient, client);
+export async function deleteClient(id:number): Promise<void> {
+    return await send(IpcChannels.DeleteClient, id);
 }
 
 /**
@@ -70,8 +70,8 @@ export async function createProject(project: IProjectTableProps): Promise<void> 
  * Requests the main process to get a project.
  * @returns a promise that resolves with the project, or rejects with an error.
  */
-export async function getProject(project: IProjectTableProps): Promise<IProjectTableProps> {
-    return await send(IpcChannels.GetProject, project);
+export async function getProject(id:number): Promise<IProjectTableProps> {
+    return await send(IpcChannels.GetProject, id);
 }
 
 
@@ -79,22 +79,22 @@ export async function getProject(project: IProjectTableProps): Promise<IProjectT
  * Requests the main process to delete a project.
  * @returns a promise that resolves when the project is deleted, or rejects with an error.
  */
-export async function deleteProject(project: IProjectTableProps): Promise<void> {
-    return await send(IpcChannels.DeleteProject, project);
+export async function deleteProject(id:number): Promise<void> {
+    return await send(IpcChannels.DeleteProject, id);
 }
 
 /**
  * Requests a list of projects for a client from the main process.
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */
-export async function getProjects(client: IClientTableProps): Promise<IProjectTableProps[]> {
-    return await send(IpcChannels.GetProjects, client);
+export async function getProjects(clientId:number): Promise<IProjectTableProps[]> {
+    return await send(IpcChannels.GetProjects, clientId);
 }
 
 /**
  * Request a list of time records for a client and/or project from the main process.
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */
-export async function getTimeRecords(client: IClientTableProps, project: IProjectTableProps): Promise<ITimeRecordTableProps[]> {
-    return await send(IpcChannels.GetTimeRecords, {client, project});
+export async function getTimeRecords(query: QueryInterfaces.ITimeRecordsQuery): Promise<ITimeRecordTableProps[]> {
+    return await send(IpcChannels.GetTimeRecords, query);
 }

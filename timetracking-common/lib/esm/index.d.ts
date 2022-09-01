@@ -1,2 +1,3 @@
 import * as IpcChannels from "./channels.js";
-export { IpcChannels };
+import * as QueryInterfaces from "./queryInterfaces";
+export { IpcChannels, QueryInterfaces, };

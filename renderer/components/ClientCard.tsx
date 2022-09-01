@@ -22,7 +22,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
 
     useEffect(() => {
         if (client) {
-            getProjects(client)
+            getProjects(client.id)
                 .then(projects => {
                     setNumProjects(projects.length);
                 })
@@ -31,7 +31,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
     }, [client])
 
     const trashIconClicked = () => {
-        deleteClient(client).then(() => {
+        deleteClient(client.id).then(() => {
             if (onClientDeleted) {
                 onClientDeleted();
             }
