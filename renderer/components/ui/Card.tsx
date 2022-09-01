@@ -18,7 +18,7 @@ interface ICardHeaderProps extends ICardProps {}
 
 const Header = ({ className, children }: ICardHeaderProps) => {
     return (
-        <div className={classNames('flex flex-grow bg-blue-500 border-b border-gray-200 p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7', className)}>
+        <div className={classNames('flex flex-grow bg-blue-500 hover:bg-blue-800 border-b border-gray-200 p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 transition ease-in-out', className)}>
             {children}
         </div>
     )

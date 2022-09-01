@@ -7,7 +7,6 @@ import * as db from '../lib/database';
 import AddClientForm from "../components/AddClientForm";
 import ClientCard from '../components/ClientCard';
 import Grid from '../components/Grid';
-import H1 from '../components/ui/text/H1';
 
 export default function Clients(props) {
     const [clients, setClients] = useState<Database.IClientsTable[]>([]);
@@ -34,8 +33,6 @@ export default function Clients(props) {
             <Head>
                 <title>Clients - TimeTracking</title>
             </Head>
-
-            <H1 className='mb-4'>Clients & Projects</H1>
 
             <AddClientForm className='mb-4' onClientAdded={clientAdded}/>
 
