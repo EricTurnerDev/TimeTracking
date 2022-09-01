@@ -11,9 +11,9 @@ import * as db from '../lib/database';
 export default function Project() {
     const router = useRouter();
     const {id: projectId} = router.query;
-    const [project, setProject] = useState<Database.IProjectsTable>();
-    const [client, setClient] = useState<Database.IClientsTable>();
-    const [timeRecords, setTimeRecords] = useState<Database.ITimeRecordsTable[]>([]);
+    const [project, setProject] = useState<Database.IProject>();
+    const [client, setClient] = useState<Database.IClient>();
+    const [timeRecords, setTimeRecords] = useState<Database.ITimeRecord[]>([]);
 
     // Get the project
     useEffect(() => {
@@ -21,7 +21,7 @@ export default function Project() {
             const ids: number[] = parseIntQueryParam(projectId);
             if (ids.length > 0) {
                 db.getProject(ids[0])
-                    .then((prj: Database.IProjectsTable) => {
+                    .then((prj: Database.IProject) => {
                         setProject(prj);
                     })
                     .catch(err => {
@@ -35,7 +35,7 @@ export default function Project() {
     useEffect(() => {
         if (project) {
             db.getClient(project.client_id)
-                .then((cl: Database.IClientsTable) => {
+                .then((cl: Database.IClient) => {
                     setClient(cl);
                 })
                 .catch(err => {
@@ -48,7 +48,7 @@ export default function Project() {
     useEffect(() => {
         if (project) {
             db.getTimeRecords({projectId: project?.id})
-                .then((trs: Database.ITimeRecordsTable[]) => {
+                .then((trs: Database.ITimeRecord[]) => {
                     setTimeRecords(trs);
                 })
                 .catch(err => {
@@ -64,7 +64,7 @@ export default function Project() {
             </Head>
             {project && client && <H1>{project.project_name} for {client.client_name}</H1>}
 
-            {timeRecords && timeRecords.map((tr: Database.ITimeRecordsTable) => (<p key={tr.id}>{tr.work_description}</p>))}
+            {timeRecords && timeRecords.map((tr: Database.ITimeRecord) => (<p key={tr.id}>{tr.work_description}</p>))}
         </div>
     )
 }

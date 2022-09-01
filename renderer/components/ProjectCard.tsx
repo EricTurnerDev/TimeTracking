@@ -10,7 +10,7 @@ import P from './ui/text/P';
 import Card from './ui/Card';
 
 export interface IProjectCardProps {
-    project: Database.IProjectsTable,
+    project: Database.IProject,
     onProjectDeleted?: () => void;
     className?: string;
 }

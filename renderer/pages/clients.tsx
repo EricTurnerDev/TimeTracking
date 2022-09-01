@@ -6,13 +6,13 @@ import {Database} from 'timetracking-common';
 import * as db from '../lib/database';
 import AddClientForm from "../components/AddClientForm";
 import ClientCard from '../components/ClientCard';
-import Grid from '../components/Grid';
+import Grid from '../components/ui/Grid';
 
 export default function Clients(props) {
-    const [clients, setClients] = useState<Database.IClientsTable[]>([]);
+    const [clients, setClients] = useState<Database.IClient[]>([]);
 
     const showClients = async () => {
-        const result: Database.IClientsTable[] = await db.getClients();
+        const result: Database.IClient[] = await db.getClients();
         setClients(result);
     };
 
@@ -37,7 +37,7 @@ export default function Clients(props) {
             <AddClientForm className='mb-4' onClientAdded={clientAdded}/>
 
             <Grid>
-                {clients && clients.map((client: Database.IClientsTable) => {
+                {clients && clients.map((client: Database.IClient) => {
                     return (
                         <ClientCard key={client.id} client={client} onClientDeleted={clientDeleted}/>
                     )

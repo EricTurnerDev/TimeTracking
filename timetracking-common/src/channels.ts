@@ -9,3 +9,4 @@ export const DeleteProject: string = 'project:delete';
 export const GetProjects: string = 'projects:get';
 
 export const GetTimeRecords: string = 'time-records:get';
+export const GetDetailedTimeRecords: string = 'time-records:detailed:get';

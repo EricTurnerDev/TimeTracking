@@ -13,6 +13,8 @@ export async function initialize() {
 }
 
 export function listen() {
+    // Clients
+
     ipcMain.handle(IpcChannels.CreateClient, (event, client) => {
         return knex.insert(client).into('clients');
     });
@@ -28,6 +30,8 @@ export function listen() {
     ipcMain.handle(IpcChannels.GetClients, (event) => {
         return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
     });
+
+    // Projects
 
     ipcMain.handle(IpcChannels.CreateProject, (event, project) => {
         return knex.insert(project).into('projects');
@@ -45,11 +49,13 @@ export function listen() {
         return knex.select().from('projects').where('projects.client_id', clientId);
     });
 
+    // Time records
+
     ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
         // GetTimeRecords supports querying by client id, project id, or both. Build the query object
         // based on the arguments received on the IPC channel.
 
-        const query: Database.ITimeRecordTable = {};
+        const query: Database.ITimeRecord = {};
         if (clientId) {
             query.client_id = clientId;
         }
@@ -57,5 +63,30 @@ export function listen() {
             query.project_id = projectId;
         }
         return knex.select().from('time_records').where(query);
-    })
+    });
+
+    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
+        // GetTimeRecords supports querying by client id, project id, or both. Build the query object
+        // based on the arguments received on the IPC channel.
+
+        const query: Database.ITimeRecord = {};
+        if (clientId) {
+            query.client_id = clientId;
+        }
+        if (projectId) {
+            query.project_id = projectId;
+        }
+        const columns = [
+            'time_records.*',
+            'projects.project_name AS project_name',
+            'clients.client_name AS client_name',
+            knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
+        ]
+        return knex
+            .select(columns)
+            .from('time_records')
+            .innerJoin('projects', 'time_records.project_id', '=', 'projects.id')
+            .innerJoin('clients', 'time_records.client_id', '=', 'clients.id');
+        // TODO: Add a where clause with the query
+    });
 }

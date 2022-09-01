@@ -7,7 +7,7 @@ import Button from './ui/Button';
 import {createClient} from '../lib/database';
 import {isBlank} from '../lib/isBlank';
 
-export const initialFormState: Database.IClientsTable = {
+export const initialFormState: Database.IClient = {
     client_name: '',
 };
 
@@ -35,7 +35,7 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
         });
     }
 
-    const isValid = (formData: Database.IClientsTable): boolean => {
+    const isValid = (formData: Database.IClient): boolean => {
         return !isBlank(formData.client_name);
     }
 

@@ -7,14 +7,14 @@ import Button from './ui/Button';
 import {createProject} from '../lib/database';
 import {isBlank} from '../lib/isBlank';
 
-export const initialFormState: Database.IProjectsTable = {
+export const initialFormState: Database.IProject = {
     project_name: '',
     client_id: -1,
 };
 
 export interface IAddProjectFormProps {
     className?: string;
-    client: Database.IClientsTable,
+    client: Database.IClient,
     onProjectAdded: () => void;
 }
 
@@ -47,7 +47,7 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
         setFormData(prevFormData => ({...prevFormData, project_name: e.target.value}));
     }
 
-    const isValid = (formData: Database.IProjectsTable): boolean => {
+    const isValid = (formData: Database.IProject): boolean => {
         return !isBlank(formData.project_name);
     }
 

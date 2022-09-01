@@ -12,7 +12,7 @@ import pluralize from '../lib/pluralize';
 import Card from './ui/Card';
 
 export interface IClientCardProps {
-    client: Database.IClientsTable,
+    client: Database.IClient,
     onClientDeleted?: () => void;
     className?: string;
 }

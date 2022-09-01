@@ -5,7 +5,7 @@ import {Database} from 'timetracking-common';
 
 import * as db from '../lib/database';
 import {parseIntQueryParam} from '../lib/parseQueryParam';
-import Grid from '../components/Grid';
+import Grid from '../components/ui/Grid';
 import ProjectCard from '../components/ProjectCard';
 import AddProjectForm from '../components/AddProjectForm';
 import H1 from '../components/ui/text/H1';
@@ -14,8 +14,8 @@ import H2 from '../components/ui/text/H2';
 export default function Client() {
     const router = useRouter();
     const {id: clientId} = router.query;
-    const [client, setClient] = useState<Database.IClientsTable>();
-    const [projects, setProjects] = useState<Database.IProjectsTable[]>();
+    const [client, setClient] = useState<Database.IClient>();
+    const [projects, setProjects] = useState<Database.IProject[]>();
 
     // Get the client
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function Client() {
             const id:number[] = parseIntQueryParam(clientId);
             if (id.length > 0) {
                 db.getClient(id[0])
-                    .then((cl: Database.IClientsTable) => {
+                    .then((cl: Database.IClient) => {
                         setClient(cl)
                     })
                     .catch(err => {
@@ -50,7 +50,7 @@ export default function Client() {
     }, [clientId]);
 
     const showProjects = async () => {
-        const result: Database.IProjectsTable[] = await db.getProjects(client.id);
+        const result: Database.IProject[] = await db.getProjects(client.id);
         setProjects(result);
     };
 
@@ -76,7 +76,7 @@ export default function Client() {
             {!hasProjects(projects) && <H2>There are no projects for this client.</H2>}
 
             <Grid>
-                {projects && projects.map((project: Database.IProjectsTable) => {
+                {projects && projects.map((project: Database.IProject) => {
                     return (
                         <ProjectCard key={project.id} project={project} onProjectDeleted={projectDeleted}/>
                     )
@@ -86,6 +86,6 @@ export default function Client() {
     )
 }
 
-function hasProjects(projects: Database.IProjectsTable[]) {
+function hasProjects(projects: Database.IProject[]) {
     return projects && projects.length > 0;
 }

@@ -6,7 +6,7 @@ import {send} from './ipc';
  * Requests the main process to create a client.
  * @returns a promise that resolves when the client is created, or rejects with an error.
  */
-export async function createClient(client: Database.IClientsTable): Promise<void> {
+export async function createClient(client: Database.IClient): Promise<void> {
     return await send(IpcChannels.CreateClient, client);
 }
 
@@ -14,7 +14,7 @@ export async function createClient(client: Database.IClientsTable): Promise<void
  * Requests the main process to get a client.
  * @returns a promise that resolves with the client, or rejects with an error.
  */
-export async function getClient(id:number): Promise<Database.IClientsTable> {
+export async function getClient(id:number): Promise<Database.IClient> {
     return await send(IpcChannels.GetClient, id);
 }
 
@@ -30,7 +30,7 @@ export async function deleteClient(id:number): Promise<void> {
  * Requests a list of all the clients from the main process.
  * @returns a promise that resolves with a list of clients, or rejects with an error.
  */
-export async function getClients(): Promise<Database.IClientsTable[]> {
+export async function getClients(): Promise<Database.IClient[]> {
     return await send(IpcChannels.GetClients);
 }
 
@@ -38,7 +38,7 @@ export async function getClients(): Promise<Database.IClientsTable[]> {
  * Requests the main process to create a project.
  * @returns a promise that resolves when the project is created, or rejects with an error.
  */
-export async function createProject(project: Database.IProjectsTable): Promise<void> {
+export async function createProject(project: Database.IProject): Promise<void> {
     return await send(IpcChannels.CreateProject, project);
 }
 
@@ -46,7 +46,7 @@ export async function createProject(project: Database.IProjectsTable): Promise<v
  * Requests the main process to get a project.
  * @returns a promise that resolves with the project, or rejects with an error.
  */
-export async function getProject(id:number): Promise<Database.IProjectsTable> {
+export async function getProject(id:number): Promise<Database.IProject> {
     return await send(IpcChannels.GetProject, id);
 }
 
@@ -63,7 +63,7 @@ export async function deleteProject(id:number): Promise<void> {
  * Requests a list of projects for a client from the main process.
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */
-export async function getProjects(clientId:number): Promise<Database.IProjectsTable[]> {
+export async function getProjects(clientId:number): Promise<Database.IProject[]> {
     return await send(IpcChannels.GetProjects, clientId);
 }
 
@@ -71,6 +71,14 @@ export async function getProjects(clientId:number): Promise<Database.IProjectsTa
  * Request a list of time records for a client and/or project from the main process.
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */
-export async function getTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.ITimeRecordsTable[]> {
+export async function getTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.ITimeRecord[]> {
     return await send(IpcChannels.GetTimeRecords, query);
+}
+
+/**
+ * Request a list of time records for a client and/or project from the main process.
+ * @returns a promise that resolves with a list of time records, or rejects with an error.
+ */
+export async function getDetailedTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.IDetailedTimeRecord[]> {
+    return await send(IpcChannels.GetDetailedTimeRecords, query);
 }

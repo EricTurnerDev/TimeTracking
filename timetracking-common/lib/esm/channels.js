@@ -7,3 +7,4 @@ export var GetProject = 'project:get';
 export var DeleteProject = 'project:delete';
 export var GetProjects = 'projects:get';
 export var GetTimeRecords = 'time-records:get';
+export var GetDetailedTimeRecords = 'time-records:detailed:get';

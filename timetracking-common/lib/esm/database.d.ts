@@ -1,13 +1,13 @@
-export interface IClientsTable {
+export interface IClient {
     id?: number;
     client_name?: string;
 }
-export interface IProjectsTable {
+export interface IProject {
     id?: number;
     project_name?: string;
     client_id?: number;
 }
-export interface ITimeRecordsTable {
+export interface ITimeRecord {
     id?: number;
     billable?: boolean;
     start_ts?: string;
@@ -18,6 +18,11 @@ export interface ITimeRecordsTable {
     notes?: string;
     client_id?: number;
     project_id?: number;
+}
+export interface IDetailedTimeRecord extends ITimeRecord {
+    hours?: number;
+    project_name?: string;
+    client_name?: string;
 }
 export interface ITimeRecordsQuery {
     clientId?: number;
