@@ -4,7 +4,11 @@ import BaseLabel from './BaseLabel';
 import P from '../text/P';
 
 const styles = {
-    base: 'appearance-none border w-full py-2 px-4 bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent',
+    base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent',
+    type: {
+        text: 'w-full py-2 px-4',
+        checkbox: 'p-0',
+    },
     state: {
         normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
         error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -19,9 +23,10 @@ const styles = {
         lg: 'rounded-lg',
     },
     errorText: 'mt-2 text-sm text-red-600',
-}
+};
 
 interface IBaseInputProps {
+    id?: string;
     label?: string;
     type?: 'text' | 'password' | 'email' | 'number' | 'url' | 'date' | 'datetime-local' | 'month' | 'week' | 'time' | 'search' | 'tel' | 'checkbox' | 'radio';
     error?: boolean;
@@ -36,6 +41,7 @@ interface IBaseInputProps {
 }
 
 const BaseInput = ({
+                       id,
                        label,
                        type = 'text',
                        error = false,
@@ -48,16 +54,17 @@ const BaseInput = ({
                        ...rest
                    }: IBaseInputProps) => {
 
-    const id = useId();
+    const inputId = useId();
 
     return (
-        <div className={classNames('base-input', className)}>
-            {label && (<BaseLabel id={id}>{label}{required && ' *'}</BaseLabel>)}
+        <div className={classNames('base-input', className)} id={id}>
+            {label && (<BaseLabel id={inputId}>{label}{required && ' *'}</BaseLabel>)}
             <input
-                id={id}
+                id={inputId}
                 type={type}
                 className={classNames(
                     styles.base,
+                    styles.type[type],
                     rounded && styles.rounded[rounded],
                     error ? styles.state.error : styles.state.normal,
                     valid ? styles.state.valid : styles.state.normal,
@@ -70,6 +77,6 @@ const BaseInput = ({
             {error && <P className={classNames('base-input-error', styles.errorText)}>{errorText}</P>}
         </div>
     )
-}
+};
 
 export default BaseInput;

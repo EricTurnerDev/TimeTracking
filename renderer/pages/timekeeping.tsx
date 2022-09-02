@@ -2,21 +2,43 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 import {getDetailedTimeRecords} from '../lib/database';
 import TimeRecordCard from '../components/TimeRecordCard';
+import Button from '../components/ui/Button';
+import AddTimeRecordForm from '../components/AddTimeRecordForm';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
+    const [addingTimeRecord, setAddingTimeRecord] = useState<boolean>(false);
+
+    const showTimeRecords = async () => {
+        const trs: Database.IDetailedTimeRecord[] = await getDetailedTimeRecords({});
+        setTimeRecords(trs);
+    }
 
     useEffect(() => {
-        getDetailedTimeRecords({})
-            .then((trs: Database.IDetailedTimeRecord[]) => {
-                console.log(trs);
-                setTimeRecords(trs);
-            })
-            .catch(err => console.log(err));
+       showTimeRecords().catch(err => console.log(err));
     }, []);
+
+    const addTimeRecordButtonClicked = () => {
+        setAddingTimeRecord(true);
+    };
+
+    const timeRecordAdded = () => {
+        setAddingTimeRecord(false);
+        showTimeRecords().catch(err => console.error(err));
+    }
+
+    const timeRecordDeleted = () => {
+        showTimeRecords().catch(err => console.error(err));
+    }
+
+    const addingTimeRecordCanceled = () => {
+        setAddingTimeRecord(false);
+    }
 
     return (
         <div className={classNames('timekeeping')}>
@@ -24,11 +46,19 @@ export default function Timekeeping() {
                 <title>Timekeeping - TimeTracking</title>
             </Head>
 
+            <div className='mb-4 text-right'>
+                <Button onClick={addTimeRecordButtonClicked} disabled={addingTimeRecord}>
+                    <FontAwesomeIcon icon={faPlus} /> New Time Record
+                </Button>
+            </div>
+
+            {addingTimeRecord && <AddTimeRecordForm className='mb-4' onTimeRecordAdded={timeRecordAdded} onCancel={addingTimeRecordCanceled}/>}
+
             <div>
                 {
                     timeRecords && timeRecords.map(
                         (timeRecord: Database.IDetailedTimeRecord) => {
-                            return <TimeRecordCard key={timeRecord.id} timeRecord={timeRecord}/>
+                            return <TimeRecordCard key={timeRecord.id} timeRecord={timeRecord} onTimeRecordDeleted={timeRecordDeleted} />
                         }
                     )
                 }

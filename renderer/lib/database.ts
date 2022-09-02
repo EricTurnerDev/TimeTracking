@@ -68,6 +68,14 @@ export async function getProjects(clientId:number): Promise<Database.IProject[]>
 }
 
 /**
+ * Requests the main process to create a time record.
+ * @returns a promise that resolves when the time record is created, or rejects with an error.
+ */
+export async function createTimeRecord(timeRecord: Database.ITimeRecord): Promise<void> {
+    return await send(IpcChannels.CreateTimeRecord, timeRecord);
+}
+
+/**
  * Request a list of time records for a client and/or project from the main process.
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */

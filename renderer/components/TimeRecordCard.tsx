@@ -9,17 +9,19 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 interface ITimeRecordRowProps {
     className?: string;
     timeRecord?: Database.IDetailedTimeRecord;
+    onTimeRecordDeleted?: () => void;
 }
 
 const styles = {
     base: 'flex flex-col mb-4'
 };
 
-export default function TimeRecordCard({timeRecord, className}: ITimeRecordRowProps) {
+export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, className}: ITimeRecordRowProps) {
     const {adjustment, billable, client_name, end_ts, hours, invoice_activity, project_name, start_ts, work_description} = timeRecord;
 
     const trashIconClicked = (e) => {
         // TODO: Delete the time record
+        onTimeRecordDeleted();
     };
 
     return (
@@ -32,7 +34,7 @@ export default function TimeRecordCard({timeRecord, className}: ITimeRecordRowPr
             </Card.Header>
             <Card.Body>
                 <P className='font-medium' variant='dark'>{invoice_activity}</P>
-                <P variant='dark'>{start_ts}-{end_ts} {adjustment !== 0.0 && `${adjustment > 0 ? '+' : ''}${adjustment} hours`}</P>
+                <P variant='dark'>{start_ts} to {end_ts} {adjustment !== 0.0 && `${adjustment > 0 ? '+' : ''}${adjustment} hours`}</P>
                 <P variant='dark'>{hours} hours{billable ? ' (billable)' : ' (non-billable)'}</P>
             </Card.Body>
             <Card.Footer>

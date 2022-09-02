@@ -5,7 +5,7 @@ import {Database} from 'timetracking-common';
 import BaseInput from './ui/form/BaseInput';
 import Button from './ui/Button';
 import {createProject} from '../lib/database';
-import {isBlank} from '../lib/isBlank';
+import isBlank from '../lib/isBlank';
 
 export const initialFormState: Database.IProject = {
     project_name: '',
@@ -61,13 +61,13 @@ export default function AddProjectForm({className, client, onProjectAdded, onCan
     return (
         <form className={classNames('add-project-form flex flex-row', className)}>
             <BaseInput
-                className="w-full"
+                className='w-full mr-1'
                 id='project-name'
                 placeholder='New project name'
                 value={formData.project_name}
                 onChange={inputChanged}/>
 
-            <Button type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Project</Button>
+            <Button className='mr-1' type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Project</Button>
             <Button variant='secondary' disabled={adding} onClick={cancelButtonClicked}>Cancel</Button>
         </form>
     )

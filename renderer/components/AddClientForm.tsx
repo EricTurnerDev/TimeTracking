@@ -5,28 +5,28 @@ import {Database} from 'timetracking-common';
 import BaseInput from './ui/form/BaseInput';
 import Button from './ui/Button';
 import {createClient} from '../lib/database';
-import {isBlank} from '../lib/isBlank';
+import isBlank from '../lib/isBlank';
 
-export const initialFormState: Database.IClient = {
+const initialFormState: Database.IClient = {
     client_name: '',
 };
 
-export interface IAddClientFormProps {
+interface IAddClientFormProps {
     className?: string;
     onClientAdded: () => void;
     onCancel: () => void;
 }
 
 export default function AddClientForm({className, onClientAdded, onCancel}: IAddClientFormProps) {
-    const [adding, setAdding] = useState(false);
-    const [formData, setFormData] = useState(initialFormState);
+    const [adding, setAdding] = useState<boolean>(false);
+    const [formData, setFormData] = useState<Database.IClient>(initialFormState);
 
     const addButtonClicked = () => {
         setAdding(true);
         createClient(formData).
         then(() => {
-            onClientAdded();
             setFormData(initialFormState);
+            onClientAdded();
         }).catch(e => {
             console.error(e);
         }).
@@ -49,12 +49,12 @@ export default function AddClientForm({className, onClientAdded, onCancel}: IAdd
         <form className={classNames('add-client-form flex flex-row', className)}>
             <BaseInput
                 id='client-name'
-                className='w-full'
+                className='w-full mr-1'
                 placeholder='New client name'
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}/>
 
-            <Button type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Client</Button>
+            <Button className='mr-1' type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Client</Button>
             <Button variant='secondary' disabled={adding} onClick={cancelButtonClicked}>Cancel</Button>
         </form>
     )

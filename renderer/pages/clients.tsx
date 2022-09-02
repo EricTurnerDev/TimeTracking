@@ -24,14 +24,14 @@ export default function Clients(props) {
         setAddingClient(true);
     }
 
+    const addingClientCanceled = () => {
+        setAddingClient(false);
+    }
+
     const clientAdded = () => {
         setAddingClient(false);
         showClients().catch(err => console.error(err));
     };
-
-    const addingClientCanceled = () => {
-        setAddingClient(false);
-    }
 
     const clientDeleted = () => {
         showClients().catch(err => console.error(err));

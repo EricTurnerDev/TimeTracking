@@ -15,15 +15,15 @@ export async function initialize() {
 export function listen() {
     // Clients
 
-    ipcMain.handle(IpcChannels.CreateClient, (event, client) => {
+    ipcMain.handle(IpcChannels.CreateClient, (event, client: Database.IClient) => {
         return knex.insert(client).into('clients');
     });
 
-    ipcMain.handle(IpcChannels.GetClient, (event, clientId) => {
+    ipcMain.handle(IpcChannels.GetClient, (event, clientId: number) => {
         return knex.select().from('clients').where('id', clientId).first();
     });
 
-    ipcMain.handle(IpcChannels.DeleteClient, (event, clientId) => {
+    ipcMain.handle(IpcChannels.DeleteClient, (event, clientId: number) => {
         return knex('clients').where('id', clientId).del();
     });
 
@@ -33,23 +33,27 @@ export function listen() {
 
     // Projects
 
-    ipcMain.handle(IpcChannels.CreateProject, (event, project) => {
+    ipcMain.handle(IpcChannels.CreateProject, (event, project: Database.IProject) => {
         return knex.insert(project).into('projects');
     });
 
-    ipcMain.handle(IpcChannels.GetProject, (event, projectId) => {
+    ipcMain.handle(IpcChannels.GetProject, (event, projectId: number) => {
         return knex.select().from('projects').where('id', projectId).first();
     });
 
-    ipcMain.handle(IpcChannels.DeleteProject, (event, projectId) => {
+    ipcMain.handle(IpcChannels.DeleteProject, (event, projectId: number) => {
         return knex('projects').where('id', projectId).del();
     });
 
-    ipcMain.handle(IpcChannels.GetProjects, (event, clientId) => {
+    ipcMain.handle(IpcChannels.GetProjects, (event, clientId: number) => {
         return knex.select().from('projects').where('projects.client_id', clientId);
     });
 
     // Time records
+
+    ipcMain.handle(IpcChannels.CreateTimeRecord, (event, timeRecord: Database.ITimeRecord) => {
+        return knex.insert(timeRecord).into('time_records');
+    });
 
     ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
         // GetTimeRecords supports querying by client id, project id, or both. Build the query object
@@ -70,23 +74,27 @@ export function listen() {
         // based on the arguments received on the IPC channel.
 
         const query: Database.ITimeRecord = {};
+
         if (clientId) {
             query.client_id = clientId;
         }
+
         if (projectId) {
             query.project_id = projectId;
         }
+
         const columns = [
             'time_records.*',
             'projects.project_name AS project_name',
             'clients.client_name AS client_name',
             knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
         ]
+
         return knex
             .select(columns)
             .from('time_records')
-            .innerJoin('projects', 'time_records.project_id', '=', 'projects.id')
             .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
+            .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
             .orderBy('time_records.end_ts', 'desc');
         // TODO: Add a where clause with the query
     });

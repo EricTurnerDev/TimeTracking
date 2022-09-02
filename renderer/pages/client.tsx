@@ -91,7 +91,6 @@ export default function Client() {
 
             {addingProject && <AddProjectForm className='mb-4' client={client} onProjectAdded={projectAdded} onCancel={addingProjectCanceled}/>}
 
-            {hasProjects(projects) && <H2 className="mb-4">Projects</H2>}
             {!hasProjects(projects) && <H2>There are no projects for this client.</H2>}
 
             <Grid>
