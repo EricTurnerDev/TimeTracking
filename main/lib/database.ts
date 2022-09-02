@@ -55,6 +55,10 @@ export function listen() {
         return knex.insert(timeRecord).into('time_records');
     });
 
+    ipcMain.handle(IpcChannels.DeleteTimeRecord, (event, timeRecordId: number) => {
+        return knex('time_records').where('id', timeRecordId).del();
+    })
+
     ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
         // GetTimeRecords supports querying by client id, project id, or both. Build the query object
         // based on the arguments received on the IPC channel.

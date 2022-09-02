@@ -1,10 +1,12 @@
 import {Database} from 'timetracking-common';
 import classNames from 'classnames';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
+
 import H2 from '../components/ui/text/H2';
 import P from '../components/ui/text/P';
 import Card from '../components/ui/Card';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {deleteTimeRecord} from "../lib/database";
 
 interface ITimeRecordRowProps {
     className?: string;
@@ -20,8 +22,14 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
     const {adjustment, billable, client_name, end_ts, hours, invoice_activity, project_name, start_ts, work_description} = timeRecord;
 
     const trashIconClicked = (e) => {
-        // TODO: Delete the time record
-        onTimeRecordDeleted();
+        deleteTimeRecord(timeRecord.id)
+            .then(() => {
+                if (onTimeRecordDeleted) {
+                    onTimeRecordDeleted();
+                }
+            })
+            .catch(err => console.error(err));
+
     };
 
     return (
