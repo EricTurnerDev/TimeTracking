@@ -2,9 +2,12 @@ import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {Database} from 'timetracking-common';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 import * as db from '../lib/database';
 import {parseIntQueryParam} from '../lib/parseQueryParam';
+import Button from '../components/ui/Button';
 import Grid from '../components/ui/Grid';
 import ProjectCard from '../components/ProjectCard';
 import AddProjectForm from '../components/AddProjectForm';
@@ -16,6 +19,7 @@ export default function Client() {
     const {id: clientId} = router.query;
     const [client, setClient] = useState<Database.IClient>();
     const [projects, setProjects] = useState<Database.IProject[]>();
+    const [addingProject, setAddingProject] = useState<boolean>(false);
 
     // Get the client
     useEffect(() => {
@@ -49,6 +53,10 @@ export default function Client() {
         }
     }, [clientId]);
 
+    const addProjectButtonClicked = () => {
+        setAddingProject(true);
+    }
+
     const showProjects = async () => {
         const result: Database.IProject[] = await db.getProjects(client.id);
         setProjects(result);
@@ -59,7 +67,12 @@ export default function Client() {
     }
 
     const projectAdded = () => {
+        setAddingProject(false);
         showProjects().catch(err => console.error(err));
+    }
+
+    const addingProjectCanceled = () => {
+        setAddingProject(false);
     }
 
     return (
@@ -70,7 +83,13 @@ export default function Client() {
 
             {client && <H1 className='mb-4'>{client.client_name}</H1>}
 
-            <AddProjectForm className='mb-4' client={client} onProjectAdded={projectAdded} />
+            <div className='text-right mb-4'>
+                <Button onClick={addProjectButtonClicked} disabled={addingProject}>
+                    <FontAwesomeIcon icon={faPlus} /> New Project
+                </Button>
+            </div>
+
+            {addingProject && <AddProjectForm className='mb-4' client={client} onProjectAdded={projectAdded} onCancel={addingProjectCanceled}/>}
 
             {hasProjects(projects) && <H2 className="mb-4">Projects</H2>}
             {!hasProjects(projects) && <H2>There are no projects for this client.</H2>}

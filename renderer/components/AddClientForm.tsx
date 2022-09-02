@@ -14,25 +14,31 @@ export const initialFormState: Database.IClient = {
 export interface IAddClientFormProps {
     className?: string;
     onClientAdded: () => void;
+    onCancel: () => void;
 }
 
-export default function AddClientForm({className, onClientAdded}: IAddClientFormProps) {
+export default function AddClientForm({className, onClientAdded, onCancel}: IAddClientFormProps) {
     const [adding, setAdding] = useState(false);
     const [formData, setFormData] = useState(initialFormState);
 
-    const buttonClicked = () => {
+    const addButtonClicked = () => {
         setAdding(true);
         createClient(formData).
         then(() => {
             onClientAdded();
             setFormData(initialFormState);
         }).catch(e => {
-            // TODO: Show error to the user.
             console.error(e);
         }).
         finally(() => {
             setAdding(false);
         });
+    }
+
+    const cancelButtonClicked = () => {
+        setFormData(initialFormState);
+        setAdding(false);
+        onCancel();
     }
 
     const isValid = (formData: Database.IClient): boolean => {
@@ -48,7 +54,8 @@ export default function AddClientForm({className, onClientAdded}: IAddClientForm
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}/>
 
-            <Button type='submit' disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Client</Button>
+            <Button type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Client</Button>
+            <Button variant='secondary' disabled={adding} onClick={cancelButtonClicked}>Cancel</Button>
         </form>
     )
 }

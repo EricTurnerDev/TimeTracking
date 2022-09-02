@@ -16,9 +16,10 @@ export interface IAddProjectFormProps {
     className?: string;
     client: Database.IClient,
     onProjectAdded: () => void;
+    onCancel: () => void;
 }
 
-export default function AddProjectForm({className, client, onProjectAdded}: IAddProjectFormProps) {
+export default function AddProjectForm({className, client, onProjectAdded, onCancel}: IAddProjectFormProps) {
     const [adding, setAdding] = useState(false);
     const [formData, setFormData] = useState(initialFormState);
 
@@ -28,7 +29,7 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
         }
     }, [client])
 
-    const buttonClicked = (e) => {
+    const addButtonClicked = (e) => {
         setAdding(true);
         createProject(formData).
         then(() => {
@@ -41,6 +42,12 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
         finally(() => {
             setAdding(false);
         });
+    }
+
+    const cancelButtonClicked = () => {
+        setFormData(initialFormState);
+        setAdding(false);
+        onCancel();
     }
 
     const inputChanged = (e) => {
@@ -60,7 +67,8 @@ export default function AddProjectForm({className, client, onProjectAdded}: IAdd
                 value={formData.project_name}
                 onChange={inputChanged}/>
 
-            <Button type='submit' disabled={adding || !isValid(formData)} onClick={buttonClicked}>Add Project</Button>
+            <Button type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Project</Button>
+            <Button variant='secondary' disabled={adding} onClick={cancelButtonClicked}>Cancel</Button>
         </form>
     )
 }
