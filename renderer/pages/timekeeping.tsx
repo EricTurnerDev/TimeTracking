@@ -2,7 +2,9 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
+
 import {getDetailedTimeRecords} from '../lib/database';
+import TimeRecordCard from '../components/TimeRecordCard';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
@@ -22,7 +24,15 @@ export default function Timekeeping() {
                 <title>Timekeeping - TimeTracking</title>
             </Head>
 
-            {timeRecords && timeRecords.map((timeRecord: Database.IDetailedTimeRecord) => (<p key={timeRecord.id}>{timeRecord.invoice_activity}: {timeRecord.work_description}</p>))}
+            <div>
+                {
+                    timeRecords && timeRecords.map(
+                        (timeRecord: Database.IDetailedTimeRecord) => {
+                            return <TimeRecordCard key={timeRecord.id} timeRecord={timeRecord}/>
+                        }
+                    )
+                }
+            </div>
         </div>
     )
 }

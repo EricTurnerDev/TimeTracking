@@ -45,7 +45,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
         <Card className={classNames('client-card', className)}>
             <Card.Header>
                  <Link href={{pathname: `/client`, query: {id: client.id}}}>
-                     <a><H3 className='font-medium'>{client.client_name}</H3></a>
+                     <a className='block w-full'><H3 className='font-medium'>{client.client_name}</H3></a>
                 </Link>
             </Card.Header>
             <Card.Body>

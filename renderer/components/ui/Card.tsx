@@ -6,6 +6,10 @@ interface ICardProps {
     children?: ReactNode;
 }
 
+const styles = {
+    padding: 'p-1 sm:p-2 md:p-3 lg:p-4 xl:p-5 2xl:p-6'
+};
+
 const Card = ({ className, children }: ICardProps) => {
     return (
         <div className={classNames('flex flex-col overflow-hidden bg-gray-50 rounded shadow-md', className)}>
@@ -18,7 +22,7 @@ interface ICardHeaderProps extends ICardProps {}
 
 const Header = ({ className, children }: ICardHeaderProps) => {
     return (
-        <div className={classNames('flex flex-grow bg-blue-500 hover:bg-blue-800 border-b border-gray-200 p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7 transition ease-in-out', className)}>
+        <div className={classNames('flex flex-grow bg-blue-500 hover:bg-blue-800 border-b border-gray-200 transition ease-in-out', styles.padding, className)}>
             {children}
         </div>
     )
@@ -28,7 +32,7 @@ interface ICardBodyProps extends ICardProps {}
 
 const Body = ({ className, children }: ICardBodyProps) => {
     return (
-        <div className={classNames('p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7', className)}>
+        <div className={classNames(styles.padding, className)}>
             {children}
         </div>
     )
@@ -39,7 +43,7 @@ interface ICardFooterProps extends ICardProps {}
 const Footer = ({ className, children }: ICardFooterProps) => {
 
     return (
-        <div className={classNames('border-t border-gray-200 p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 2xl:p-7', className)}>
+        <div className={classNames('border-t border-gray-200', styles.padding, className)}>
             {children}
         </div>
     )

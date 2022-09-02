@@ -86,7 +86,8 @@ export function listen() {
             .select(columns)
             .from('time_records')
             .innerJoin('projects', 'time_records.project_id', '=', 'projects.id')
-            .innerJoin('clients', 'time_records.client_id', '=', 'clients.id');
+            .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
+            .orderBy('time_records.end_ts', 'desc');
         // TODO: Add a where clause with the query
     });
 }
