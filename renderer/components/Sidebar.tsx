@@ -2,8 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faClock, faHome, faPeopleGroup} from '@fortawesome/free-solid-svg-icons';
+import {Icon, clock, home, people} from './ui/Icon';
 import Span from './ui/text/Span';
 
 interface ISidebarProps {
@@ -13,20 +12,21 @@ interface ISidebarProps {
 export default function Sidebar({className}: ISidebarProps) {
     const styles = {
         base: 'flex flex-col p-3 bg-black',
+        icon: 'mr-4',
     };
 
     return (
         <aside className={classNames('sidebar', styles.base, className)}>
             <SidebarItem href='/home'>
-                <FontAwesomeIcon icon={faHome} /> <Span>Home</Span>
+                <Icon icon={home} className={styles.icon}/> <Span>Home</Span>
             </SidebarItem>
 
             <SidebarItem href='/timekeeping'>
-                <FontAwesomeIcon icon={faClock} /> <Span>Timekeeping</Span>
+                <Icon icon={clock} className={styles.icon}/> <Span>Timekeeping</Span>
             </SidebarItem>
 
             <SidebarItem href='/clients'>
-                <FontAwesomeIcon icon={faPeopleGroup} /> <Span>Clients & Projects</Span>
+                <Icon icon={people} className={styles.icon}/> <Span>Clients & Projects</Span>
             </SidebarItem>
         </aside>
     )

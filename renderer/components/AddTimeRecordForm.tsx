@@ -37,8 +37,8 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const [projects, setProjects] = useState<Database.IProject[]>([{id: -1, project_name: ''}]);
 
     // Versions of start_ts and end_ts converted to UTC ISO format for when we save the time record in the database.
-    const [startTs, setStartTs] = useState<string>();
-    const [endTs, setEndTs] = useState<string>();
+    const [utcStartTs, setUtcStartTs] = useState<string>();
+    const [utcEndTs, setUtcEndTs] = useState<string>();
 
     // Get the clients only once
     useEffect(() => {
@@ -63,10 +63,10 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     // When start_ts or end_ts changes, convert to the ISO UTC format used in the database and save it in state.
     useEffect(() => {
         if (formData.start_ts) {
-            setStartTs(isoLocalToUTC(formData.start_ts));
+            setUtcStartTs(isoLocalToUTC(formData.start_ts));
         }
         if (formData.end_ts) {
-            setEndTs(isoLocalToUTC(formData.end_ts));
+            setUtcEndTs(isoLocalToUTC(formData.end_ts));
         }
     }, [formData.start_ts, formData.end_ts]);
 
@@ -88,7 +88,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const addButtonClicked = () => {
         setAdding(true);
         // Use the ISO start and end timestamps from state in the database since they're in UTC.
-        createTimeRecord({...formData, start_ts: startTs, end_ts: endTs})
+        createTimeRecord({...formData, start_ts: utcStartTs, end_ts: utcEndTs})
             .then(() => {
                 setFormData(initialFormState);
                 onTimeRecordAdded();

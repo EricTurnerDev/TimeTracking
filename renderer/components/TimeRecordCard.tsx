@@ -1,13 +1,12 @@
 import {Database} from 'timetracking-common';
 import classNames from 'classnames';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import {DateTime} from 'luxon';
 
 import H2 from '../components/ui/text/H2';
 import P from '../components/ui/text/P';
 import Card from '../components/ui/Card';
 import {deleteTimeRecord} from "../lib/database";
+import {Icon, trash} from './ui/Icon';
 
 interface ITimeRecordRowProps {
     className?: string;
@@ -52,7 +51,7 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
             </Card.Body>
             <Card.Footer>
                 <P variant='dark'>
-                    <FontAwesomeIcon icon={faTrash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
+                    <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
                 </P>
             </Card.Footer>
         </Card>

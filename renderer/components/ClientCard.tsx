@@ -1,8 +1,6 @@
 import classNames from 'classnames';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Database} from 'timetracking-common';
 
 import {deleteClient, getProjects} from '../lib/database';
@@ -10,6 +8,7 @@ import H3 from './ui/text/H3';
 import P from './ui/text/P';
 import pluralize from '../lib/pluralize';
 import Card from './ui/Card';
+import {Icon, trash} from './ui/Icon';
 
 export interface IClientCardProps {
     client: Database.IClient,
@@ -53,7 +52,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
             </Card.Body>
             <Card.Footer>
                 <P variant='dark'>
-                    <FontAwesomeIcon icon={faTrash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
+                    <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
                 </P>
             </Card.Footer>
         </Card>

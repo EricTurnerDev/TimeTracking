@@ -2,13 +2,12 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 import {getDetailedTimeRecords} from '../lib/database';
 import TimeRecordCard from '../components/TimeRecordCard';
 import Button from '../components/ui/Button';
 import AddTimeRecordForm from '../components/AddTimeRecordForm';
+import {Icon, plus} from '../components/ui/Icon';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
@@ -48,7 +47,7 @@ export default function Timekeeping() {
 
             <div className='mb-4 text-right'>
                 <Button onClick={addTimeRecordButtonClicked} disabled={addingTimeRecord}>
-                    <FontAwesomeIcon icon={faPlus} /> New Time Record
+                    <Icon icon={plus} /> New Time Record
                 </Button>
             </div>
 

@@ -2,14 +2,13 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 import * as db from '../lib/database';
 import AddClientForm from "../components/AddClientForm";
 import ClientCard from '../components/ClientCard';
 import Button from '../components/ui/Button';
 import Grid from '../components/ui/Grid';
+import {Icon, plus} from '../components/ui/Icon';
 
 export default function Clients(props) {
     const [clients, setClients] = useState<Database.IClient[]>([]);
@@ -49,7 +48,7 @@ export default function Clients(props) {
 
             <div className='text-right mb-4'>
                 <Button onClick={addClientButtonClicked} disabled={addingClient}>
-                    <FontAwesomeIcon icon={faPlus} /> New Client
+                    <Icon icon={plus} /> New Client
                 </Button>
             </div>
 

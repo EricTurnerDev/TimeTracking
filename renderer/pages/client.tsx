@@ -2,8 +2,6 @@ import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {Database} from 'timetracking-common';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 import * as db from '../lib/database';
 import {parseIntQueryParam} from '../lib/parseQueryParam';
@@ -13,6 +11,7 @@ import ProjectCard from '../components/ProjectCard';
 import AddProjectForm from '../components/AddProjectForm';
 import H1 from '../components/ui/text/H1';
 import H2 from '../components/ui/text/H2';
+import {Icon, plus} from '../components/ui/Icon';
 
 export default function Client() {
     const router = useRouter();
@@ -85,7 +84,7 @@ export default function Client() {
 
             <div className='text-right mb-4'>
                 <Button onClick={addProjectButtonClicked} disabled={addingProject}>
-                    <FontAwesomeIcon icon={faPlus} /> New Project
+                    <Icon icon={plus} /> New Project
                 </Button>
             </div>
 
