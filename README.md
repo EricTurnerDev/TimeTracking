@@ -90,9 +90,6 @@ cd main
 npx knex seed:run --connection '%APPDATA%\time-tracking (development)\timetracking.sqlite'
 ```
 
-This works because the knex runs seed file names in alphabetical order, and `clients`, `projects`, and `time_records`
-happen to be in the order that we need them to run in.
-
 ### Notes
 
 The seed data is loaded by Knex from CSV files that I generated at mockaroo.com:
@@ -103,7 +100,7 @@ The seed data is loaded by Knex from CSV files that I generated at mockaroo.com:
 
 Mockaroo doesn't have a way of ensuring unique values, so I had to go through these by hand to do that.
 
-Generate the seed file
+I generated the seed file using:
 
 ```shell
 cd main
