@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
+import {DateTime} from 'luxon';
 
 import BaseInput from './ui/form/BaseInput';
 import BaseSelect from './ui/form/BaseSelect';
@@ -35,6 +36,11 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const [clients, setClients] = useState<Database.IClient[]>([{id: -1, client_name: ''}]);
     const [projects, setProjects] = useState<Database.IProject[]>([{id: -1, project_name: ''}]);
 
+    // Versions of start_ts and end_ts converted to UTC ISO format for when we save the time record in the database.
+    const [startTs, setStartTs] = useState<string>();
+    const [endTs, setEndTs] = useState<string>();
+
+    // Get the clients only once
     useEffect(() => {
         getClients()
             .then((clients: Database.IClient[]) => {
@@ -43,8 +49,9 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
             .catch(err => console.error(err));
     }, []);
 
+    // Get the projects for whatever client is selected
     useEffect(() => {
-        if (formData?.client_id) {
+        if (formData.client_id) {
             getProjects(formData.client_id)
                 .then((projects: Database.IProject[]) => {
                     setProjects([{id: -1, project_name: ''}, ...projects]);
@@ -53,20 +60,35 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
         }
     }, [formData.client_id]);
 
+    // When start_ts or end_ts changes, convert to the ISO UTC format used in the database and save it in state.
+    useEffect(() => {
+        if (formData.start_ts) {
+            setStartTs(isoLocalToUTC(formData.start_ts));
+        }
+        if (formData.end_ts) {
+            setEndTs(isoLocalToUTC(formData.end_ts));
+        }
+    }, [formData.start_ts, formData.end_ts]);
+
+    const isoLocalToUTC = (local: string): string => {
+        return DateTime.fromISO(local).toUTC().toString();
+    };
+
     const isValid = (formData: Database.ITimeRecord) => {
         return !isBlank(formData.work_description) &&
             !isBlank(formData.invoice_activity) &&
             formData.client_id >= 0 &&
+            (formData.project_id >= 0 || !formData.project_id) &&
             !isBlank(formData.start_ts) &&
             !isBlank(formData.end_ts);
 
-            // TODO: Check that end_ts is on or after start_ts
+        // TODO: Check that end_ts is on or after start_ts
     };
 
     const addButtonClicked = () => {
         setAdding(true);
-        // TODO: Make a copy of formData, and change start_ts and end_ts to UTC before creating the time record?
-        createTimeRecord(formData)
+        // Use the ISO start and end timestamps from state in the database since they're in UTC.
+        createTimeRecord({...formData, start_ts: startTs, end_ts: endTs})
             .then(() => {
                 setFormData(initialFormState);
                 onTimeRecordAdded();
@@ -124,7 +146,11 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                     className='w-1 grow'
                     label='Project'
                     value={formData.project_id}
-                    onChange={(e) => setFormData({...formData, project_id: e.target.value})}>
+                    onChange={(e) => {
+                        const pid = e.target.value;
+                        // Project id >= 0 means a valid project was selected.
+                        setFormData({...formData, project_id: pid >= 0 ? pid : undefined})
+                    }}>
                     {projects && projects.map((project: Database.IProject) => (
                         <option key={project.id} value={project.id}>{project.project_name}</option>))}
                 </BaseSelect>
@@ -163,7 +189,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                     type='checkbox'
                     label='Billable?'
                     value={formData.billable}
-                    onChange={(e) => setFormData({...formData, billable: e.target.checked}) }/>
+                    onChange={(e) => setFormData({...formData, billable: e.target.checked})}/>
             </div>
 
             {/*// TODO: Add Notes*/}

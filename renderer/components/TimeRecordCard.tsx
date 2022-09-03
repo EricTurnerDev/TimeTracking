@@ -2,6 +2,7 @@ import {Database} from 'timetracking-common';
 import classNames from 'classnames';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {DateTime} from 'luxon';
 
 import H2 from '../components/ui/text/H2';
 import P from '../components/ui/text/P';
@@ -32,6 +33,10 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
 
     };
 
+    const isoUTCToLocal = (utc:string) => {
+        return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);
+    }
+
     return (
         <Card className={classNames('time-record-row', styles.base, className)}>
             <Card.Header>
@@ -42,7 +47,7 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
             </Card.Header>
             <Card.Body>
                 <P className='font-medium' variant='dark'>{invoice_activity}</P>
-                <P variant='dark'>{start_ts} to {end_ts} {adjustment !== 0.0 && `${adjustment > 0 ? '+' : ''}${adjustment} hours`}</P>
+                <P variant='dark'>{isoUTCToLocal(start_ts)} to {isoUTCToLocal(end_ts)} {adjustment !== 0.0 && `${adjustment > 0 ? '+' : ''}${adjustment} hours`}</P>
                 <P variant='dark'>{hours} hours{billable ? ' (billable)' : ' (non-billable)'}</P>
             </Card.Body>
             <Card.Footer>

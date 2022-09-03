@@ -16,10 +16,10 @@ exports.up = function(knex) {
         table.unique(['project_name', 'client_id']);
     }).createTable('time_records', (table) => {
         table.increments('id').primary();
-        table.boolean('billable').notNullable().defaultTo(false); // defaultTo doesn't work with sqlite3
-        table.timestamp('start_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
-        table.timestamp('end_ts').notNullable().defaultTo(knex.fn.now()); // defaultTo doesn't work with sqlite3
-        table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0); // defaultTo doesn't work with sqlite3
+        table.boolean('billable').notNullable().defaultTo(false);
+        table.timestamp('start_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ','now'))"));
+        table.timestamp('end_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ'))"));
+        table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0);
         table.text('invoice_activity');
         table.text('work_description');
         table.text('notes');
