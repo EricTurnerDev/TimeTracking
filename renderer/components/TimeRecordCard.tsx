@@ -36,6 +36,15 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
         return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);
     }
 
+    const formatAdjustment = (adj) => {
+        if (adj > 0 || adj < 0) {
+            const sign = adj > 0 ? '+' : '';
+            return `${sign}${adj.toFixed(2)} hours`
+        } else {
+            return '';
+        }
+    }
+
     return (
         <Card className={classNames('time-record-row', styles.base, className)}>
             <Card.Header>
@@ -46,7 +55,7 @@ export default function TimeRecordCard({timeRecord, onTimeRecordDeleted, classNa
             </Card.Header>
             <Card.Body>
                 <P className='font-medium' variant='dark'>{invoice_activity}</P>
-                <P variant='dark'>{isoUTCToLocal(start_ts)} to {isoUTCToLocal(end_ts)} {adjustment !== 0.0 && `${adjustment > 0 ? '+' : ''}${adjustment} hours`}</P>
+                <P variant='dark'>{isoUTCToLocal(start_ts)} to {isoUTCToLocal(end_ts)} {formatAdjustment(adjustment)}</P>
                 <P variant='dark'>{hours} hours{billable ? ' (billable)' : ' (non-billable)'}</P>
             </Card.Body>
             <Card.Footer>
