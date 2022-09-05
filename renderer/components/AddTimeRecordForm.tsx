@@ -1,23 +1,17 @@
 import classNames from 'classnames';
+import {Formik, Form, useFormikContext} from 'formik';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import {DateTime} from 'luxon';
+import * as Yup from 'yup';
 
-import BaseInput from './ui/form/BaseInput';
-import BaseSelect from './ui/form/BaseSelect';
 import Button from './ui/Button';
 import {createTimeRecord, getClients, getProjects} from '../lib/database';
-import isBlank from '../lib/isBlank';
-
-const initialFormState: Database.ITimeRecord = {
-    invoice_activity: '',
-    work_description: '',
-    client_id: -1,
-    start_ts: '',
-    end_ts: '',
-    adjustment: 0.0,
-    billable: false,
-};
+import CheckboxInput from './ui/form/CheckboxInput';
+import DateTimeInput from './ui/form/DateTimeInput';
+import NumberInput from './ui/form/NumberInput';
+import SelectInput from './ui/form/SelectInput';
+import TextInput from './ui/form/TextInput';
 
 interface IAddTimeRecordFormProps {
     className?: string;
@@ -25,14 +19,35 @@ interface IAddTimeRecordFormProps {
     onCancel?: () => void;
 }
 
-const styles = {
-    base: 'p-4'
-};
-
 export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, className}: IAddTimeRecordFormProps) {
+    const styles = {
+        base: 'p-4',
+        error: 'border-red-600 focus:ring-red-600 text-red-600',
+    };
 
-    const [adding, setAdding] = useState<boolean>(false);
-    const [formData, setFormData] = useState<Database.ITimeRecord>(initialFormState);
+    const initialFormState: Database.ITimeRecord = {
+        invoice_activity: '',
+        work_description: '',
+        client_id: 0,
+        project_id: 0,
+        start_ts: '',
+        end_ts: '',
+        adjustment: 0.0,
+        billable: false,
+    };
+
+    const validationSchema = Yup.object({
+        invoice_activity: Yup.string().required('Required'),
+        work_description: Yup.string().required('Required'),
+        client_id: Yup.number().positive('Required').required('Required'),
+        project_id: Yup.number(),
+        start_ts: Yup.date().required('Required'),
+        end_ts: Yup.date().min(Yup.ref('start_ts'), 'End must be after start').required('Required'),
+        adjustment: Yup.number(),
+        billable: Yup.boolean()
+    });
+
+    const [submitError, setSubmitError] = useState<string>('');
     const [clients, setClients] = useState<Database.IClient[]>([{id: -1, client_name: ''}]);
     const [projects, setProjects] = useState<Database.IProject[]>([{id: -1, project_name: ''}]);
 
@@ -40,166 +55,159 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const [utcStartTs, setUtcStartTs] = useState<string>();
     const [utcEndTs, setUtcEndTs] = useState<string>();
 
-    // Get the clients only once
+    // Get the clients for the select input once when the component mounts
     useEffect(() => {
         getClients()
             .then((clients: Database.IClient[]) => {
-                setClients([{id: -1, client_name: ''}, ...clients]);
+                setClients([{id: 0, client_name: ''}, ...clients]);
             })
             .catch(err => console.error(err));
     }, []);
 
-    // Get the projects for whatever client is selected
-    useEffect(() => {
-        if (formData.client_id) {
-            getProjects(formData.client_id)
-                .then((projects: Database.IProject[]) => {
-                    setProjects([{id: -1, project_name: ''}, ...projects]);
-                })
-                .catch(err => console.error(err));
-        }
-    }, [formData.client_id]);
+    const submitForm = (values, {setSubmitting}) => {
+        setSubmitError('');
 
-    // When start_ts or end_ts changes, convert to the ISO UTC format used in the database and save it in state.
-    useEffect(() => {
-        if (formData.start_ts) {
-            setUtcStartTs(isoLocalToUTC(formData.start_ts));
-        }
-        if (formData.end_ts) {
-            setUtcEndTs(isoLocalToUTC(formData.end_ts));
-        }
-    }, [formData.start_ts, formData.end_ts]);
-
-    const isoLocalToUTC = (local: string): string => {
-        return DateTime.fromISO(local).toUTC().toString();
-    };
-
-    const isValid = (formData: Database.ITimeRecord) => {
-        return !isBlank(formData.work_description) &&
-            !isBlank(formData.invoice_activity) &&
-            formData.client_id >= 0 &&
-            (formData.project_id >= 0 || !formData.project_id) &&
-            !isBlank(formData.start_ts) &&
-            !isBlank(formData.end_ts);
-
-        // TODO: Check that end_ts is on or after start_ts
-    };
-
-    const addButtonClicked = () => {
-        setAdding(true);
         // Use the ISO start and end timestamps from state in the database since they're in UTC.
-        createTimeRecord({...formData, start_ts: utcStartTs, end_ts: utcEndTs})
+        let record = {...values, start_ts: utcStartTs, end_ts: utcEndTs}
+
+        // If no project ID was selected, remove it from the values.
+        if (record.project_id <= 0) {
+            delete record.project_id;
+        }
+
+        createTimeRecord(record)
             .then(() => {
-                setFormData(initialFormState);
                 onTimeRecordAdded();
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                setSubmitError(err.message);
+            })
             .finally(() => {
-                setAdding(false);
+                setSubmitting(false);
             });
     };
 
-    const cancelButtonClicked = () => {
-        setFormData(initialFormState);
-        setAdding(false);
+    const cancelForm = () => {
+        setSubmitError('');
         onCancel();
-    }
+    };
+
+    const formChanged = (values, touched) => {
+        // When a client is selected, get the client's projects.
+        if (touched.client_id) {
+            getProjects(values.client_id)
+                .then((projects: Database.IProject[]) => {
+                    setProjects([{id: 0, project_name: ''}, ...projects]);
+                })
+                .catch(err => console.error(err));
+        }
+
+        // When start or end timestamp changes, convert them to what the database needs.
+        if (touched.start_ts) {
+            setUtcStartTs(isoLocalToUTC(values.start_ts));
+        }
+
+        if (touched.end_ts) {
+            setUtcEndTs(isoLocalToUTC(values.end_ts));
+        }
+    };
 
     return (
-        <form className={classNames('add-time-record-form', styles.base, className)}>
-            <div className='flex flex-row mb-4'>
-                <BaseInput
-                    id='work-description'
-                    className='grow'
-                    label='Work Description'
-                    required
-                    placeholder='Description of work being performed (e.g. Held meeting to understand business goals)'
-                    value={formData.work_description}
-                    onChange={(e) => setFormData({...formData, work_description: e.target.value})}/>
-            </div>
+        <Formik
+            initialValues={initialFormState}
+            onSubmit={submitForm}
+            validationSchema={validationSchema}>
+            {props => (
+                <Form className={classNames('add-time-record-form', styles.base, className)}>
+                    <FormObserver onFormChanged={formChanged} />
+                    <div className='flex flex-row mb-4'>
+                        <TextInput
+                            name='work_description'
+                            label='Work Description'
+                            className='grow'
+                            required
+                            placeholder='Description of work being performed (e.g. Held meeting to understand business goals)' />
+                    </div>
 
-            <div className='flex flex-row mb-4'>
-                <BaseInput
-                    id='invoice-activity'
-                    className='grow'
-                    label='Invoice Activity'
-                    required
-                    placeholder='Type of work to show on the invoice (e.g. Requirements Analysis)'
-                    value={formData.invoice_activity}
-                    onChange={(e) => setFormData({...formData, invoice_activity: e.target.value})}/>
-            </div>
+                    <div className='flex flex-row mb-4'>
+                        <TextInput
+                            name='invoice_activity'
+                            label='Invoice Activity'
+                            className='grow'
+                            required
+                            placeholder='Type of work to show on the invoice (e.g. Requirements Analysis)' />
+                    </div>
 
-            <div className='flex flex-row mb-4 justify-items-stretch'>
-                <BaseSelect
-                    id='client-id'
-                    className='w-1 grow mr-4'
-                    label='Client'
-                    required
-                    value={formData.client_id}
-                    onChange={(e) => setFormData({...formData, client_id: e.target.value})}>
-                    {clients && clients.map((client: Database.IClient) => (
-                        <option key={client.id} value={client.id}>{client.client_name}</option>))}
-                </BaseSelect>
+                    <div className='flex flex-row mb-4 justify-items-stretch'>
+                        <SelectInput
+                            name='client_id'
+                            label='Client'
+                            className='w-1 grow mr-4'
+                            required>
+                            {clients && clients.map((client: Database.IClient) => (
+                                <option key={client.id} value={client.id}>{client.client_name}</option>))}
+                        </SelectInput>
 
-                <BaseSelect
-                    id='project-id'
-                    className='w-1 grow'
-                    label='Project'
-                    value={formData.project_id}
-                    onChange={(e) => {
-                        const pid = e.target.value;
-                        // Project id >= 0 means a valid project was selected.
-                        setFormData({...formData, project_id: pid >= 0 ? pid : undefined})
-                    }}>
-                    {projects && projects.map((project: Database.IProject) => (
-                        <option key={project.id} value={project.id}>{project.project_name}</option>))}
-                </BaseSelect>
-            </div>
+                        <SelectInput
+                            name='project_id'
+                            className='w-1 grow'
+                            label='Project'>
+                            {projects && projects.map((project: Database.IProject) => (
+                                <option key={project.id} value={project.id}>{project.project_name}</option>))}
+                        </SelectInput>
+                    </div>
 
-            <div className='flex flex-row mb-4'>
-                <BaseInput
-                    id='start-date-time'
-                    className='mr-4'
-                    type='datetime-local'
-                    label='Start'
-                    required
-                    value={formData.start_ts}
-                    onChange={(e) => setFormData({...formData, start_ts: e.target.value})}/>
+                    <div className='flex flex-row mb-4'>
+                        <DateTimeInput
+                            name='start_ts'
+                            className='mr-4'
+                            label='Start'
+                            required />
 
-                <BaseInput
-                    id='end-date-time'
-                    className='mr-4'
-                    type='datetime-local'
-                    label='End'
-                    required
-                    value={formData.end_ts}
-                    onChange={(e) => setFormData({...formData, end_ts: e.target.value})}/>
+                        <DateTimeInput
+                            name='end_ts'
+                            className='mr-4'
+                            label='End'
+                            required />
 
-                <BaseInput
-                    id='adjustment'
-                    className='mr-4'
-                    type='number'
-                    label='Adjustment (hours)'
-                    step=".01"
-                    value={formData.adjustment}
-                    onChange={(e) => setFormData({...formData, adjustment: e.target.value})}/>
+                        <NumberInput
+                            name='adjustment'
+                            className='mr-4'
+                            label='Adjustment (hours)'
+                            step=".01"/>
 
-                <BaseInput
-                    id='billable'
-                    type='checkbox'
-                    label='Billable?'
-                    value={formData.billable}
-                    onChange={(e) => setFormData({...formData, billable: e.target.checked})}/>
-            </div>
+                        <CheckboxInput
+                            name='billable'
+                            label='Billable?' />
+                    </div>
 
-            {/*// TODO: Add Notes*/}
+                    {/*// TODO: Add Notes*/}
 
-            <div className='flex flex-row justify-end mt-6'>
-                <Button className='mr-1' type='submit' disabled={adding || !isValid(formData)}
-                        onClick={addButtonClicked}>Add Time
-                    Record</Button>
-                <Button variant='secondary' onClick={cancelButtonClicked}>Cancel</Button>
-            </div>
-        </form>
+                    <div className='flex flex-row justify-end'>
+                        <Button className='mr-1' disabled={!props.dirty || Object.keys(props.errors).length > 0 || props.isSubmitting} type='submit'>
+                            Add Time Record
+                        </Button>
+                        <Button variant='secondary' disabled={props.isSubmitting} onClick={cancelForm}>Cancel</Button>
+                    </div>
+
+                    {submitError && <div className={classNames('submit-error', styles.error)}>{submitError}</div>}
+                </Form>)}
+        </Formik>
     )
 }
+
+const isoLocalToUTC = (local: string): string => {
+    return DateTime.fromISO(local).toUTC().toString();
+};
+
+interface IFormObserverProps {
+    onFormChanged?: (values, touched) => any;
+}
+
+const FormObserver = ({onFormChanged}: IFormObserverProps) => {
+    const { values, touched } = useFormikContext();
+
+    useEffect(() => {
+        if (onFormChanged) onFormChanged(values, touched);
+    }, [values, touched]);  return null;
+};

@@ -1,74 +1,85 @@
 import classNames from 'classnames';
-import {useEffect, useState} from 'react';
+import {Formik, Form} from 'formik';
+import {useState} from 'react';
 import {Database} from 'timetracking-common';
+import * as Yup from 'yup';
 
-import BaseInput from './ui/form/BaseInput';
+import HiddenInput from './ui/form/HiddenInput';
+import TextInput from './ui/form/TextInput';
 import Button from './ui/Button';
 import {createProject} from '../lib/database';
-import isBlank from '../lib/isBlank';
 
-export const initialFormState: Database.IProject = {
-    project_name: '',
-    client_id: -1,
-};
-
-export interface IAddProjectFormProps {
+interface IAddProjectFormProps {
+    client: Database.IClient;
     className?: string;
-    client: Database.IClient,
     onProjectAdded: () => void;
     onCancel: () => void;
 }
 
-export default function AddProjectForm({className, client, onProjectAdded, onCancel}: IAddProjectFormProps) {
-    const [adding, setAdding] = useState(false);
-    const [formData, setFormData] = useState(initialFormState);
+const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProjectFormProps) => {
 
-    useEffect(() => {
-        if (client) {
-            setFormData(prevFormData => ({...prevFormData, client_id: client.id}));
-        }
-    }, [client])
+    const [submitError, setSubmitError] = useState<string>('');
 
-    const addButtonClicked = (e) => {
-        setAdding(true);
-        createProject(formData).
-        then(() => {
-            onProjectAdded();
-            setFormData(prevFormData => ({...prevFormData, project_name: ''}));
-        }).catch(e => {
-            // TODO: Show error to the user.
-            console.error(e);
-        }).
-        finally(() => {
-            setAdding(false);
-        });
-    }
+    const styles = {
+        form: 'flex flex-row',
+        error: 'border-red-600 focus:ring-red-600 text-red-600',
+    };
 
-    const cancelButtonClicked = () => {
-        setFormData(initialFormState);
-        setAdding(false);
+    const initialFormState: Database.IProject = {
+        client_id: client.id,
+        project_name: '',
+    };
+
+    const validationSchema = Yup.object({
+        client_id: Yup.number().required('Required'),
+        project_name: Yup.string().required('Required'),
+    });
+
+    const submitForm = (values, {setSubmitting}) => {
+        setSubmitError('');
+        createProject(values)
+            .then(() => {
+                onProjectAdded();
+            })
+            .catch(err => {
+                setSubmitError(err.message);
+            })
+            .finally(() => setSubmitting(false));
+    };
+
+    const cancelForm = () => {
+        setSubmitError('');
         onCancel();
     }
 
-    const inputChanged = (e) => {
-        setFormData(prevFormData => ({...prevFormData, project_name: e.target.value}));
-    }
-
-    const isValid = (formData: Database.IProject): boolean => {
-        return !isBlank(formData.project_name);
-    }
-
     return (
-        <form className={classNames('add-project-form flex flex-row', className)}>
-            <BaseInput
-                className='w-full mr-1'
-                id='project-name'
-                placeholder='New project name'
-                value={formData.project_name}
-                onChange={inputChanged}/>
+        <Formik
+            initialValues={initialFormState}
+            onSubmit={submitForm}
+            validationSchema={validationSchema}>
+            {props => (
+                <Form className={classNames('add-project-form flex flex-col', styles.form, className)}>
+                    <HiddenInput name='client_id' />
+                    <div className='flex flex-row mb-4'>
+                        <TextInput
+                            name='project_name'
+                            label='Project Name'
+                            className='grow'
+                            required
+                            placeholder='Enter the name of a new Project'/>
+                    </div>
 
-            <Button className='mr-1' type='submit' disabled={adding || !isValid(formData)} onClick={addButtonClicked}>Add Project</Button>
-            <Button variant='secondary' disabled={adding} onClick={cancelButtonClicked}>Cancel</Button>
-        </form>
+                    <div className='flex flex-row justify-end'>
+                        <Button className='mr-1' disabled={!props.dirty || Object.keys(props.errors).length > 0 || props.isSubmitting} type='submit'>
+                            Add Project
+                        </Button>
+                        <Button variant='secondary' disabled={props.isSubmitting} onClick={cancelForm}>Cancel</Button>
+                    </div>
+
+                    {submitError && <div className={classNames('submit-error', styles.error)}>{submitError}</div>}
+                </Form>)}
+        </Formik>
     )
-}
+};
+
+export default AddProjectForm;

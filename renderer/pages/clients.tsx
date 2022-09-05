@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
 import * as db from '../lib/database';
-import AddClientForm from "../components/AddClientForm";
+import AddClientForm from '../components/AddClientForm';
 import ClientCard from '../components/ClientCard';
 import Button from '../components/ui/Button';
 import Grid from '../components/ui/Grid';

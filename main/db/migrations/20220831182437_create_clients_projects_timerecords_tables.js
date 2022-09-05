@@ -1,5 +1,6 @@
 // TODO: Figure out how to enforce the project for the time record to be one of the client's projects. Otherwise
-//       we could mistakenly assign a project from a different client.
+//       we could mistakenly assign a project from a different client. The UI ensures this should never happen, but it
+//       would be better to enforce it in the database as well.
 
 exports.up = function(knex) {
     return knex.schema.createTable('clients', (table) => {
@@ -18,11 +19,11 @@ exports.up = function(knex) {
         table.increments('id').primary();
         table.boolean('billable').notNullable().defaultTo(false);
         table.timestamp('start_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ','now'))"));
-        table.timestamp('end_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ'))"));
+        table.timestamp('end_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))"));
         table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0);
-        table.text('invoice_activity');
-        table.text('work_description');
-        table.text('notes');
+        table.text('invoice_activity').notNullable();
+        table.text('work_description').notNullable();
+        table.text('notes').nullable();
         table.integer('client_id')
             .references('clients.id')
             .onUpdate('CASCADE')
@@ -30,7 +31,9 @@ exports.up = function(knex) {
             .notNullable();
         table.integer('project_id')
             .references('projects.id')
-            .onDelete('SET NULL');
+            .nullable()
+            .onUpdate('CASCADE')
+            .onDelete('SET NULL'); // If the project is deleted, the time record will still be associated with the client.
         table.check('?? >= ??', ['end_ts', 'start_ts']);
     })
 };

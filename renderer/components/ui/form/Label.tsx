@@ -11,14 +11,15 @@ interface IBaseLabelProps {
     children?: ReactNode
 }
 
-const BaseLabel = ({id, className, children}: IBaseLabelProps) => {
+const Label = ({id, className, children, ...props}: IBaseLabelProps) => {
     return (
         <label
-            className={classNames('base-label', styles.base, className)}
-            htmlFor={id}>
+            className={classNames('label', styles.base, className)}
+            htmlFor={id}
+            {...props}>
             {children}
         </label>
     )
 }
 
-export default BaseLabel;
+export default Label;
