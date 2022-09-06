@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import {Formik, Form} from 'formik';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import * as Yup from 'yup';
 
 import TextInput from './ui/form/TextInput';
 import Button from './ui/Button';
-import {createClient} from '../lib/database';
+import {createClient, getClients} from '../lib/database';
 
 interface IAddTextFormProps {
     className?: string;
@@ -17,6 +17,7 @@ interface IAddTextFormProps {
 const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) => {
 
     const [submitError, setSubmitError] = useState<string>('');
+    const [clientNames, setClientNames] = useState<string[]>([]);
 
     const styles = {
         form: 'flex flex-row',
@@ -28,8 +29,17 @@ const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) 
     };
 
     const validationSchema = Yup.object({
-        client_name: Yup.string().required('Required'),
+        client_name: Yup.string().test("Unique", "Client name needs to be unique", (clientName) => {
+            return !clientNames.includes(clientName);
+        }).required('Required'),
     });
+
+    // Get client names once so validation can ensure that the user doesn't try to submit a duplicate client.
+    useEffect(() => {
+        getClients()
+            .then(clients => setClientNames(clients.map(c => c.client_name)))
+            .catch(err => console.error(err));
+    }, [])
 
     const submitForm = (values, {setSubmitting}) => {
         setSubmitError('');

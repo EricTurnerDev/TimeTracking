@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import {Formik, Form} from 'formik';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import * as Yup from 'yup';
 
 import HiddenInput from './ui/form/HiddenInput';
 import TextInput from './ui/form/TextInput';
 import Button from './ui/Button';
-import {createProject} from '../lib/database';
+import {createProject, getProjects} from '../lib/database';
 
 interface IAddProjectFormProps {
     client: Database.IClient;
@@ -19,6 +19,7 @@ interface IAddProjectFormProps {
 const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProjectFormProps) => {
 
     const [submitError, setSubmitError] = useState<string>('');
+    const [projectNames, setProjectNames] = useState<string[]>([]);
 
     const styles = {
         form: 'flex flex-row',
@@ -32,8 +33,17 @@ const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProje
 
     const validationSchema = Yup.object({
         client_id: Yup.number().required('Required'),
-        project_name: Yup.string().required('Required'),
+        project_name: Yup.string().test("Unique", "Project name needs to be unique", (projectName) => {
+            return !projectNames.includes(projectName);
+        }).required('Required'),
     });
+
+    // Get project names once so validation can ensure that the user doesn't try to submit a duplicate project.
+    useEffect(() => {
+        getProjects(client.id)
+            .then(projects => setProjectNames(projects.map(p => p.project_name)))
+            .catch(err => console.error(err));
+    }, []);
 
     const submitForm = (values, {setSubmitting}) => {
         setSubmitError('');
