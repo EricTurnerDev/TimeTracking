@@ -70,6 +70,7 @@ const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) 
                             name='client_name'
                             label='Client Name'
                             className='grow'
+                            inputStyles='py-2 px-4 w-full'
                             required
                             placeholder='Enter the name of a new client'/>
                     </div>

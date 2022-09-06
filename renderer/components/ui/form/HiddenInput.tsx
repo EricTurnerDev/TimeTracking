@@ -1,30 +1,10 @@
-import classNames from 'classnames';
-import {FieldHookConfig, useField} from 'formik';
+import BaseInput, {IBaseInput} from './BaseInput';
 
-interface IHiddenInput {
-    id?: string;
-    name: string;
-    className?: string;
+interface IHiddenInput extends IBaseInput {}
 
-    [x: string]: string | boolean | FieldHookConfig<any>;
-}
-
-const HiddenInput = ({id, className, ...props}: IHiddenInput) => {
-    const [field] = useField(props);
-
+const HiddenInput = ({...props}: IHiddenInput) => {
     return (
-        <div >
-            <input
-                id={id}
-                className={classNames(
-                    'hidden-input',
-                    className
-                )}
-                type='hidden'
-                {...field}
-                {...props}
-            />
-        </div>
+        <BaseInput type='hidden' className='hidden-input' {...props} />
     )
 };
 

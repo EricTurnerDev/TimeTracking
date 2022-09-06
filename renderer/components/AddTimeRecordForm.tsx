@@ -125,6 +125,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                             name='work_description'
                             label='Work Description'
                             className='grow'
+                            inputStyles='py-2 px-4 w-full'
                             required
                             placeholder='Description of work being performed (e.g. Held meeting to understand business goals)' />
                     </div>
@@ -134,6 +135,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                             name='invoice_activity'
                             label='Invoice Activity'
                             className='grow'
+                            inputStyles='py-2 px-4 w-full'
                             required
                             placeholder='Type of work to show on the invoice (e.g. Requirements Analysis)' />
                     </div>

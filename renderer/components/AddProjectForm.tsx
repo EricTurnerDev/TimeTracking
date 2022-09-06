@@ -75,6 +75,7 @@ const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProje
                             name='project_name'
                             label='Project Name'
                             className='grow'
+                            inputStyles='py-2 px-4 w-full'
                             required
                             placeholder='Enter the name of a new Project'/>
                     </div>
