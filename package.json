@@ -2,8 +2,10 @@
   "private": true,
   "name": "time-tracking",
   "description": "Application for tracking time spent working on projects for clients",
-  "version": "1.0.0",
-  "author": "Eric Turner <eric@ericturner.dev>",
+  "version": "0.0.0",
+  "license": "MPL-2.0",
+  "author": "Eric Turner",
+  "email": "info@ericturner.dev",
   "main": "app/background.js",
   "scripts": {
     "predev": "cd timetracking-common && npm run tsc",

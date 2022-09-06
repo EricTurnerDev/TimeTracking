@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2022, Eric Turner.
+ *
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faClock, faHome, faPeopleGroup, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";

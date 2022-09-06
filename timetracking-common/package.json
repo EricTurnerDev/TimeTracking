@@ -16,7 +16,7 @@
   "keywords": [],
   "author": "Eric Turner",
   "email": "info@ericturner.dev",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "devDependencies": {
     "typescript": "^4.8.2"
   }

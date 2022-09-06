@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2022, Eric Turner.
+ *
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 // TODO: Figure out how to enforce the project for the time record to be one of the client's projects. Otherwise
 //       we could mistakenly assign a project from a different client. The UI ensures this should never happen, but it
 //       would be better to enforce it in the database as well.
