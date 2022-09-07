@@ -36,6 +36,15 @@ export async function deleteClient(id:number): Promise<void> {
 }
 
 /**
+ * Requests the main process to update a client.
+ * @returns a promise that resolves when the client is updated, or rejects with an error.
+ */
+export async function updateClient(id: number, client: Database.IClient): Promise<void> {
+    return await send(IpcChannels.UpdateClient, {...client, id});
+}
+
+
+/**
  * Requests a list of all the clients from the main process.
  * @returns a promise that resolves with a list of clients, or rejects with an error.
  */

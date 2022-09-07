@@ -36,6 +36,10 @@ export function listen() {
         return knex('clients').where('id', clientId).del();
     });
 
+    ipcMain.handle(IpcChannels.UpdateClient, (event, client: Database.IClient) => {
+        return knex('clients').where('id', client.id).update(client);
+    });
+
     ipcMain.handle(IpcChannels.GetClients, (event) => {
         return knex.select().from('clients').orderByRaw('client_name COLLATE NOCASE');
     });

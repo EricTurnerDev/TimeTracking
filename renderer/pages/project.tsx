@@ -68,7 +68,7 @@ export default function Project() {
 
     const updateProjectName = async (projectName: string): Promise<void> => {
         await db.updateProject(project.id, {project_name: projectName});
-        setProject((prevState: Database.IProject) => ({...prevState, project_id: project.id}));
+        setProject((prevState: Database.IProject) => ({...prevState, project_name: projectName}));
     };
 
     return (
@@ -76,7 +76,7 @@ export default function Project() {
             <Head>
                 <title>Project - TimeKeeping</title>
             </Head>
-            {project && client && <H1 editable={true} onSave={updateProjectName}>{project.project_name}</H1>}
+            {project && <H1 editable={true} onSave={updateProjectName}>{project.project_name}</H1>}
 
             {timeRecords && timeRecords.map((tr: Database.ITimeRecord) => (<p key={tr.id}>{tr.work_description}</p>))}
         </div>
