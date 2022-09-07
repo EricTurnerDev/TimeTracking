@@ -51,14 +51,14 @@ function SidebarItem({href, className, children}: ISidebarItemProps) {
     const router = useRouter();
 
     const styles = {
-        base: 'sidebar-item p-3 text-gray-300',
+        base: 'p-3 text-gray-300',
         active: router.pathname === href ? 'text-blue-500' : 'hover:text-white',
     };
 
     return (
-        <div className={classNames(styles.base, styles.active, className)}>
+        <div className={classNames('sidebar-item', styles.base, styles.active, className)}>
             <Link href={href}>
-                <a>{children}</a>
+                <a className='flex flex-row items-center'>{children}</a>
             </Link>
         </div>
     )

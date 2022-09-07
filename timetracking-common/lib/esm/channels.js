@@ -13,6 +13,7 @@ export var GetClients = 'clients:get';
 export var CreateProject = 'project:create';
 export var GetProject = 'project:get';
 export var DeleteProject = 'project:delete';
+export var UpdateProject = 'project:update';
 export var GetProjects = 'projects:get';
 export var CreateTimeRecord = 'time-record:create';
 export var DeleteTimeRecord = 'time-record:delete';
