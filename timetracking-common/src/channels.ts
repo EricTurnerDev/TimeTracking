@@ -10,6 +10,7 @@
 export const CreateClient: string = "client:create";
 export const GetClient: string = 'client:get';
 export const DeleteClient: string = 'client:delete';
+export const UpdateClient: string = 'client:update';
 export const GetClients: string = 'clients:get';
 
 export const CreateProject: string = 'project:create';

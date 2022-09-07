@@ -22,7 +22,7 @@ export interface IBaseEditableTextProps extends IBaseTextProps {
     onSave?: (string) => Promise<void>;
 }
 
-const BaseEditableText = ({editable = false, onSave, children, ...props}: IBaseEditableTextProps) => {
+const BaseEditableText = ({editable = false, onSave, className, children, ...props}: IBaseEditableTextProps) => {
     const [text, setText] = useState<ReactNode>(children);
     const [editing, setEditing] = useState<boolean>(false);
 
@@ -49,7 +49,7 @@ const BaseEditableText = ({editable = false, onSave, children, ...props}: IBaseE
     };
 
     return (
-        <div className={classNames('base-editable-text', 'flex flex-row justify-between items-center')}>
+        <div className={classNames('base-editable-text', 'flex flex-row justify-between items-center', className)}>
             {!editing && <BaseText {...props}>{text}</BaseText>}
             {editable && canEdit(text) && !editing && <Icon icon={pencil} className='hover:cursor-pointer' onClick={editIconClicked}/>}
 

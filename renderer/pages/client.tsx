@@ -61,6 +61,11 @@ export default function Client() {
         }
     }, [clientId]);
 
+    const updateClientName = async (clientName: string): Promise<void> => {
+        await db.updateClient(client.id, {client_name: clientName});
+        setClient((prevState: Database.IClient) => ({...prevState, client_name: clientName}));
+    };
+
     const addProjectButtonClicked = () => {
         setAddingProject(true);
     }
@@ -89,7 +94,7 @@ export default function Client() {
                 <title>Client - TimeTracking</title>
             </Head>
 
-            {client && <H1 className='mb-4'>{client.client_name}</H1>}
+            {client && <H1 className='mb-4' editable={true} onSave={updateClientName}>{client.client_name}</H1>}
 
             <div className='text-right mb-4'>
                 <Button onClick={addProjectButtonClicked} disabled={addingProject}>

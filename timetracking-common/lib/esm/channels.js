@@ -9,6 +9,7 @@
 export var CreateClient = "client:create";
 export var GetClient = 'client:get';
 export var DeleteClient = 'client:delete';
+export var UpdateClient = 'client:update';
 export var GetClients = 'clients:get';
 export var CreateProject = 'project:create';
 export var GetProject = 'project:get';
