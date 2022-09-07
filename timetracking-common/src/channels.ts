@@ -15,6 +15,7 @@ export const GetClients: string = 'clients:get';
 export const CreateProject: string = 'project:create';
 export const GetProject: string = 'project:get';
 export const DeleteProject: string = 'project:delete';
+export const UpdateProject: string = 'project:update';
 export const GetProjects: string = 'projects:get';
 
 export const CreateTimeRecord: string = 'time-record:create';

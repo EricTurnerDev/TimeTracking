@@ -7,18 +7,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {ReactNode} from 'react';
-import BaseText from './BaseText';
+import BaseEditableText, {IBaseEditableTextProps} from './BaseEditableText';
 
-interface ISpanProps {
-    className?: string;
-    children: ReactNode;
-    [x:string]: any;
-}
+interface ISpanProps extends IBaseEditableTextProps {}
 
-const Span = ({className, children, ...rest}: ISpanProps) => {
+const Span = ({className, children, ...props}: ISpanProps) => {
     return (
-        <BaseText className={className} as='span' {...rest}>{children}</BaseText>
+        <BaseEditableText className={className} as='span' {...props}>{children}</BaseEditableText>
     )
 }
 

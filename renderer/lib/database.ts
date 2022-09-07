@@ -69,6 +69,14 @@ export async function deleteProject(id:number): Promise<void> {
 }
 
 /**
+ * Requests the main process to update a project.
+ * @returns a promise that resolves when the project is updated, or rejects with an error.
+ */
+export async function updateProject(id: number, project: Database.IProject): Promise<void> {
+    return await send(IpcChannels.UpdateProject, {...project, id});
+}
+
+/**
  * Requests a list of projects for a client from the main process.
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */

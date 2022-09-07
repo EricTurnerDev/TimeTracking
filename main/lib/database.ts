@@ -54,6 +54,10 @@ export function listen() {
         return knex('projects').where('id', projectId).del();
     });
 
+    ipcMain.handle(IpcChannels.UpdateProject, (event, project: Database.IProject) => {
+        return knex('projects').where('id', project.id).update(project);
+    });
+
     ipcMain.handle(IpcChannels.GetProjects, (event, clientId: number) => {
         return knex.select().from('projects').where('projects.client_id', clientId);
     });

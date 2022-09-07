@@ -7,18 +7,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {ReactNode} from 'react';
-import BaseText from './BaseText';
+import BaseEditableText, {IBaseEditableTextProps} from './BaseEditableText';
 
-interface IH2Props {
-    className?: string;
-    children: ReactNode;
-    [x:string]: any;
-}
+interface IH2Props extends IBaseEditableTextProps {}
 
-const H2 = ({className, children, ...rest}: IH2Props) => {
+const H2 = ({className, children, ...props}: IH2Props) => {
     return (
-        <BaseText className={className} as='h2' {...rest}>{children}</BaseText>
+        <BaseEditableText className={className} as='h2' {...props}>{children}</BaseEditableText>
     )
 }
 
