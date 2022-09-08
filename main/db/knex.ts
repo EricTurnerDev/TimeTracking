@@ -22,6 +22,8 @@ export async function create() {
     const dbLocation = getDatabaseLocation();
     console.log(`Database file location: ${dbLocation}`);
 
+    // Migrations are added to the application's resources directory during the build, which is where we need to
+    // obtain them when running in production (i.e. from an .exe, .AppImage, etc).
     const migrationsDir = isProd ? path.join(process.resourcesPath, 'main/db/migrations') : './main/db/migrations';
     const seedsDir = isProd ? path.join(process.resourcesPath, 'main/db/seeds') : './main/db/seeds';
 
