@@ -10,7 +10,7 @@ files:
       - package.json
       - app
       - timetracking.db
-extraFiles:
+extraResources:
   - from: main/db/migrations
     to: main/db/migrations
     filter: ["**/*"]
