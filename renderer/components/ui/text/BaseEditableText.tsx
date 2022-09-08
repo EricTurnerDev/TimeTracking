@@ -26,6 +26,14 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
     const [text, setText] = useState<ReactNode>(children);
     const [editing, setEditing] = useState<boolean>(false);
 
+    const Tag = isInline(props.as, className) ? 'span' : 'div';
+
+    const styles = {
+        base: '',
+        block: 'flex flex-row justify-between items-center',
+        inline: 'inline',
+    };
+
     const submitForm = (values, {setSubmitting}) => {
         onSave(values.text)
             .then(() => {
@@ -48,8 +56,10 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
         setEditing(true);
     };
 
+    // TODO: Handle inline editable text differently. A span can't use flex.
+
     return (
-        <div className={classNames('base-editable-text', 'flex flex-row justify-between items-center', className)}>
+        <Tag className={classNames('base-editable-text', isInline(props.as, className) ? styles.inline : styles.block, className)}>
             {!editing && <BaseText {...props}>{text}</BaseText>}
             {editable && canEdit(text) && !editing && <Icon icon={pencil} className='hover:cursor-pointer' onClick={editIconClicked}/>}
 
@@ -58,7 +68,7 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
                           onSubmit={submitForm}
                           cancelForm={cancelForm}
                           validationSchema={validationSchema}/>}
-        </div>
+        </Tag>
     )
 }
 
@@ -67,9 +77,10 @@ interface IEditFormProps {
     onSubmit: (values: any, {setSubmitting}: { setSubmitting: any; }) => void;
     cancelForm: () => void;
     validationSchema: object;
+    className?: string;
 }
 
-const EditForm = ({text, onSubmit, cancelForm, validationSchema}: IEditFormProps) => {
+const EditForm = ({text, onSubmit, cancelForm, validationSchema, className}: IEditFormProps) => {
     return (
         <Formik initialValues={{text}}
                 onSubmit={onSubmit}
@@ -89,6 +100,19 @@ const EditForm = ({text, onSubmit, cancelForm, validationSchema}: IEditFormProps
 function canEdit(children: any): boolean {
     // Only a strings can be edited.
     return typeof children === 'string';
+}
+
+function isInline(element: string = '', className: string = ''): boolean {
+    const blockRegex = /(^|\s)block(\s|$)/g;
+    const inlineRegex = /(^|\s)inline(\s|$)/g
+
+    // Element is inline and hasn't been overridden with the 'block' tailwind class.
+    if ((element === 'span' || element === 'cite' || element === 'abbr') && !className.match(blockRegex)) {
+        return true;
+    }
+
+    // Element is block, but has been overridden with the 'inline' tailwind class.
+    return !!className.match(inlineRegex);
 }
 
 export default BaseEditableText;

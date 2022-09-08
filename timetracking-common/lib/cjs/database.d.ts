@@ -9,7 +9,7 @@ export interface IProject {
 }
 export interface ITimeRecord {
     id?: number;
-    billable?: boolean;
+    billable?: boolean | number;
     start_ts?: string;
     end_ts?: string;
     adjustment?: number;

@@ -72,6 +72,27 @@ export function listen() {
         return knex.insert(timeRecord).into('time_records');
     });
 
+    ipcMain.handle(IpcChannels.GetTimeRecord, (event, timeRecordId: number) => {
+        return knex.select().from('time_records').where('id', timeRecordId).first();
+    });
+
+    ipcMain.handle(IpcChannels.GetDetailedTimeRecord, (event, timeRecordId: number) => {
+        const columns = [
+            'time_records.*',
+            'projects.project_name AS project_name',
+            'clients.client_name AS client_name',
+            knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
+        ]
+
+        return knex
+            .select(columns)
+            .from('time_records')
+            .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
+            .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
+            .where({'time_records.id': timeRecordId})
+            .first();
+    });
+
     ipcMain.handle(IpcChannels.DeleteTimeRecord, (event, timeRecordId: number) => {
         return knex('time_records').where('id', timeRecordId).del();
     })
