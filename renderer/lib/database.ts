@@ -93,12 +93,30 @@ export async function getProjects(clientId:number): Promise<Database.IProject[]>
     return await send(IpcChannels.GetProjects, clientId);
 }
 
+// Time records
+
 /**
  * Requests the main process to create a time record.
  * @returns a promise that resolves when the time record is created, or rejects with an error.
  */
 export async function createTimeRecord(timeRecord: Database.ITimeRecord): Promise<void> {
     return await send(IpcChannels.CreateTimeRecord, timeRecord);
+}
+
+/**
+ * Requests the main process to get a time record.
+ * @returns a promise that resolves with the time record, or rejects with an error.
+ */
+export async function getTimeRecord(id: number): Promise<Database.ITimeRecord> {
+    return await send(IpcChannels.GetTimeRecord, id);
+}
+
+/**
+ * Requests the main process to get a detailed time record.
+ * @returns a promise that resolves with the detailed time record, or rejects with an error.
+ */
+export async function getDetailedTimeRecord(id: number): Promise<Database.ITimeRecord> {
+    return await send(IpcChannels.GetDetailedTimeRecord, id);
 }
 
 /**
