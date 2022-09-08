@@ -12,6 +12,8 @@ import knexConfig from '../knexfile';
 import path from "path";
 import {app} from "electron";
 
+const isProd: boolean = process.env.NODE_ENV === 'production';
+
 export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }
@@ -20,10 +22,13 @@ export async function create() {
     const dbLocation = getDatabaseLocation();
     console.log(`Database file location: ${dbLocation}`);
 
+    const migrationsDir = isProd ? path.join(process.resourcesPath, 'main/db/migrations') : './main/db/migrations';
+    const seedsDir = isProd ? path.join(process.resourcesPath, 'main/db/seeds') : './main/db/seeds';
+
     // Override the default knex configuration so it works with the correct SQLite file, migrations, and seed data.
     knexConfig.connection = {filename: dbLocation};
-    knexConfig.migrations = {directory: './main/db/migrations'};
-    knexConfig.seeds = {directory: './main/db/seeds'};
+    knexConfig.migrations = {directory: migrationsDir};
+    knexConfig.seeds = {directory: seedsDir};
 
     const k = knex(knexConfig);
 
