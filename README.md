@@ -1,110 +1,87 @@
-<p align="center"><img src="https://i.imgur.com/a9QWW0v.png"></p>
+# TimeTracking
 
-## Usage
+TimeTracking is a cross-platform _**desktop**_ application for tracking the time
+that you work for clients. I created it specifically for my own use in
+freelance software development, but it should be usable for other professions.
 
-### Create an App
+IMPORTANT: TimeTracking is not yet ready for public use. I started developing it
+in earnest in September 2022, and expect to have a usable version by
+the end of 2022.
 
-```
-# with npx
-$ npx create-nextron-app my-app --example with-typescript-tailwindcss
+* Cross-platform: runs on Windows, macOS, and Linux
+* Data is stored locally, never in the cloud
+* Works offline (i.e. without an Internet connection)
+* Export time records to a spreadsheet (e.g. for creating invoices, reporting, etc)
+* Create backups of the TimeTracking database, and restore from them
+* [Pomodoro timers](https://en.wikipedia.org/wiki/Pomodoro_Technique) help you focus on your work :tomato:
+* Free and Open Source under the [Mozilla Public License](https://en.wikipedia.org/wiki/Mozilla_Public_License)
 
-# with yarn
-$ yarn create nextron-app my-app --example with-typescript-tailwindcss
+## Installation
 
-# with pnpx
-$ pnpx create-nextron-app my-app --example with-typescript-tailwindcss
-```
+TimeTracking executables for various platforms are not currently available.
+Links to these will be added here once I start building them. Until then,
+clone the Github repo, and run:
 
-### Install Dependencies
-
-```
-$ cd my-app
-
-# using yarn or npm
-$ yarn (or `npm install`)
-
-# using pnpm
-$ pnpm install --shamefully-hoist
-```
-
-### Use it
-
-```
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
-
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
+```shell
+npm install
+npm run build
 ```
 
-## Database File Location
-
-The SQLite database file is found in different locations on different platforms:
+The application will be built in the `dist` directory.
 
 ### Windows
 
-Development: `%APPDATA%\time-tracking (development)\timetracking.sqlite`  
-
-Production: `%APPDATA%\time-tracking\timetracking.sqlite`
+Run the `TimeTracking-[version].exe` file to install the application. A shortcut
+will be added to your Desktop that you can use to run it.
 
 ### Linux
 
+Copy the `TimeTracking-[version].AppImage` to your `~/bin` directory, and ensure
+that you have execute permissions by running `chmod u+x ~/bin/TimeTracking-[version].AppImage`.
+The `~/bin` directory should already be in your `$PATH`, so you should be able to run TimeTracking
+anywhere from the command line.
+
+### macOS
+
 TODO
 
-### MacOS
+## Usage
 
-TODO
+### Add a client
 
-## Database Migrations
+1. Select `Clients & Projects` from the sidebar
+2. Press the `New Client` button
+3. Enter the name of the client
+4. Press the `Add Client` button
 
-### Creating a Knex Migration
+![Add client](./readme-images/create-client.png)
 
-```shell
-cd main
-npx knex migrate:make whatever_you_want_to_name_it
-```
+### Edit a client
 
-### Running Database Migrations
+### Delete a client
 
-You can manually run database migrations on a SQLite database from the command line. For example:
+WARNING: Deleting a client will delete all projects and time records associated
+with the client.
 
-```shell
-cd main
-npx knex migrate:latest --connection '%APPDATA%\time-tracking (development)\timetracking.sqlite' 
-```
+### Add a project
 
-You can also roll back migrations:
+### Edit a project
 
-```shell
-cd main
-npx knex migrate:rollback --connection '%APPDATA%\time-tracking (development)\timetracking.sqlite' 
-```
+### Delete a project
 
-## Seeding the Database with Sample Data
+IMPORTANT: Any time records associated with the project will not have the deleted
+project  associated with them anymore.
 
-### Running
-WARNING: Only do this in development with a new (empty) database.
+### Record time
 
-```shell
-cd main
-npx knex seed:run --connection '%APPDATA%\time-tracking (development)\timetracking.sqlite'
-```
+### Edit a time record
 
-### Notes
+### Delete a time record
 
-The seed data is loaded by Knex from CSV files that I generated at mockaroo.com:
+## Contributing
 
-* clients: https://www.mockaroo.com/b35306e0
-* projects: https://www.mockaroo.com/05adf630
-* time_records: https://www.mockaroo.com/cc7412b0
+There are several ways you can contribute to TimeTracking development:
 
-Mockaroo doesn't have a way of ensuring unique values, so I had to go through these by hand to do that.
-
-I generated the seed file using:
-
-```shell
-cd main
-npx knex seed:make seed_clients_projects_time_records
-```
-Then I modified it to import the data from `main/db/seeds/clients.csv`, `main/db/seeds/projects.csv`, and
-`main/db/seeds/time_records.csv`.
+* Use it, and let us know if you like it, problems you run into, and changes you would like us to make
+* Create issues in Github for bugs and feature requests
+* Work on Gitlab issues. Fork the Github repository, make changes, and submit pull requests to have your changes added to TimeTracking
