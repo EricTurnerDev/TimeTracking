@@ -2,7 +2,8 @@
 
 TimeTracking is a cross-platform _**desktop**_ application for tracking the time
 that you work for clients. I created it specifically for my own use in
-freelance software development, but it should be usable for other professions.
+freelance software development to replace the spreadsheets I was using,
+but it should be usable for other professions.
 
 IMPORTANT: TimeTracking is not yet ready for public use. I started developing it
 in earnest in September 2022, and expect to have a usable version by
