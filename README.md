@@ -5,12 +5,9 @@ that you work for clients. I created it specifically for my own use in
 freelance software development to replace the spreadsheets I was using,
 but it should be usable for other professions.
 
-<div style="padding:10px;border-radius:0.5rem;background-color:#53c5eb">
-   <p style="color:white;font-weight:bold;font-size:large">IMPORTANT</p>
-   <p style="color:white"> TimeTracking is not yet ready for public use. I started developing it
-      in earnest in September 2022, and expect to have a usable version by
-      the end of 2022.</p>
-</div>
+IMPORTANT: TimeTracking is not ready for public use. I started developing it
+in earnest in September 2022, and expect to have a usable version by
+the end of 2022.
 
 * Cross-platform: runs on Windows, macOS, and Linux
 * Data is stored locally, never in the cloud
@@ -64,11 +61,8 @@ TODO
 
 ### Delete a client
 
-<div style="padding:10px;border-radius:0.5rem;background-color:#f8383f">
-   <p style="color:white;font-weight:bold;font-size:large">WARNING</p>
-   <p style="color:white">Deleting a client will delete all projects and time records associated
-with the client.</p>
-</div>
+WARNING: Deleting a client will delete all projects and time records associated
+with the client.
 
 ### Add a project
 
@@ -76,11 +70,8 @@ with the client.</p>
 
 ### Delete a project
 
-<div style="padding:10px;border-radius:0.5rem;background-color:#53c5eb">
-   <p style="color:white;font-weight:bold;font-size:large">IMPORTANT</p>
-   <p style="color:white"> Any time records associated with the project will not have the deleted
-project  associated with them anymore.</p>
-</div>
+IMPORTANT: Time records associated with the project will not have the deleted
+project associated with them anymore.
 
 ### Record time
 
