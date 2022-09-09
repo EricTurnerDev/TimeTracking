@@ -26,22 +26,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: get-app-version
-        id: app-version
-        uses: martinbeentjes/npm-get-version-action@main
+      - name: version
+        run: echo "::set-output name=version::$(npm pkg get version)"
+        id: version
       - run: npm ci
       - run: npm run build
       - name: Archive Linux AppImage
-        if: ${{ matrix.os == 'linux-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v3
         with:
-          name: timetracking-${{ steps.app-version.outputs.current-version}}-linux
+          name: timetracking-${{ steps.version.outputs.version }}-linux
           path: dist/TimeTracking*.AppImage
           if-no-files-found: ignore
       - name: Archive Windows exe
         if: ${{ matrix.os == 'windows-latest' }}
         uses: actions/upload-artifact@v3
         with:
-          name: timetracking-${{ steps.app-version.outputs.current-version}}-windows
+          name: timetracking-${{ steps.version.outputs.version }}-windows
           path: dist/TimeTracking*.exe
           if-no-files-found: ignore
