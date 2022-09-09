@@ -7,10 +7,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         node-version: [18.x]
 
     steps:
@@ -21,3 +22,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build
+      - name: Archive Linux AppImage
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-build
+          path: dist/TimeTracking*.AppImage
+      - name: Archive Windows exe
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-build
+          path: dist/TimeTracking*.exe
