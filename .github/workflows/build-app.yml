@@ -32,13 +32,13 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v3
         with:
-          name: timetracking-${{ $GITHUB_SHA }}-linux
+          name: timetracking-${{ github.sha }}-linux
           path: dist/TimeTracking*.AppImage
           if-no-files-found: ignore
       - name: Archive Windows exe
         if: ${{ matrix.os == 'windows-latest' }}
         uses: actions/upload-artifact@v3
         with:
-          name: timetracking-${{ $GITHUB_SHA }}-windows
+          name: timetracking-${{ github.sha }}-windows
           path: dist/TimeTracking*.exe
           if-no-files-found: ignore
