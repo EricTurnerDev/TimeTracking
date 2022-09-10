@@ -23,12 +23,14 @@ export interface IBaseInput {
     disabled?: boolean;
     className?: string;
     inputStyles?: string; // Additional styles applied directly to the <input> element
+    onBlur?: () => void;
+    onKeyDown?: (e) => any;
 }
 
 const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, ...props}: IBaseInput) => {
 
     const styles = {
-        base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent',
+        base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent rounded',
         state: {
             normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
             error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -54,6 +56,7 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
                 )}
                 type={type}
                 id={inputId}
+                autoFocus
                 {...field}
                 {...props}
             />

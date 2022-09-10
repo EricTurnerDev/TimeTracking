@@ -9,12 +9,10 @@
 
 import classNames from 'classnames';
 import {Formik, Form} from 'formik';
-import {ReactNode, useState} from 'react';
+import {ReactNode, useCallback, useState} from 'react';
 import * as Yup from 'yup';
 
 import BaseText, {IBaseTextProps} from './BaseText';
-import Button from '../Button';
-import {Icon, pencil} from '../Icon';
 import TextInput from '../form/TextInput';
 
 export interface IBaseEditableTextProps extends IBaseTextProps {
@@ -27,12 +25,6 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
     const [editing, setEditing] = useState<boolean>(false);
 
     const Tag = isInline(props.as, className) ? 'span' : 'div';
-
-    const styles = {
-        base: '',
-        block: 'flex flex-row justify-between items-center',
-        inline: 'inline',
-    };
 
     const submitForm = (values, {setSubmitting}) => {
         onSave(values.text)
@@ -52,22 +44,35 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
         text: Yup.string().required('Required'),
     });
 
-    const editIconClicked = (e) => {
-        setEditing(true);
+    const textClicked = (e) => {
+        if (editable && canEdit(text)) {
+            setEditing(true);
+        }
     };
 
-    // TODO: Handle inline editable text differently. A span can't use flex.
+    const styles = {
+        base: 'w-full',
+        editable: 'hover:cursor-pointer',
+        block: 'flex flex-row',
+        inline: 'inline',
+    };
 
     return (
-        <Tag className={classNames('base-editable-text', isInline(props.as, className) ? styles.inline : styles.block, className)}>
-            {!editing && <BaseText {...props}>{text}</BaseText>}
-            {editable && canEdit(text) && !editing && <Icon icon={pencil} className='hover:cursor-pointer' onClick={editIconClicked}/>}
+        <Tag
+            className={classNames(
+                'base-editable-text',
+                styles.base,
+                editable && styles.editable,
+                isInline(props.as, className) ? styles.inline : styles.block,
+                className)}>
+            {!editing && <BaseText className={classNames('w-full')} onClick={textClicked} {...props}>{text}</BaseText>}
 
             {editing && canEdit(text) &&
-                <EditForm text={text}
-                          onSubmit={submitForm}
-                          cancelForm={cancelForm}
-                          validationSchema={validationSchema}/>}
+                <EditForm
+                    text={text}
+                    onSubmit={submitForm}
+                    cancelForm={cancelForm}
+                    validationSchema={validationSchema}/>}
         </Tag>
     )
 }
@@ -81,18 +86,27 @@ interface IEditFormProps {
 }
 
 const EditForm = ({text, onSubmit, cancelForm, validationSchema, className}: IEditFormProps) => {
+
+    // TODO: Tabbing away from the input should submit the change
+
+    const keyPressed = useCallback((e) => {
+        if (e.key === 'Escape') {
+            cancelForm();
+        }
+    }, []);
+
     return (
         <Formik initialValues={{text}}
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}>
-            {formikProps => (
-                <Form className='flex flex-row grow'>
-                    <TextInput className='w-full mr-1' inputStyles='w-full' name='text'/>
-                    <Button type='submit'
-                            className='mr-1'
-                            disabled={!formikProps.dirty || Object.keys(formikProps.errors).length > 0 || formikProps.isSubmitting}>Save</Button>
-                    <Button variant='secondary' disabled={formikProps.isSubmitting} onClick={cancelForm}>Cancel</Button>
-                </Form>)}
+            <Form className='flex flex-row grow'>
+                <TextInput
+                    className='w-full mr-1'
+                    inputStyles='w-full'
+                    name='text'
+                    onBlur={cancelForm}
+                    onKeyDown={keyPressed}/>
+            </Form>
         </Formik>
     )
 };
