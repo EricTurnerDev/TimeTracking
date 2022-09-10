@@ -72,7 +72,8 @@ const BaseEditableText = ({editable = false, onSave, className, children, ...pro
                     text={text}
                     onSubmit={submitForm}
                     cancelForm={cancelForm}
-                    validationSchema={validationSchema}/>}
+                    validationSchema={validationSchema}
+                    autoFocus={props.autoFocus}/>}
         </Tag>
     )
 }
@@ -83,9 +84,10 @@ interface IEditFormProps {
     cancelForm: () => void;
     validationSchema: object;
     className?: string;
+    autoFocus?: boolean;
 }
 
-const EditForm = ({text, onSubmit, cancelForm, validationSchema, className}: IEditFormProps) => {
+const EditForm = ({text, onSubmit, cancelForm, validationSchema, autoFocus = false, className}: IEditFormProps) => {
 
     // TODO: Tabbing away from the input should submit the change
 
@@ -105,7 +107,8 @@ const EditForm = ({text, onSubmit, cancelForm, validationSchema, className}: IEd
                     inputStyles='w-full'
                     name='text'
                     onBlur={cancelForm}
-                    onKeyDown={keyPressed}/>
+                    onKeyDown={keyPressed}
+                    autoFocus={autoFocus}/>
             </Form>
         </Formik>
     )

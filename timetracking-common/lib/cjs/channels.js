@@ -8,7 +8,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
+exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.UpdateTimeRecord = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
 exports.CreateClient = "client:create";
 exports.GetClient = 'client:get';
 exports.DeleteClient = 'client:delete';
@@ -23,5 +23,6 @@ exports.CreateTimeRecord = 'time-record:create';
 exports.GetTimeRecord = 'time-record: get';
 exports.GetDetailedTimeRecord = 'time-record:detailed:get';
 exports.DeleteTimeRecord = 'time-record:delete';
+exports.UpdateTimeRecord = 'time-record:update';
 exports.GetTimeRecords = 'time-records:get';
 exports.GetDetailedTimeRecords = 'time-records:detailed:get';

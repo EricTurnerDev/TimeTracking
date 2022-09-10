@@ -20,5 +20,6 @@ export var CreateTimeRecord = 'time-record:create';
 export var GetTimeRecord = 'time-record: get';
 export var GetDetailedTimeRecord = 'time-record:detailed:get';
 export var DeleteTimeRecord = 'time-record:delete';
+export var UpdateTimeRecord = 'time-record:update';
 export var GetTimeRecords = 'time-records:get';
 export var GetDetailedTimeRecords = 'time-records:detailed:get';

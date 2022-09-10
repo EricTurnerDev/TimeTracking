@@ -21,6 +21,7 @@ export interface IBaseInput {
     label?: string;
     required?: boolean;
     disabled?: boolean;
+    autoFocus?: boolean;
     className?: string;
     inputStyles?: string; // Additional styles applied directly to the <input> element
     onBlur?: () => void;
@@ -56,7 +57,6 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
                 )}
                 type={type}
                 id={inputId}
-                autoFocus
                 {...field}
                 {...props}
             />

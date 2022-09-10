@@ -25,6 +25,8 @@ export const CreateTimeRecord: string = 'time-record:create';
 export const GetTimeRecord: string = 'time-record: get';
 export const GetDetailedTimeRecord: string = 'time-record:detailed:get';
 export const DeleteTimeRecord: string = 'time-record:delete';
+export const UpdateTimeRecord: string = 'time-record:update';
+
 export const GetTimeRecords: string = 'time-records:get';
 
 export const GetDetailedTimeRecords: string = 'time-records:detailed:get';
