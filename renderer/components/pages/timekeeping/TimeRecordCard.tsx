@@ -11,12 +11,12 @@ import {Database} from 'timetracking-common';
 import classNames from 'classnames';
 import Link from 'next/link';
 
-import H2 from '../components/ui/text/H2';
-import P from '../components/ui/text/P';
-import Card from '../components/ui/Card';
-import {deleteTimeRecord} from "../lib/database";
-import {Icon, trash} from './ui/Icon';
-import utcToLocal from '../lib/convertDateTimeUTCToLocal';
+import H2 from '../../ui/text/H2';
+import P from '../../ui/text/P';
+import Card from '../../ui/Card';
+import {deleteTimeRecord} from "../../../lib/database";
+import {Icon, trash} from '../../ui/Icon';
+import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
 
 interface ITimeRecordRowProps {
     className?: string;

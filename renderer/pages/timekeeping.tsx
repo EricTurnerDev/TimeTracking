@@ -13,9 +13,9 @@ import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
 
 import {getDetailedTimeRecords} from '../lib/database';
-import TimeRecordCard from '../components/TimeRecordCard';
+import TimeRecordCard from '../components/pages/timekeeping/TimeRecordCard';
 import Button from '../components/ui/Button';
-import AddTimeRecordForm from '../components/AddTimeRecordForm';
+import AddTimeRecordForm from '../components/pages/timekeeping/AddTimeRecordForm';
 import {Icon, plus} from '../components/ui/Icon';
 
 export default function Timekeeping() {
