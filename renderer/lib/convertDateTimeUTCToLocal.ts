@@ -10,7 +10,7 @@
 import {DateTime} from 'luxon';
 
 const convert = (utc: string): string => {
-    return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);
+    return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_SHORT);
 };
 
 export default convert;

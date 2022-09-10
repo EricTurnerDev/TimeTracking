@@ -12,12 +12,12 @@ import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
-import {deleteClient, getProjects} from '../lib/database';
-import H3 from './ui/text/H3';
-import P from './ui/text/P';
-import pluralize from '../lib/pluralize';
-import Card from './ui/Card';
-import {Icon, trash} from './ui/Icon';
+import {deleteClient, getProjects} from '../../../lib/database';
+import H3 from '../../ui/text/H3';
+import P from '../../ui/text/P';
+import pluralize from '../../../lib/pluralize';
+import Card from '../../ui/Card';
+import {Icon, trash} from '../../ui/Icon';
 
 export interface IClientCardProps {
     client: Database.IClient,

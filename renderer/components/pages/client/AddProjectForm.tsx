@@ -13,48 +13,52 @@ import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import * as Yup from 'yup';
 
-import TextInput from './ui/form/TextInput';
-import Button from './ui/Button';
-import {createClient, getClients} from '../lib/database';
+import HiddenInput from '../../ui/form/HiddenInput';
+import TextInput from '../../ui/form/TextInput';
+import Button from '../../ui/Button';
+import {createProject, getProjects} from '../../../lib/database';
 
-interface IAddTextFormProps {
+interface IAddProjectFormProps {
+    client: Database.IClient;
     className?: string;
-    onClientAdded: () => void;
+    onProjectAdded: () => void;
     onCancel: () => void;
 }
 
-const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) => {
+const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProjectFormProps) => {
 
     const [submitError, setSubmitError] = useState<string>('');
-    const [clientNames, setClientNames] = useState<string[]>([]);
+    const [projectNames, setProjectNames] = useState<string[]>([]);
 
     const styles = {
         form: 'flex flex-row',
         error: 'border-red-600 focus:ring-red-600 text-red-600',
     };
 
-    const initialFormState: Database.IClient = {
-        client_name: '',
+    const initialFormState: Database.IProject = {
+        client_id: client.id,
+        project_name: '',
     };
 
     const validationSchema = Yup.object({
-        client_name: Yup.string().test("Unique", "Client name needs to be unique", (clientName) => {
-            return !clientNames.includes(clientName);
+        client_id: Yup.number().required('Required'),
+        project_name: Yup.string().test("Unique", "Project name needs to be unique", (projectName) => {
+            return !projectNames.includes(projectName);
         }).required('Required'),
     });
 
-    // Get client names once so validation can ensure that the user doesn't try to submit a duplicate client.
+    // Get project names once so validation can ensure that the user doesn't try to submit a duplicate project.
     useEffect(() => {
-        getClients()
-            .then(clients => setClientNames(clients.map(c => c.client_name)))
+        getProjects(client.id)
+            .then(projects => setProjectNames(projects.map(p => p.project_name)))
             .catch(err => console.error(err));
-    }, [])
+    }, []);
 
     const submitForm = (values, {setSubmitting}) => {
         setSubmitError('');
-        createClient(values)
+        createProject(values)
             .then(() => {
-                onClientAdded();
+                onProjectAdded();
             })
             .catch(err => {
                 setSubmitError(err.message);
@@ -73,29 +77,29 @@ const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) 
             onSubmit={submitForm}
             validationSchema={validationSchema}>
             {props => (
-                <Form className={classNames('add-client-form flex flex-col', styles.form, className)}>
+                <Form className={classNames('add-project-form flex flex-col', styles.form, className)}>
+                    <HiddenInput name='client_id' />
                     <div className='flex flex-row mb-4'>
                         <TextInput
-                            name='client_name'
-                            label='Client Name'
+                            name='project_name'
+                            label='Project Name'
                             className='grow'
                             inputStyles='py-2 px-4 w-full'
                             required
-                            placeholder='Enter the name of a new client'/>
+                            placeholder='Enter the name of a new Project'/>
                     </div>
 
                     <div className='flex flex-row justify-end'>
                         <Button className='mr-1' disabled={!props.dirty || Object.keys(props.errors).length > 0 || props.isSubmitting} type='submit'>
-                            Add Client
+                            Add Project
                         </Button>
                         <Button variant='secondary' disabled={props.isSubmitting} onClick={cancelForm}>Cancel</Button>
                     </div>
 
                     {submitError && <div className={classNames('submit-error', styles.error)}>{submitError}</div>}
-                </Form>
-            )}
+                </Form>)}
         </Formik>
     )
 };
 
-export default AddClientForm;
+export default AddProjectForm;

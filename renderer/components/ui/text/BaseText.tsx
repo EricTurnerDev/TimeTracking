@@ -16,6 +16,7 @@ export interface IBaseTextProps {
     variant?: 'dark' | 'medium' | 'light';
     className?: string;
     children: ReactNode;
+    [x:string]: any;
 }
 
 const BaseText = ({as = 'p', size, variant, className, children, ...props}: IBaseTextProps) => {

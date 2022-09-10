@@ -13,10 +13,10 @@ import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
 
 import {getDetailedTimeRecords} from '../lib/database';
-import TimeRecordCard from '../components/TimeRecordCard';
 import Button from '../components/ui/Button';
-import AddTimeRecordForm from '../components/AddTimeRecordForm';
+import AddTimeRecordForm from '../components/pages/timekeeping/AddTimeRecordForm';
 import {Icon, plus} from '../components/ui/Icon';
+import TimekeepingDataTable from '../components/pages/timekeeping/TimekeepingDataTable';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
@@ -62,15 +62,7 @@ export default function Timekeeping() {
 
             {addingTimeRecord && <AddTimeRecordForm className='mb-4' onTimeRecordAdded={timeRecordAdded} onCancel={addingTimeRecordCanceled}/>}
 
-            <div>
-                {
-                    timeRecords && timeRecords.map(
-                        (timeRecord: Database.IDetailedTimeRecord) => {
-                            return <TimeRecordCard key={timeRecord.id} timeRecord={timeRecord} onTimeRecordDeleted={timeRecordDeleted} />
-                        }
-                    )
-                }
-            </div>
+            <TimekeepingDataTable timeRecords={timeRecords} />
         </div>
     )
 }

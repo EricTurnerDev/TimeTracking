@@ -11,11 +11,11 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import {Database} from 'timetracking-common';
 
-import {deleteProject} from '../lib/database';
-import H3 from './ui/text/H3';
-import P from './ui/text/P';
-import Card from './ui/Card';
-import {Icon, trash} from './ui/Icon';
+import {deleteProject} from '../../../lib/database';
+import H3 from '../../ui/text/H3';
+import P from '../../ui/text/P';
+import Card from '../../ui/Card';
+import {Icon, trash} from '../../ui/Icon';
 
 export interface IProjectCardProps {
     project: Database.IProject,

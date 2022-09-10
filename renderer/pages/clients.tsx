@@ -13,8 +13,8 @@ import React, {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
 import * as db from '../lib/database';
-import AddClientForm from '../components/AddClientForm';
-import ClientCard from '../components/ClientCard';
+import AddClientForm from '../components/pages/clients/AddClientForm';
+import ClientCard from '../components/pages/clients/ClientCard';
 import Button from '../components/ui/Button';
 import Grid from '../components/ui/Grid';
 import {Icon, plus} from '../components/ui/Icon';

@@ -12,5 +12,6 @@ export declare const CreateTimeRecord: string;
 export declare const GetTimeRecord: string;
 export declare const GetDetailedTimeRecord: string;
 export declare const DeleteTimeRecord: string;
+export declare const UpdateTimeRecord: string;
 export declare const GetTimeRecords: string;
 export declare const GetDetailedTimeRecords: string;
