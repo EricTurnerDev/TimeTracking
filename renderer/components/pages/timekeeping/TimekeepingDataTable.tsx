@@ -10,22 +10,24 @@
 import {darkTheme} from '../../../lib/dataTableThemes';
 
 import classNames from 'classnames';
+import {useLayoutEffect, useEffect, useRef, useState} from 'react';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
 import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
-import {Icon, gear} from '../../ui/Icon';
+import {Icon, gear, trash} from '../../ui/Icon';
 import P from '../../ui/text/P';
 import * as db from '../../../lib/database';
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
+    onDelete?: () => any;
     className?: string;
 }
 
 createTheme('timetrackingDark', darkTheme, 'dark');
 
-const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTableProps) => {
+const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDataTableProps) => {
 
     const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
@@ -36,7 +38,8 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
             name: 'Description',
             selector: row => row.description,
             grow: 2,
-            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)} autoFocus={true}>{row.description}</P>
+            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)}
+                            autoFocus={true}>{row.description}</P>
         },
         {
             name: 'Project',
@@ -71,7 +74,7 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
         {
             name: '',
             sortable: false,
-            cell: (row) => <MenuIcon row={row}/>,
+            cell: (row) => <RecordActions record={row} onDelete={onDelete}/>,
             ignoreRowClick: true,
             width: '3rem'
         }
@@ -91,25 +94,65 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
 export default TimekeepingDataTable;
 
 interface IMenuIconProps {
-    row: Database.IDetailedTimeRecord;
+    record: Database.IDetailedTimeRecord;
+    onDelete: () => any;
 }
 
-const MenuIcon = ({row}: IMenuIconProps) => {
-    const clicked = (e) => {
-        console.log(row.id);
+const RecordActions = ({record, onDelete}: IMenuIconProps) => {
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [popupLocation, setPopupLocation] = useState({x: 0, y: 0});
+    const [popupWidth, setPopupWidth] = useState(0);
+    const popupRef = useRef(null);
+
+    useLayoutEffect(() => {
+        setPopupWidth(popupRef.current.offsetWidth);
+    }, []);
+
+    const iconClicked = (e) => {
+        setPopupLocation({x: e.clientX, y: e.clientY});
+        setPopupVisible(visible => !visible);
     };
 
     return (
-        <span className='hover:cursor-pointer'>
-            <Icon onClick={clicked} icon={gear}/>
-        </span>
+        <div className='record-actions z-50'>
+            <Icon icon={gear} className='hover:cursor-pointer' onMouseDown={iconClicked}/>
+
+            <div
+                className={classNames(
+                    'actions-popup',
+                    'autoFocus focus:ring-2 ring-blue-800 fixed bg-white text-black rounded',
+                    popupVisible ? 'visible' : 'invisible'
+                )}
+                ref={popupRef}
+                style={{top: popupLocation.y + 5, left: popupLocation.x - popupWidth - 5}}>
+                <div>
+                    <DeleteRecordAction record={record} onDelete={onDelete} onClose={() => setPopupVisible(false)}/>
+                </div>
+            </div>
+
+        </div>
     )
 };
 
-// TODO: When gear icon is clicked, show a context menu with the ability to delete the record.
+const DeleteRecordAction = ({record, onDelete, onClose}) => {
+    const deleteRecord = () => {
+        db.deleteTimeRecord(record.id)
+            .then(() => {
+                if (onDelete) {
+                    onDelete();
+                }
+            })
+            .catch(err => console.error(err))
+            .finally(() => {
+                if (onClose) {
+                    onClose();
+                }
+            });
+    };
 
-const Menu = () => {
     return (
-        <div></div>
+        <div className='delete-record-action block p-4 hover:cursor-pointer' onClick={deleteRecord}>
+            <Icon icon={trash} className='mr-2'/> Delete
+        </div>
     )
-}
+};
