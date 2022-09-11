@@ -21,7 +21,7 @@ const commonStyles = {
 
 const Card = ({ className, children }: ICardProps) => {
     return (
-        <div className={classNames('card', 'flex flex-col overflow-hidden rounded shadow-md', commonStyles.base, className)}>
+        <div className={classNames('card', 'flex flex-col overflow-hidden rounded shadow-md border-gray-700 border', commonStyles.base, className)}>
             {children}
         </div>
     )

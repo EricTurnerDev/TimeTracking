@@ -8,16 +8,15 @@
  */
 
 import classNames from 'classnames';
-import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
 import {deleteClient, getProjects} from '../../../lib/database';
 import H3 from '../../ui/text/H3';
-import P from '../../ui/text/P';
-import pluralize from '../../../lib/pluralize';
 import Card from '../../ui/Card';
-import {Icon, trash} from '../../ui/Icon';
+import {Icon, trash, plus} from '../../ui/Icon';
+import ProjectsDataTable from "./ProjectsDataTable";
+import Button from '../../ui/Button';
 
 export interface IClientCardProps {
     client: Database.IClient,
@@ -27,13 +26,13 @@ export interface IClientCardProps {
 
 export default function ClientCard({client, onClientDeleted, className}: IClientCardProps) {
 
-    const [numProjects, setNumProjects] = useState<number>(-1);
+    const [projects, setProjects] = useState<Database.IProject[]>([]);
 
     useEffect(() => {
         if (client) {
             getProjects(client.id)
                 .then(projects => {
-                    setNumProjects(projects.length);
+                    setProjects(projects);
                 })
                 .catch(err => console.error(err));
         }
@@ -52,17 +51,14 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
     return (
         <Card className={classNames('client-card', className)}>
             <Card.Header>
-                 <Link href={{pathname: `/client`, query: {id: client.id}}}>
-                     <a className='block w-full'><H3 className='font-medium'>{client.client_name}</H3></a>
-                </Link>
+                <H3 className='font-medium'>{client.client_name}</H3>
+                <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
             </Card.Header>
             <Card.Body>
-                {numProjects > -1 && <P variant='dark'>{numProjects} {pluralize('project', numProjects)}</P>}
+                <ProjectsDataTable projects={projects} />
             </Card.Body>
-            <Card.Footer>
-                <P variant='dark'>
-                    <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
-                </P>
+            <Card.Footer className='flex flex-row justify-end bg-gray-900'>
+                <Button variant='clear'><Icon icon={plus} /> New Project</Button>
             </Card.Footer>
         </Card>
     )

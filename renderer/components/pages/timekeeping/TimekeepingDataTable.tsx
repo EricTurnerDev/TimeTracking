@@ -7,6 +7,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import {darkTheme} from '../../../lib/dataTableThemes';
+
 import classNames from 'classnames';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
@@ -21,23 +23,7 @@ interface ITimekeepingDataTableProps {
     className?: string;
 }
 
-const theme = {
-    text: {
-        primary: 'rgb(243,244,246, 0.87)', // text-gray-100
-        secondary: 'rgb(243,244,246, 0.54)',
-        disabled: 'rgb(243,244,246,0.38)',
-    },
-    background: {
-        default: 'rgb(17, 24, 39)', // bg-gray-900
-    },
-    striped: {
-        default: 'rgb(31, 41, 55)', // bg-gray-800
-        text: 'rgb(243,244,246, 0.87)', // text-gray-100
-    }
-};
-
-// Extend the default dark theme
-createTheme('timetrackingDark', theme, 'dark');
+createTheme('timetrackingDark', darkTheme, 'dark');
 
 const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTableProps) => {
 
