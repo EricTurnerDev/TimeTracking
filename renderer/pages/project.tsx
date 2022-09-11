@@ -78,7 +78,7 @@ export default function Project() {
             </Head>
             {project && <H1 editable={true} onSave={updateProjectName}>{project.project_name}</H1>}
 
-            {timeRecords && timeRecords.map((tr: Database.ITimeRecord) => (<p key={tr.id}>{tr.work_description}</p>))}
+            {timeRecords && timeRecords.map((tr: Database.ITimeRecord) => (<p key={tr.id}>{tr.description}</p>))}
         </div>
     )
 }
