@@ -104,9 +104,19 @@ const RecordActions = ({record, onDelete}: IMenuIconProps) => {
     const [popupWidth, setPopupWidth] = useState(0);
     const popupRef = useRef(null);
 
+    const hide = () => {
+        setPopupVisible(false);
+    };
+
     useLayoutEffect(() => {
         setPopupWidth(popupRef.current.offsetWidth);
     }, []);
+
+    useEffect(() => {
+        if (popupVisible) {
+            popupRef.current.focus();
+        }
+    }, [popupVisible]);
 
     const iconClicked = (e) => {
         setPopupLocation({x: e.clientX, y: e.clientY});
@@ -114,19 +124,19 @@ const RecordActions = ({record, onDelete}: IMenuIconProps) => {
     };
 
     return (
-        <div className='record-actions z-50'>
+        <div className='record-actions z-50' onBlur={hide} tabIndex={-1}>
             <Icon icon={gear} className='hover:cursor-pointer' onMouseDown={iconClicked}/>
 
             <div
                 className={classNames(
                     'actions-popup',
-                    'autoFocus focus:ring-2 ring-blue-800 fixed bg-white text-black rounded',
+                    'fixed bg-gray-600 text-gray-50 rounded',
                     popupVisible ? 'visible' : 'invisible'
                 )}
                 ref={popupRef}
-                style={{top: popupLocation.y + 5, left: popupLocation.x - popupWidth - 5}}>
+                style={{top: popupLocation.y + 10, left: popupLocation.x - popupWidth - 10}}>
                 <div>
-                    <DeleteRecordAction record={record} onDelete={onDelete} onClose={() => setPopupVisible(false)}/>
+                    <DeleteRecordAction record={record} onDelete={onDelete} onClose={hide}/>
                 </div>
             </div>
 
@@ -151,7 +161,7 @@ const DeleteRecordAction = ({record, onDelete, onClose}) => {
     };
 
     return (
-        <div className='delete-record-action block p-4 hover:cursor-pointer' onClick={deleteRecord}>
+        <div className='delete-record-action block p-4 hover:cursor-pointer hover:bg-black' onClick={deleteRecord}>
             <Icon icon={trash} className='mr-2'/> Delete
         </div>
     )
