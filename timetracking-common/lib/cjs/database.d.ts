@@ -13,8 +13,7 @@ export interface ITimeRecord {
     start_ts?: string;
     end_ts?: string;
     adjustment?: number;
-    invoice_activity?: string;
-    work_description?: string;
+    description?: string;
     notes?: string;
     client_id?: number;
     project_id?: number;

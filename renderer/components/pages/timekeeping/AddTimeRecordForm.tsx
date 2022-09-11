@@ -35,25 +35,25 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     };
 
     const initialFormState: Database.ITimeRecord = {
-        invoice_activity: '',
-        work_description: '',
+        description: '',
         client_id: 0,
         project_id: 0,
         start_ts: '',
         end_ts: '',
         adjustment: 0.0,
         billable: false,
+        notes: '',
     };
 
     const validationSchema = Yup.object({
-        invoice_activity: Yup.string().required('Required'),
-        work_description: Yup.string().required('Required'),
+        description: Yup.string().required('Required'),
         client_id: Yup.number().positive('Required').required('Required'),
         project_id: Yup.number(),
         start_ts: Yup.date().required('Required'),
         end_ts: Yup.date().min(Yup.ref('start_ts'), 'End must be after start').required('Required'),
         adjustment: Yup.number(),
-        billable: Yup.boolean()
+        billable: Yup.boolean(),
+        notes: Yup.string(),
     });
 
     const [submitError, setSubmitError] = useState<string>('');
@@ -131,22 +131,12 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                     <FormObserver onFormChanged={formChanged} />
                     <div className='flex flex-row mb-4'>
                         <TextInput
-                            name='work_description'
-                            label='Work Description'
+                            name='description'
+                            label='Description'
                             className='grow'
                             inputStyles='py-2 px-4 w-full'
                             required
-                            placeholder='Description of work being performed (e.g. Held meeting to understand business goals)' />
-                    </div>
-
-                    <div className='flex flex-row mb-4'>
-                        <TextInput
-                            name='invoice_activity'
-                            label='Invoice Activity'
-                            className='grow'
-                            inputStyles='py-2 px-4 w-full'
-                            required
-                            placeholder='Type of work to show on the invoice (e.g. Requirements Analysis)' />
+                            placeholder='Description of work being performed (e.g. Requirements meeting)' />
                     </div>
 
                     <div className='flex flex-row mb-4 justify-items-stretch'>

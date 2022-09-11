@@ -41,16 +41,16 @@ createTheme('timetrackingDark', theme, 'dark');
 
 const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTableProps) => {
 
-    const workDescriptionChanged = async (row: Database.IDetailedTimeRecord, workDescription) => {
-        await db.updateTimeRecord({id: row.id, work_description: workDescription});
+    const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
+        await db.updateTimeRecord({id: row.id, description: description});
     };
 
     const columns: TableColumn<Database.IDetailedTimeRecord>[] = [
         {
             name: 'Description',
-            selector: row => row.work_description,
+            selector: row => row.description,
             grow: 2,
-            cell: row => <P editable={true} onSave={async (text) => workDescriptionChanged(row, text)} autoFocus={true}>{row.work_description}</P>
+            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)} autoFocus={true}>{row.description}</P>
         },
         {
             name: 'Project',
