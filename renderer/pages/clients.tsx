@@ -16,7 +16,6 @@ import * as db from '../lib/database';
 import AddClientForm from '../components/pages/clients/AddClientForm';
 import ClientCard from '../components/pages/clients/ClientCard';
 import Button from '../components/ui/Button';
-import Grid from '../components/ui/Grid';
 import {Icon, plus} from '../components/ui/Icon';
 
 export default function Clients(props) {
@@ -63,13 +62,11 @@ export default function Clients(props) {
 
             {addingClient && <AddClientForm className='mb-4' onClientAdded={clientAdded} onCancel={addingClientCanceled}/>}
 
-            <Grid>
                 {clients && clients.map((client: Database.IClient) => {
                     return (
-                        <ClientCard key={client.id} client={client} onClientDeleted={clientDeleted} />
+                        <ClientCard key={client.id} className='mb-8' client={client} onClientDeleted={clientDeleted} />
                     )
                 })}
-            </Grid>
         </div>
     )
 }

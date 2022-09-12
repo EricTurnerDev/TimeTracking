@@ -7,19 +7,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export interface IClient {
+export interface IDatabaseEntity {
     id?: number;
+}
+
+export interface IClient extends IDatabaseEntity {
     client_name?: string;
 }
 
-export interface IProject {
-    id?: number;
+export interface IProject extends IDatabaseEntity {
     project_name?: string,
     client_id?: number;
 }
 
-export interface ITimeRecord {
-    id?: number;
+export interface ITimeRecord extends IDatabaseEntity {
     billable?: boolean|number;
     start_ts?: string;
     end_ts?: string;

@@ -7,39 +7,26 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import {darkTheme} from '../../../lib/dataTableThemes';
+
 import classNames from 'classnames';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
 import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
-import {Icon, gear} from '../../ui/Icon';
 import P from '../../ui/text/P';
 import * as db from '../../../lib/database';
+import {RowActions} from '../DataTableRowActions';
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
+    onDelete?: () => any;
     className?: string;
 }
 
-const theme = {
-    text: {
-        primary: 'rgb(243,244,246, 0.87)', // text-gray-100
-        secondary: 'rgb(243,244,246, 0.54)',
-        disabled: 'rgb(243,244,246,0.38)',
-    },
-    background: {
-        default: 'rgb(17, 24, 39)', // bg-gray-900
-    },
-    striped: {
-        default: 'rgb(31, 41, 55)', // bg-gray-800
-        text: 'rgb(243,244,246, 0.87)', // text-gray-100
-    }
-};
+createTheme('timetrackingDark', darkTheme, 'dark');
 
-// Extend the default dark theme
-createTheme('timetrackingDark', theme, 'dark');
-
-const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTableProps) => {
+const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDataTableProps) => {
 
     const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
@@ -50,7 +37,8 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
             name: 'Description',
             selector: row => row.description,
             grow: 2,
-            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)} autoFocus={true}>{row.description}</P>
+            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)}
+                            autoFocus={true}>{row.description}</P>
         },
         {
             name: 'Project',
@@ -85,7 +73,7 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
         {
             name: '',
             sortable: false,
-            cell: (row) => <MenuIcon row={row}/>,
+            cell: (row) => <RowActions row={row} deleteRow={(rowId) => db.deleteTimeRecord(rowId)} onDelete={onDelete}/>,
             ignoreRowClick: true,
             width: '3rem'
         }
@@ -104,26 +92,4 @@ const TimekeepingDataTable = ({timeRecords, className}: ITimekeepingDataTablePro
 
 export default TimekeepingDataTable;
 
-interface IMenuIconProps {
-    row: Database.IDetailedTimeRecord;
-}
 
-const MenuIcon = ({row}: IMenuIconProps) => {
-    const clicked = (e) => {
-        console.log(row.id);
-    };
-
-    return (
-        <span className='hover:cursor-pointer'>
-            <Icon onClick={clicked} icon={gear}/>
-        </span>
-    )
-};
-
-// TODO: When gear icon is clicked, show a context menu with the ability to delete the record.
-
-const Menu = () => {
-    return (
-        <div></div>
-    )
-}

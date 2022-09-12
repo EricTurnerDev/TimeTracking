@@ -63,7 +63,7 @@ export function listen() {
     });
 
     ipcMain.handle(IpcChannels.GetProjects, (event, clientId: number) => {
-        return knex.select().from('projects').where('projects.client_id', clientId);
+        return knex.select().from('projects').where('client_id', clientId).orderByRaw('project_name COLLATE NOCASE');
     });
 
     // Time records
