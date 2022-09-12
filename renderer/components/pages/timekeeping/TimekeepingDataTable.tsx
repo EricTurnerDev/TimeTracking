@@ -41,6 +41,11 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                             autoFocus={true}>{row.description}</P>
         },
         {
+            name: 'Client',
+            selector: row => row.client_name,
+            grow: 1,
+        },
+        {
             name: 'Project',
             selector: row => row.project_name,
             grow: 1,
