@@ -11,12 +11,14 @@ import classNames from 'classnames';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
+import AddProjectForm from './AddProjectForm';
 import Button from '../../ui/Button';
 import Card from '../../ui/Card';
 import {deleteClient, getProjects} from '../../../lib/database';
 import H3 from '../../ui/text/H3';
 import {Icon, trash, plus} from '../../ui/Icon';
 import ProjectsDataTable from './ProjectsDataTable';
+import * as db from "../../../lib/database";
 
 export interface IClientCardProps {
     client: Database.IClient,
@@ -27,20 +29,17 @@ export interface IClientCardProps {
 export default function ClientCard({client, onClientDeleted, className}: IClientCardProps) {
 
     const [projects, setProjects] = useState<Database.IProject[]>([]);
+    const [addingProject, setAddingProject] = useState<boolean>(false);
 
-    const showProjects = async () => {
-        const projs: Database.IProject[] = await getProjects(client.id);
-        setProjects(projs);
+    const updateProjects = async () => {
+        if (client) {
+            const projs: Database.IProject[] = await getProjects(client.id);
+            setProjects(projs);
+        }
     }
 
     useEffect(() => {
-        if (client) {
-            getProjects(client.id)
-                .then(projects => {
-                    setProjects(projects);
-                })
-                .catch(err => console.error(err));
-        }
+        updateProjects().catch(err => console.error(err));
     }, [client])
 
     const trashIconClicked = () => {
@@ -53,21 +52,54 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
         });
     }
 
+    const newProjectButtonClicked = () => {
+        setAddingProject(true);
+    };
+
+    const cancelButtonClicked = () => {
+        setAddingProject(false);
+    };
+
+    const projectAdded = () => {
+        updateProjects()
+            .catch(err => console.error(err))
+            .finally(() => setAddingProject(false));
+    };
+
     const projectDeleted = () => {
-        showProjects().catch(err => console.error(err));
+        updateProjects().catch(err => console.error(err));
     }
+
+    const clientNameChanged = async (clientName) => {
+        await db.updateClient(client.id, {client_name: clientName});
+    };
 
     return (
         <Card className={classNames('client-card', className)}>
             <Card.Header>
-                <H3 className='font-medium'>{client.client_name}</H3>
+                <H3
+                    className='font-medium'
+                    editable={true}
+                    autoFocus={true}
+                    onSave={clientNameChanged}>
+                    {client.client_name}
+                </H3>
                 <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
             </Card.Header>
             <Card.Body>
-                <ProjectsDataTable projects={projects} onDelete={projectDeleted} />
+                <ProjectsDataTable projects={projects} onDelete={projectDeleted}/>
             </Card.Body>
-            <Card.Footer className='flex flex-row justify-end bg-gray-900'>
-                <Button variant='clear'><Icon icon={plus} /> New Project</Button>
+            <Card.Footer className='flex flex-col bg-gray-900'>
+                <div className='flex flex-row justify-end'>
+                    <Button variant='clear' onClick={newProjectButtonClicked}>
+                        <Icon icon={plus}/> New Project
+                    </Button>
+                </div>
+                {addingProject &&
+                    <div className='p-4'>
+                        <AddProjectForm client={client} onProjectAdded={projectAdded} onCancel={cancelButtonClicked}/>
+                    </div>
+                }
             </Card.Footer>
         </Card>
     )
