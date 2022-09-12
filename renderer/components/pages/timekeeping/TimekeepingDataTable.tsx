@@ -10,14 +10,13 @@
 import {darkTheme} from '../../../lib/dataTableThemes';
 
 import classNames from 'classnames';
-import {useLayoutEffect, useEffect, useRef, useState} from 'react';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
 import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
-import {Icon, gear, trash} from '../../ui/Icon';
 import P from '../../ui/text/P';
 import * as db from '../../../lib/database';
+import {RowActions} from '../DataTableRowActions';
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
@@ -74,7 +73,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
         {
             name: '',
             sortable: false,
-            cell: (row) => <RecordActions record={row} onDelete={onDelete}/>,
+            cell: (row) => <RowActions row={row} deleteRow={(rowId) => db.deleteTimeRecord(rowId)} onDelete={onDelete}/>,
             ignoreRowClick: true,
             width: '3rem'
         }
@@ -93,76 +92,4 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
 export default TimekeepingDataTable;
 
-interface IMenuIconProps {
-    record: Database.IDetailedTimeRecord;
-    onDelete: () => any;
-}
 
-const RecordActions = ({record, onDelete}: IMenuIconProps) => {
-    const [popupVisible, setPopupVisible] = useState(false);
-    const [popupLocation, setPopupLocation] = useState({x: 0, y: 0});
-    const [popupWidth, setPopupWidth] = useState(0);
-    const popupRef = useRef(null);
-
-    const hide = () => {
-        setPopupVisible(false);
-    };
-
-    useLayoutEffect(() => {
-        setPopupWidth(popupRef.current.offsetWidth);
-    }, []);
-
-    useEffect(() => {
-        if (popupVisible) {
-            popupRef.current.focus();
-        }
-    }, [popupVisible]);
-
-    const iconClicked = (e) => {
-        setPopupLocation({x: e.clientX, y: e.clientY});
-        setPopupVisible(visible => !visible);
-    };
-
-    return (
-        <div className='record-actions z-50' onBlur={hide} tabIndex={-1}>
-            <Icon icon={gear} className='hover:cursor-pointer' onMouseDown={iconClicked}/>
-
-            <div
-                className={classNames(
-                    'actions-popup',
-                    'fixed bg-gray-600 text-gray-50 rounded',
-                    popupVisible ? 'visible' : 'invisible'
-                )}
-                ref={popupRef}
-                style={{top: popupLocation.y + 10, left: popupLocation.x - popupWidth - 10}}>
-                <div>
-                    <DeleteRecordAction record={record} onDelete={onDelete} onClose={hide}/>
-                </div>
-            </div>
-
-        </div>
-    )
-};
-
-const DeleteRecordAction = ({record, onDelete, onClose}) => {
-    const deleteRecord = () => {
-        db.deleteTimeRecord(record.id)
-            .then(() => {
-                if (onDelete) {
-                    onDelete();
-                }
-            })
-            .catch(err => console.error(err))
-            .finally(() => {
-                if (onClose) {
-                    onClose();
-                }
-            });
-    };
-
-    return (
-        <div className='delete-record-action block p-4 hover:cursor-pointer hover:bg-black' onClick={deleteRecord}>
-            <Icon icon={trash} className='mr-2'/> Delete
-        </div>
-    )
-};

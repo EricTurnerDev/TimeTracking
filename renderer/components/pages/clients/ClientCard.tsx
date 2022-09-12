@@ -11,12 +11,12 @@ import classNames from 'classnames';
 import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
+import Button from '../../ui/Button';
+import Card from '../../ui/Card';
 import {deleteClient, getProjects} from '../../../lib/database';
 import H3 from '../../ui/text/H3';
-import Card from '../../ui/Card';
 import {Icon, trash, plus} from '../../ui/Icon';
-import ProjectsDataTable from "./ProjectsDataTable";
-import Button from '../../ui/Button';
+import ProjectsDataTable from './ProjectsDataTable';
 
 export interface IClientCardProps {
     client: Database.IClient,
@@ -27,6 +27,11 @@ export interface IClientCardProps {
 export default function ClientCard({client, onClientDeleted, className}: IClientCardProps) {
 
     const [projects, setProjects] = useState<Database.IProject[]>([]);
+
+    const showProjects = async () => {
+        const projs: Database.IProject[] = await getProjects(client.id);
+        setProjects(projs);
+    }
 
     useEffect(() => {
         if (client) {
@@ -48,6 +53,10 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
         });
     }
 
+    const projectDeleted = () => {
+        showProjects().catch(err => console.error(err));
+    }
+
     return (
         <Card className={classNames('client-card', className)}>
             <Card.Header>
@@ -55,7 +64,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
                 <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
             </Card.Header>
             <Card.Body>
-                <ProjectsDataTable projects={projects} />
+                <ProjectsDataTable projects={projects} onDelete={projectDeleted} />
             </Card.Body>
             <Card.Footer className='flex flex-row justify-end bg-gray-900'>
                 <Button variant='clear'><Icon icon={plus} /> New Project</Button>

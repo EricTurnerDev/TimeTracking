@@ -11,19 +11,20 @@ import classNames from 'classnames';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
-import {Icon, gear} from '../../ui/Icon';
 import P from '../../ui/text/P';
 import * as db from '../../../lib/database';
 import {darkTheme} from '../../../lib/dataTableThemes';
+import {RowActions} from '../DataTableRowActions';
 
 interface IProjectsDataTableProps {
     projects: Database.IProject[];
+    onDelete: () => any;
     className?: string;
 }
 
 createTheme('timetrackingDark', darkTheme, 'dark');
 
-const ProjectsDataTable = ({projects, className}: IProjectsDataTableProps) => {
+const ProjectsDataTable = ({projects, onDelete, className}: IProjectsDataTableProps) => {
 
     const projectNameChanged = async (row: Database.IProject, projectName) => {
         await db.updateProject(row.id, {id: row.id, project_name: projectName});
@@ -39,7 +40,7 @@ const ProjectsDataTable = ({projects, className}: IProjectsDataTableProps) => {
         {
             name: '',
             sortable: false,
-            cell: (row) => <MenuIcon row={row}/>,
+            cell: (row) => <RowActions row={row} deleteRow={(rowId) => db.deleteProject(rowId)} onDelete={onDelete}/>,
             ignoreRowClick: true,
             width: '3rem'
         }
@@ -58,27 +59,3 @@ const ProjectsDataTable = ({projects, className}: IProjectsDataTableProps) => {
 };
 
 export default ProjectsDataTable;
-
-interface IMenuIconProps {
-    row: Database.IDetailedTimeRecord;
-}
-
-const MenuIcon = ({row}: IMenuIconProps) => {
-    const clicked = (e) => {
-        console.log(row.id);
-    };
-
-    return (
-        <span className='hover:cursor-pointer'>
-            <Icon onClick={clicked} icon={gear}/>
-        </span>
-    )
-};
-
-// TODO: When gear icon is clicked, show a context menu with the ability to delete the project.
-
-const Menu = () => {
-    return (
-        <div></div>
-    )
-}
