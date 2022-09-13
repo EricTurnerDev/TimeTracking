@@ -7,13 +7,19 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseInput, {IBaseInput} from './BaseInput';
+import {useField} from 'formik';
 
-interface IHiddenInput extends IBaseInput {}
+import BaseInput, {IBaseInputProps} from './BaseInput';
 
-const HiddenInput = ({...props}: IHiddenInput) => {
+interface IHiddenInputProps extends IBaseInputProps {
+    name: string;
+}
+
+const HiddenInput = ({...props}: IHiddenInputProps) => {
+    const [field, meta] = useField(props);
+
     return (
-        <BaseInput type='hidden' className='hidden-input' {...props} />
+        <BaseInput type='hidden' className='hidden-input' touched={meta.touched} error={meta.error} {...field} {...props} />
     )
 };
 

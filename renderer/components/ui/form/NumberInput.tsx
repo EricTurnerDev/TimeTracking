@@ -7,16 +7,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseInput, {IBaseInput} from './BaseInput';
+import BaseInput, {IBaseInputProps} from './BaseInput';
 import classNames from 'classnames';
+import {useField} from "formik";
 
-interface INumberInput extends IBaseInput {
+interface INumberInputProps extends IBaseInputProps {
+    name: string;
     step?: string;
 }
 
-const NumberInput = ({className, ...props}: INumberInput) => {
+const NumberInput = ({className, ...props}: INumberInputProps) => {
+    const [field, meta] = useField(props);
+
     return (
-        <BaseInput type='number' className={classNames('number-input', className)} {...props} />
+        <BaseInput type='number' className={classNames('number-input', className)} touched={meta.touched} error={meta.error} {...field} {...props} />
     )
 };
 

@@ -7,14 +7,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseInput, {IBaseInput} from './BaseInput';
 import classNames from 'classnames';
+import {useField} from 'formik';
 
-interface IDateTimeInputProps extends IBaseInput {}
+import BaseInput, {IBaseInputProps} from './BaseInput';
+
+interface IDateTimeInputProps extends IBaseInputProps {
+    name: string;
+}
 
 const DateTimeInput = ({className, ...props}: IDateTimeInputProps) => {
+    const [field, meta] = useField(props);
+
     return (
-        <BaseInput type='datetime-local' className={classNames('datetime-input', className)} {...props} />
+        <BaseInput type='datetime-local' className={classNames('datetime-input', className)} touched={meta.touched} error={meta.error} {...field} {...props} />
     )
 };
 

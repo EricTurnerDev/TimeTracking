@@ -8,30 +8,27 @@
  */
 
 import classNames from 'classnames';
-import {useId} from 'react';
+import {ReactNode,useId} from 'react';
+import {useField} from 'formik';
 
-import InputElement from '../../../lib/types/InputElement';
 import Label from './Label';
 import P from '../text/P';
 
-export interface IBaseInputProps {
+export interface IBaseSelectProps {
     id?: string;
-    type?: InputElement;
     label?: string;
     required?: boolean;
     disabled?: boolean;
-    autoFocus?: boolean;
     className?: string;
-    inputStyles?: string; // Additional styles applied directly to the <input> element
-    onKeyDown?: (e) => any;
+    children?: ReactNode;
     touched?: boolean;
     error?: string;
 }
 
-const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, touched=false, error='', ...props}: IBaseInputProps) => {
+const BaseSelect = ({id, label, required, disabled, className, children, touched=false, error='', ...props}: IBaseSelectProps) => {
 
     const styles = {
-        base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent rounded',
+        base: 'text-gray-700 w-full',
         state: {
             normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
             error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -44,25 +41,23 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
     const inputId = useId();
 
     return (
-        <div className={classNames('base-input', className)} id={id}>
+        <div className={classNames('base-select', className)} id={id}>
             {label && <Label id={inputId}>{label}{required && '*'}</Label>}
 
-            <input
+            <select
                 className={classNames(
                     styles.base,
-                    inputStyles,
                     touched && error ? styles.state.error : styles.state.normal,
-                    disabled && styles.state.disabled,
+                    disabled && styles.state.disabled
                 )}
-                type={type}
                 id={inputId}
-                {...props}
-            />
+                {...props}>
+                {children}
+            </select>
 
             {touched && error ? (<P className={classNames('error', styles.errorText)}>{error}</P>) : null}
         </div>
     )
 };
 
-export default BaseInput;
-
+export default BaseSelect;
