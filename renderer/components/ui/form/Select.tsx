@@ -24,7 +24,7 @@ interface ISelectInputProps {
     children?: ReactNode;
 }
 
-const SelectInput = ({id, label, required, disabled, className, children, ...props}: ISelectInputProps) => {
+const Select = ({id, label, required, disabled, className, children, ...props}: ISelectInputProps) => {
 
     const styles = {
         base: 'text-gray-700 w-full',
@@ -61,4 +61,4 @@ const SelectInput = ({id, label, required, disabled, className, children, ...pro
     )
 };
 
-export default SelectInput;
+export default Select;

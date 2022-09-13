@@ -7,6 +7,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-type SelectOption = {value: string, text: string};
+type InputElement = 'checkbox'|'datetime-local'|'hidden'|'number'|'text';
 
-export default SelectOption;
+export default InputElement;

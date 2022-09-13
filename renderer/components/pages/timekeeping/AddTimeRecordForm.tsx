@@ -19,7 +19,7 @@ import {createTimeRecord, getClients, getProjects} from '../../../lib/database';
 import CheckboxInput from '../../ui/form/CheckboxInput';
 import DateTimeInput from '../../ui/form/DateTimeInput';
 import NumberInput from '../../ui/form/NumberInput';
-import SelectInput from '../../ui/form/SelectInput';
+import Select from '../../ui/form/Select';
 import TextInput from '../../ui/form/TextInput';
 
 interface IAddTimeRecordFormProps {
@@ -140,22 +140,22 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                     </div>
 
                     <div className='flex flex-row mb-4 justify-items-stretch'>
-                        <SelectInput
+                        <Select
                             name='client_id'
                             label='Client'
                             className='w-1 grow mr-4'
                             required>
                             {clients && clients.map((client: Database.IClient) => (
                                 <option key={client.id} value={client.id}>{client.client_name}</option>))}
-                        </SelectInput>
+                        </Select>
 
-                        <SelectInput
+                        <Select
                             name='project_id'
                             className='w-1 grow'
                             label='Project'>
                             {projects && projects.map((project: Database.IProject) => (
                                 <option key={project.id} value={project.id}>{project.project_name}</option>))}
-                        </SelectInput>
+                        </Select>
                     </div>
 
                     <div className='flex flex-row mb-4'>

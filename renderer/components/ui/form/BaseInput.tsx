@@ -11,12 +11,13 @@ import classNames from 'classnames';
 import {useField} from 'formik';
 import {useId} from 'react';
 
+import InputElement from '../../../lib/types/InputElement';
 import Label from './Label';
 import P from '../text/P';
 
 export interface IBaseInput {
     id?: string;
-    type?: 'checkbox'|'datetime-local'|'hidden'|'number'|'text';
+    type?: InputElement;
     name: string;
     label?: string;
     required?: boolean;

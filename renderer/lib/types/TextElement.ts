@@ -7,6 +7,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-type Text = 'p' | 'span' | 'cite' | 'abbr' | 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type TextElement = 'p' | 'span' | 'cite' | 'abbr' | 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export default Text;
+export default TextElement;
