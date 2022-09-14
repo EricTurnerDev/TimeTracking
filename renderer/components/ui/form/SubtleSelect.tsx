@@ -9,12 +9,12 @@
 
 import {useState} from 'react';
 
+import BaseSelect from './BaseSelect';
 import NonEmptyArray from "../../../lib/types/NonEmptyArray";
-import Select, {ISelectProps} from './Select';
 import SelectOption from "../../../lib/types/SelectOption";
 import TextElement from "../../../lib/types/TextElement";
 
-interface ISubtleSelectProps extends ISelectProps {
+interface ISubtleSelectProps {
     as?: TextElement;
     options: NonEmptyArray<SelectOption>;
     value: string;
@@ -22,7 +22,7 @@ interface ISubtleSelectProps extends ISelectProps {
     selectionChanged: (Option) => Promise<void>;
 }
 
-const SubtleSelect = ({name, as = 'p', options, value, selectionChanged, className}: ISubtleSelectProps) => {
+const SubtleSelect = ({as = 'p', options, value, selectionChanged, className}: ISubtleSelectProps) => {
     const Tag = as;
 
     const initialOption: SelectOption = options.find(option => option.value === value) || options[0];
@@ -54,13 +54,13 @@ const SubtleSelect = ({name, as = 'p', options, value, selectionChanged, classNa
     return (
         <div style={{cursor: 'pointer'}} className={className}>
             {!editing && <Tag onClick={textClicked}>{selectedText}</Tag>}
-            {editing && <Select name={name}
+            {editing && <BaseSelect
                                 value={selectedValue}
                                 onBlur={onBlur}
                                 onChange={optionSelected}
                                 autoFocus>
                 {options.map(option => (<option key={option.value} value={option.value}>{option.text}</option>))}
-            </Select>}
+            </BaseSelect>}
         </div>
     )
 };

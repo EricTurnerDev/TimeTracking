@@ -10,6 +10,7 @@
 import {darkTheme} from '../../../lib/dataTableThemes';
 
 import classNames from 'classnames';
+import {useEffect, useState} from 'react';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
@@ -17,6 +18,9 @@ import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
 import * as db from '../../../lib/database';
 import {RowActions} from '../DataTableRowActions';
 import SubtleTextInput from "../../ui/form/SubtleTextInput";
+import SubtleSelect from "../../ui/form/SubtleSelect";
+import SelectOption from '../../../lib/types/SelectOption';
+import NonEmptyArray from '../../../lib/types/NonEmptyArray';
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
@@ -28,8 +32,35 @@ createTheme('timetrackingDark', darkTheme, 'dark');
 
 const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDataTableProps) => {
 
+    const [clients, setClients] = useState<Database.IClient[]>([]);
+    const [clientOptions, setClientOptions] = useState<NonEmptyArray<SelectOption>>([{value: '', text: ''}]);
+    const [data, setData] = useState<Database.IDetailedTimeRecord[]>(timeRecords);
+
+    useEffect(() => {
+        db.getClients()
+            .then((cls:Database.IClient[]) => setClients(cls))
+            .catch(err => console.error(err));
+    }, []);
+
+    useEffect(() => {
+        setData(timeRecords);
+    }, [timeRecords])
+
+    useEffect(() => {
+        const options:SelectOption[] = clients.map(client => ({value: client.id.toString(), text: client.client_name}));
+        setClientOptions([{value: '', text: ''}, ...options]);
+    }, [clients])
+
     const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
+    };
+
+    const clientChanged = async (row, option:SelectOption) => {
+        await db.updateTimeRecord({id: row.id, client_id: parseInt(option.value), project_id: null});
+
+        // Since the project has been cleared, re-fetch the detailed time records and update the data that the data table is using.
+        const updatedTimeRecords = await db.getDetailedTimeRecords({});
+        setData(updatedTimeRecords);
     };
 
     const columns: TableColumn<Database.IDetailedTimeRecord>[] = [
@@ -43,6 +74,9 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
             name: 'Client',
             selector: row => row.client_name,
             grow: 1,
+            cell: row => <SubtleSelect options={clientOptions}
+                                       value={row.client_id.toString()}
+                                       selectionChanged={async (option:SelectOption) => clientChanged(row, option)}/>
         },
         {
             name: 'Project',
@@ -87,7 +121,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
         <DataTable
             className={classNames(className)}
             columns={columns}
-            data={timeRecords}
+            data={data}
             theme='timetrackingDark'
             highlightOnHover
         />
