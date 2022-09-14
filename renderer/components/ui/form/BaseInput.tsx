@@ -26,6 +26,9 @@ export interface IBaseInputProps {
     onKeyDown?: (e) => any;
     touched?: boolean;
     error?: string;
+    onBlur?: (any) => any;
+    onChange?: (any) => any;
+    value?: any;
 }
 
 const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, touched=false, error='', ...props}: IBaseInputProps) => {

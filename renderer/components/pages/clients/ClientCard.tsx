@@ -19,6 +19,7 @@ import H3 from '../../ui/text/H3';
 import {Icon, trash, plus} from '../../ui/Icon';
 import ProjectsDataTable from './ProjectsDataTable';
 import * as db from "../../../lib/database";
+import SubtleTextInput from '../../ui/form/SubtleTextInput';
 
 export interface IClientCardProps {
     client: Database.IClient,
@@ -76,14 +77,14 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
 
     return (
         <Card className={classNames('client-card', className)}>
-            <Card.Header>
-                <H3
+            <Card.Header className='justify-between'>
+                <SubtleTextInput
+                    as='h3'
                     className='font-medium'
-                    editable={true}
                     autoFocus={true}
                     onSave={clientNameChanged}>
                     {client.client_name}
-                </H3>
+                </SubtleTextInput>
                 <Icon icon={trash} className='hover:cursor-pointer' onClick={trashIconClicked}/>
             </Card.Header>
             <Card.Body>

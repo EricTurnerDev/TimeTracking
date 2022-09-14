@@ -23,6 +23,10 @@ export interface IBaseSelectProps {
     children?: ReactNode;
     touched?: boolean;
     error?: string;
+    value?: any;
+    onBlur?: (e:any) => void;
+    onChange?: (e:any) => void;
+    autoFocus?: boolean;
 }
 
 const BaseSelect = ({id, label, required, disabled, className, children, touched=false, error='', ...props}: IBaseSelectProps) => {

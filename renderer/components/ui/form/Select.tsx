@@ -7,23 +7,25 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import classNames from 'classnames';
+import {useField} from 'formik';
 
 import BaseSelect, {IBaseSelectProps} from './BaseSelect';
-import classNames from 'classnames';
-import {useField} from "formik";
 
-interface ISelectProps extends IBaseSelectProps {
+export interface ISelectProps extends IBaseSelectProps {
     name: string;
 }
 
-const NumberInput = ({className, children, ...props}: ISelectProps) => {
+const Select = ({className, children, ...props}: ISelectProps) => {
     const [field, meta] = useField(props);
 
     return (
-        <BaseSelect className={classNames('number-input', className)} touched={meta.touched} error={meta.error} {...field} {...props}>
+        <BaseSelect className={classNames('select', className)}
+                    touched={meta.touched}
+                    error={meta.error} {...field} {...props}>
             {children}
         </BaseSelect>
     )
 };
 
-export default NumberInput;
+export default Select;

@@ -14,9 +14,9 @@ import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
 import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
-import P from '../../ui/text/P';
 import * as db from '../../../lib/database';
 import {RowActions} from '../DataTableRowActions';
+import SubtleTextInput from "../../ui/form/SubtleTextInput";
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
@@ -37,8 +37,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
             name: 'Description',
             selector: row => row.description,
             grow: 2,
-            cell: row => <P editable={true} onSave={async (text) => descriptionChanged(row, text)}
-                            autoFocus={true}>{row.description}</P>
+            cell: row => <SubtleTextInput onSave={async (text) => descriptionChanged(row, text)} autoFocus={true}>{row.description}</SubtleTextInput>
         },
         {
             name: 'Client',

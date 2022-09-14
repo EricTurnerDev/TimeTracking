@@ -12,7 +12,7 @@ import {useField} from 'formik';
 
 import BaseInput, {IBaseInputProps} from './BaseInput';
 
-interface ITextInputProps extends IBaseInputProps {
+export interface ITextInputProps extends IBaseInputProps {
     name: string;
     placeholder?: string;
 }
