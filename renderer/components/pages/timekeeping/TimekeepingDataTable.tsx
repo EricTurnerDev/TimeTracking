@@ -14,11 +14,12 @@ import {useEffect, useState} from 'react';
 import DataTable, {createTheme} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
-import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
+import {isoToLocale} from '../../../lib/dateTimeConversion';
 import * as db from '../../../lib/database';
 import {RowActions} from '../DataTableRowActions';
-import SubtleTextInput from "../../ui/form/SubtleTextInput";
-import SubtleSelect from "../../ui/form/SubtleSelect";
+import SubtleDateTimeInput from '../../ui/form/SubtleDateTimeInput';
+import SubtleSelect from '../../ui/form/SubtleSelect';
+import SubtleTextInput from '../../ui/form/SubtleTextInput';
 import SelectOption from '../../../lib/types/SelectOption';
 
 interface ITimekeepingDataTableProps {
@@ -40,9 +41,9 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
     const [tableData, setTableData] = useState<IDataTableRecord[]>([]);
     const [columns, setColumns] = useState([]);
     const [pending, setPending] = useState<boolean>(true);
-    const [projectSelectOptions, setProjectSelectOptions] = useState<{[clientId:number]: SelectOption[]}>([]);
+    const [projectSelectOptions, setProjectSelectOptions] = useState<{ [clientId: number]: SelectOption[] }>([]);
 
-    const createTableData = (timeRecords:Database.IDetailedTimeRecord[], projectSelectOptions): IDataTableRecord[] => {
+    const createTableData = (timeRecords: Database.IDetailedTimeRecord[], projectSelectOptions): IDataTableRecord[] => {
         return timeRecords.map(tr => {
             const opts = projectSelectOptions[tr.client_id] || [];
             return {...tr, projectOptions: [emptyOption, ...opts]}
@@ -52,12 +53,18 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
     useEffect(() => {
         Promise.all([db.getClients(), db.getProjects({})])
             .then(([clients, projects]) => {
-                const clientSelectOptions = clients.map(client => ({value: client.id.toString(), text: client.client_name}));
+                const clientSelectOptions = clients.map(client => ({
+                    value: client.id.toString(),
+                    text: client.client_name
+                }));
 
                 const projectSelectOptions = {};
                 clients.forEach(client => {
                     const clientProjects = projects.filter(project => project.client_id === client.id);
-                    projectSelectOptions[client.id] = clientProjects.map(project => ({value: project.id.toString(), text: project.project_name}));
+                    projectSelectOptions[client.id] = clientProjects.map(project => ({
+                        value: project.id.toString(),
+                        text: project.project_name
+                    }));
                 });
 
                 setProjectSelectOptions(projectSelectOptions);
@@ -99,14 +106,16 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                     {
                         name: 'Start',
                         selector: row => row.start_ts,
-                        format: row => utcToLocal(row.start_ts),
-                        width: '10rem'
+                        format: row => isoToLocale(row.start_ts),
+                        width: '10rem',
+                        cell: row => <SubtleDateTimeInput onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</SubtleDateTimeInput>
                     },
                     {
                         name: 'End',
                         selector: row => row.end_ts,
-                        format: row => utcToLocal(row.end_ts),
-                        width: '10rem'
+                        format: row => isoToLocale(row.end_ts),
+                        width: '10rem',
+                        cell: row => <SubtleDateTimeInput onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{row.end_ts}</SubtleDateTimeInput>
                     },
                     {
                         name: 'Hours',
@@ -142,7 +151,15 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
         await db.updateTimeRecord({id: row.id, project_id: parseInt(option.value)});
     };
 
-    const timeRecordDeleted = async (timeRecordId:number) => {
+    const startDateTimeChanged = async (row, utcDateTime) => {
+        await db.updateTimeRecord({id: row.id, start_ts: utcDateTime});
+    }
+
+    const endDateTimeChanged = async (row, utcDateTime) => {
+        await db.updateTimeRecord({id: row.id, end_ts: utcDateTime});
+    }
+
+    const timeRecordDeleted = async (timeRecordId: number) => {
         await db.deleteTimeRecord(timeRecordId);
         await refreshTableData();
     }

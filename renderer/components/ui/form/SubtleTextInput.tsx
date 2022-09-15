@@ -21,7 +21,14 @@ export interface ISubtleTextInputProps {
     autoFocus?: boolean;
 }
 
-const SubtleTextInput = ({as = 'p', className, children, onSave, autoFocus=false, ...props}: ISubtleTextInputProps) => {
+const SubtleTextInput = ({
+                             as = 'p',
+                             className,
+                             children,
+                             onSave,
+                             autoFocus = false,
+                             ...props
+                         }: ISubtleTextInputProps) => {
     const Tag = as;
 
     const [text, setText] = useState<ReactNode>(children);
