@@ -9,7 +9,7 @@
 import classNames from 'classnames';
 import {useCallback, useState} from 'react';
 
-import BaseInput from './BaseInput';
+import BaseInput from '../form/BaseInput';
 import {utcISOToLocalISO, isoToLocale, localISOToUTCISO} from '../../../lib/dateTimeConversion';
 import TextElement from '../../../lib/types/TextElement';
 
@@ -21,7 +21,7 @@ export interface ISubtleDateTimeInputProps {
     autoFocus?: boolean;
 }
 
-const SubtleDateTimeInput = ({
+const InlineEditDateTime = ({
                                  as = 'p',
                                  className,
                                  children,
@@ -89,4 +89,4 @@ const SubtleDateTimeInput = ({
     )
 };
 
-export default SubtleDateTimeInput;
+export default InlineEditDateTime;

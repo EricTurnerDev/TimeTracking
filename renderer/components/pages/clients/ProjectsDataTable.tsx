@@ -14,7 +14,7 @@ import {Database} from 'timetracking-common';
 import * as db from '../../../lib/database';
 import {darkTheme} from '../../../lib/dataTableThemes';
 import {RowActions} from '../DataTableRowActions';
-import SubtleTextInput from '../../ui/form/SubtleTextInput';
+import InlineEditText from '../../ui/inline-editing/InlineEditText';
 
 interface IProjectsDataTableProps {
     projects: Database.IProject[];
@@ -35,7 +35,7 @@ const ProjectsDataTable = ({projects, onDelete, className}: IProjectsDataTablePr
             name: 'Project Name',
             selector: row => row.project_name,
             grow: 2,
-            cell: row => <SubtleTextInput onSave={async (text) => projectNameChanged(row, text)} autoFocus={true}>{row.project_name}</SubtleTextInput>
+            cell: row => <InlineEditText onSave={async (text) => projectNameChanged(row, text)} autoFocus={true}>{row.project_name}</InlineEditText>
         },
         {
             name: '',

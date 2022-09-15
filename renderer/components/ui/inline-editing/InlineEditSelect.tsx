@@ -10,7 +10,7 @@
 import {useState} from 'react';
 import classNames from 'classnames';
 
-import BaseSelect from './BaseSelect';
+import BaseSelect from '../form/BaseSelect';
 import isBlank from '../../../lib/isBlank';
 import NonEmptyArray from "../../../lib/types/NonEmptyArray";
 import SelectOption from "../../../lib/types/SelectOption";
@@ -27,7 +27,7 @@ interface ISubtleSelectProps {
 
 const emptyOption: SelectOption = {value: '', text: ''};
 
-const SubtleSelect = ({as = 'p', options, value, allowBlank=true, selectionChanged, className}: ISubtleSelectProps) => {
+const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionChanged, className}: ISubtleSelectProps) => {
     const Tag = as;
 
     const initialOption: SelectOption = options?.find(option => {
@@ -77,4 +77,4 @@ const SubtleSelect = ({as = 'p', options, value, allowBlank=true, selectionChang
     )
 };
 
-export default SubtleSelect;
+export default InlineEditSelect;

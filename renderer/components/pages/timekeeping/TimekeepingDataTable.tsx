@@ -17,9 +17,9 @@ import {Database} from 'timetracking-common';
 import {isoToLocale} from '../../../lib/dateTimeConversion';
 import * as db from '../../../lib/database';
 import {RowActions} from '../DataTableRowActions';
-import SubtleDateTimeInput from '../../ui/form/SubtleDateTimeInput';
-import SubtleSelect from '../../ui/form/SubtleSelect';
-import SubtleTextInput from '../../ui/form/SubtleTextInput';
+import InlineEditDateTime from '../../ui/inline-editing/InlineEditDateTime';
+import InlineEditSelect from '../../ui/inline-editing/InlineEditSelect';
+import InlineEditText from '../../ui/inline-editing/InlineEditText';
 import SelectOption from '../../../lib/types/SelectOption';
 
 interface ITimekeepingDataTableProps {
@@ -76,25 +76,25 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         name: 'Description',
                         selector: row => row.description,
                         grow: 2,
-                        cell: row => <SubtleTextInput onSave={async (text) => descriptionChanged(row, text)}
-                                                      autoFocus={true}>{row.description}</SubtleTextInput>
+                        cell: row => <InlineEditText onSave={async (text) => descriptionChanged(row, text)}
+                                                     autoFocus={true}>{row.description}</InlineEditText>
                     },
                     {
                         name: 'Client',
                         selector: row => row.client_name,
                         grow: 1,
-                        cell: row => <SubtleSelect options={[emptyOption, ...clientSelectOptions]}
-                                                   value={row.client_id.toString()}
-                                                   allowBlank={false}
-                                                   selectionChanged={async (option: SelectOption) => clientChanged(row, option)}/>
+                        cell: row => <InlineEditSelect options={[emptyOption, ...clientSelectOptions]}
+                                                       value={row.client_id.toString()}
+                                                       allowBlank={false}
+                                                       selectionChanged={async (option: SelectOption) => clientChanged(row, option)}/>
                     },
                     {
                         name: 'Project',
                         selector: row => row.project_name,
                         grow: 1,
-                        cell: row => <SubtleSelect options={row.projectOptions}
-                                                   value={row.project_id?.toString()}
-                                                   selectionChanged={async (option: SelectOption) => projectChanged(row, option)}/>
+                        cell: row => <InlineEditSelect options={row.projectOptions}
+                                                       value={row.project_id?.toString()}
+                                                       selectionChanged={async (option: SelectOption) => projectChanged(row, option)}/>
                     },
                     {
                         name: 'Billable',
@@ -108,14 +108,14 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         selector: row => row.start_ts,
                         format: row => isoToLocale(row.start_ts),
                         width: '10rem',
-                        cell: row => <SubtleDateTimeInput onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</SubtleDateTimeInput>
+                        cell: row => <InlineEditDateTime onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</InlineEditDateTime>
                     },
                     {
                         name: 'End',
                         selector: row => row.end_ts,
                         format: row => isoToLocale(row.end_ts),
                         width: '10rem',
-                        cell: row => <SubtleDateTimeInput onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{row.end_ts}</SubtleDateTimeInput>
+                        cell: row => <InlineEditDateTime className='z-40' onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{row.end_ts}</InlineEditDateTime>
                     },
                     {
                         name: 'Hours',

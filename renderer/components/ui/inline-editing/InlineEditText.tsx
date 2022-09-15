@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import {ReactNode, useCallback, useState} from 'react';
 
-import BaseInput from './BaseInput';
+import BaseInput from '../form/BaseInput';
 import TextElement from "../../../lib/types/TextElement";
 
 export interface ISubtleTextInputProps {
@@ -21,7 +21,7 @@ export interface ISubtleTextInputProps {
     autoFocus?: boolean;
 }
 
-const SubtleTextInput = ({
+const InlineEditText = ({
                              as = 'p',
                              className,
                              children,
@@ -91,4 +91,4 @@ function isInline(element: string = '', className: string = ''): boolean {
     return !!className.match(inlineRegex);
 }
 
-export default SubtleTextInput;
+export default InlineEditText;
