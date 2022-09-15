@@ -61,8 +61,9 @@ const SubtleSelect = ({as = 'p', options, value, allowBlank=true, selectionChang
     };
 
     return (
-        <div className={classNames('subtle-select', 'hover:cursor-pointer', className)}>
-            {!editing && <Tag onClick={textClicked}>{selectedText}</Tag>}
+        <div className={classNames('subtle-select', 'min-w-full hover:cursor-pointer', className)}>
+            {!editing && !selectedText && <Tag className='min-w-full h-6' onClick={textClicked}></Tag>}
+            {!editing && selectedText && <Tag onClick={textClicked}>{selectedText}</Tag>}
             {editing && <BaseSelect
                 value={selectedValue}
                 onBlur={onBlur}

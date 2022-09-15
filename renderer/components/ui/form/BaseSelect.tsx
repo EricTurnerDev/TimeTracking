@@ -32,7 +32,7 @@ export interface IBaseSelectProps {
 const BaseSelect = ({id, label, required, disabled, className, children, touched=false, error='', ...props}: IBaseSelectProps) => {
 
     const styles = {
-        base: 'text-gray-700 w-full',
+        base: 'text-gray-700 w-full rounded',
         state: {
             normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
             error: 'border-red-600 focus:ring-red-600 text-red-600',

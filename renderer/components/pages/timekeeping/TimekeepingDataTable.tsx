@@ -135,7 +135,6 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const clientChanged = async (row, option: SelectOption) => {
         await db.updateTimeRecord({id: row.id, client_id: parseInt(option.value), project_id: null});
-        // Refresh to show that the project unset.
         await refreshTableData();
     };
 
@@ -145,7 +144,6 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const timeRecordDeleted = async (timeRecordId:number) => {
         await db.deleteTimeRecord(timeRecordId);
-        // Refresh to show the row was deleted
         await refreshTableData();
     }
 
