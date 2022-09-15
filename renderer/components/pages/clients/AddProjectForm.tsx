@@ -49,7 +49,7 @@ const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProje
 
     // Get project names once so validation can ensure that the user doesn't try to submit a duplicate project.
     useEffect(() => {
-        getProjects(client.id)
+        getProjects({clientId: client.id})
             .then(projects => setProjectNames(projects.map(p => p.project_name)))
             .catch(err => console.error(err));
     }, []);

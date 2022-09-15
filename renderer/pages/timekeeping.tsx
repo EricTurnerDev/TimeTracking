@@ -62,7 +62,7 @@ export default function Timekeeping() {
 
             {addingTimeRecord && <AddTimeRecordForm className='mb-4' onTimeRecordAdded={timeRecordAdded} onCancel={addingTimeRecordCanceled}/>}
 
-            <TimekeepingDataTable timeRecords={timeRecords} onDelete={timeRecordDeleted} />
+            {timeRecords && <TimekeepingDataTable timeRecords={timeRecords} onDelete={timeRecordDeleted} />}
         </div>
     )
 }

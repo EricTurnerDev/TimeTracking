@@ -104,7 +104,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const formChanged = (values, touched) => {
         // When a client is selected, get the client's projects.
         if (touched.client_id) {
-            getProjects(values.client_id)
+            getProjects({clientId: values.client_id})
                 .then((projects: Database.IProject[]) => {
                     setProjects([{id: 0, project_name: ''}, ...projects]);
                 })

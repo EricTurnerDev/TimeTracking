@@ -11,7 +11,7 @@ import {darkTheme} from '../../../lib/dataTableThemes';
 
 import classNames from 'classnames';
 import {useEffect, useState} from 'react';
-import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
+import DataTable, {createTheme} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
 import utcToLocal from '../../../lib/convertDateTimeUTCToLocal';
@@ -20,7 +20,6 @@ import {RowActions} from '../DataTableRowActions';
 import SubtleTextInput from "../../ui/form/SubtleTextInput";
 import SubtleSelect from "../../ui/form/SubtleSelect";
 import SelectOption from '../../../lib/types/SelectOption';
-import NonEmptyArray from '../../../lib/types/NonEmptyArray';
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
@@ -30,99 +29,140 @@ interface ITimekeepingDataTableProps {
 
 createTheme('timetrackingDark', darkTheme, 'dark');
 
+const emptyOption: SelectOption = {value: '', text: ''};
+
 const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDataTableProps) => {
 
-    const [clients, setClients] = useState<Database.IClient[]>([]);
-    const [clientOptions, setClientOptions] = useState<NonEmptyArray<SelectOption>>([{value: '', text: ''}]);
-    const [data, setData] = useState<Database.IDetailedTimeRecord[]>(timeRecords);
+    interface IDataTableRecord extends Database.IDetailedTimeRecord {
+        projectOptions: SelectOption[];
+    }
+
+    const [tableData, setTableData] = useState<IDataTableRecord[]>([]);
+    const [columns, setColumns] = useState([]);
+    const [pending, setPending] = useState<boolean>(true);
+    const [projectSelectOptions, setProjectSelectOptions] = useState<{[clientId:number]: SelectOption[]}>([]);
+
+    const createTableData = (timeRecords:Database.IDetailedTimeRecord[], projectSelectOptions): IDataTableRecord[] => {
+        return timeRecords.map(tr => {
+            const opts = projectSelectOptions[tr.client_id] || [];
+            return {...tr, projectOptions: [emptyOption, ...opts]}
+        });
+    };
 
     useEffect(() => {
-        db.getClients()
-            .then((cls:Database.IClient[]) => setClients(cls))
+        Promise.all([db.getClients(), db.getProjects({})])
+            .then(([clients, projects]) => {
+                const clientSelectOptions = clients.map(client => ({value: client.id.toString(), text: client.client_name}));
+
+                const projectSelectOptions = {};
+                clients.forEach(client => {
+                    const clientProjects = projects.filter(project => project.client_id === client.id);
+                    projectSelectOptions[client.id] = clientProjects.map(project => ({value: project.id.toString(), text: project.project_name}));
+                });
+
+                setProjectSelectOptions(projectSelectOptions);
+
+                setTableData(createTableData(timeRecords, projectSelectOptions));
+
+                setColumns([
+                    {
+                        name: 'Description',
+                        selector: row => row.description,
+                        grow: 2,
+                        cell: row => <SubtleTextInput onSave={async (text) => descriptionChanged(row, text)}
+                                                      autoFocus={true}>{row.description}</SubtleTextInput>
+                    },
+                    {
+                        name: 'Client',
+                        selector: row => row.client_name,
+                        grow: 1,
+                        cell: row => <SubtleSelect options={[emptyOption, ...clientSelectOptions]}
+                                                   value={row.client_id.toString()}
+                                                   allowBlank={false}
+                                                   selectionChanged={async (option: SelectOption) => clientChanged(row, option)}/>
+                    },
+                    {
+                        name: 'Project',
+                        selector: row => row.project_name,
+                        grow: 1,
+                        cell: row => <SubtleSelect options={row.projectOptions}
+                                                   value={row.project_id?.toString()}
+                                                   selectionChanged={async (option: SelectOption) => projectChanged(row, option)}/>
+                    },
+                    {
+                        name: 'Billable',
+                        selector: row => row.billable,
+                        format: row => row.billable ? '$' : '',
+                        width: '5rem',
+                        center: true,
+                    },
+                    {
+                        name: 'Start',
+                        selector: row => row.start_ts,
+                        format: row => utcToLocal(row.start_ts),
+                        width: '10rem'
+                    },
+                    {
+                        name: 'End',
+                        selector: row => row.end_ts,
+                        format: row => utcToLocal(row.end_ts),
+                        width: '10rem'
+                    },
+                    {
+                        name: 'Hours',
+                        selector: row => row.hours,
+                        format: row => row.hours.toFixed(2),
+                        width: '5rem'
+                    },
+                    {
+                        name: '',
+                        sortable: false,
+                        cell: (row) => <RowActions row={row}
+                                                   deleteRow={timeRecordDeleted}
+                                                   onDelete={onDelete}/>,
+                        ignoreRowClick: true,
+                        width: '3rem'
+                    }
+                ]);
+                setPending(false);
+            })
             .catch(err => console.error(err));
-    }, []);
-
-    useEffect(() => {
-        setData(timeRecords);
-    }, [timeRecords])
-
-    useEffect(() => {
-        const options:SelectOption[] = clients.map(client => ({value: client.id.toString(), text: client.client_name}));
-        setClientOptions([{value: '', text: ''}, ...options]);
-    }, [clients])
+    }, [timeRecords]);
 
     const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
     };
 
-    const clientChanged = async (row, option:SelectOption) => {
+    const clientChanged = async (row, option: SelectOption) => {
         await db.updateTimeRecord({id: row.id, client_id: parseInt(option.value), project_id: null});
-
-        // Since the project has been cleared, re-fetch the detailed time records and update the data that the data table is using.
-        const updatedTimeRecords = await db.getDetailedTimeRecords({});
-        setData(updatedTimeRecords);
+        // Refresh to show that the project unset.
+        await refreshTableData();
     };
 
-    const columns: TableColumn<Database.IDetailedTimeRecord>[] = [
-        {
-            name: 'Description',
-            selector: row => row.description,
-            grow: 2,
-            cell: row => <SubtleTextInput onSave={async (text) => descriptionChanged(row, text)} autoFocus={true}>{row.description}</SubtleTextInput>
-        },
-        {
-            name: 'Client',
-            selector: row => row.client_name,
-            grow: 1,
-            cell: row => <SubtleSelect options={clientOptions}
-                                       value={row.client_id.toString()}
-                                       selectionChanged={async (option:SelectOption) => clientChanged(row, option)}/>
-        },
-        {
-            name: 'Project',
-            selector: row => row.project_name,
-            grow: 1,
-        },
-        {
-            name: 'Billable',
-            selector: row => row.billable,
-            format: row => row.billable ? '$' : '',
-            width: '5rem',
-            center: true,
-        },
-        {
-            name: 'Start',
-            selector: row => row.start_ts,
-            format: row => utcToLocal(row.start_ts),
-            width: '10rem'
-        },
-        {
-            name: 'End',
-            selector: row => row.end_ts,
-            format: row => utcToLocal(row.end_ts),
-            width: '10rem'
-        },
-        {
-            name: 'Hours',
-            selector: row => row.hours,
-            format: row => row.hours.toFixed(2),
-            width: '5rem'
-        },
-        {
-            name: '',
-            sortable: false,
-            cell: (row) => <RowActions row={row} deleteRow={(rowId) => db.deleteTimeRecord(rowId)} onDelete={onDelete}/>,
-            ignoreRowClick: true,
-            width: '3rem'
-        }
-    ];
+    const projectChanged = async (row, option: SelectOption) => {
+        await db.updateTimeRecord({id: row.id, project_id: parseInt(option.value)});
+    };
+
+    const timeRecordDeleted = async (timeRecordId:number) => {
+        await db.deleteTimeRecord(timeRecordId);
+        // Refresh to show the row was deleted
+        await refreshTableData();
+    }
+
+    const refreshTableData = async () => {
+        setPending(true);
+        const updatedTimeRecords = await db.getDetailedTimeRecords({});
+        setTableData(createTableData(updatedTimeRecords, projectSelectOptions));
+        setPending(false);
+    };
 
     return (
         <DataTable
             className={classNames(className)}
             columns={columns}
-            data={data}
+            data={tableData}
             theme='timetrackingDark'
+            progressPending={pending}
             highlightOnHover
         />
     )

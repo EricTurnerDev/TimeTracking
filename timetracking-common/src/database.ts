@@ -41,3 +41,8 @@ export interface ITimeRecordsQuery {
     clientId?: number;
     projectId?: number;
 }
+
+export interface IProjectsQuery {
+    clientId?: number;
+    projectId?: number;
+}

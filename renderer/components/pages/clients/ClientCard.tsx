@@ -34,7 +34,7 @@ export default function ClientCard({client, onClientDeleted, className}: IClient
 
     const updateProjects = async () => {
         if (client) {
-            const projs: Database.IProject[] = await getProjects(client.id);
+            const projs: Database.IProject[] = await getProjects({clientId: client.id});
             setProjects(projs);
         }
     }
