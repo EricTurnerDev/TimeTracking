@@ -7,10 +7,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {DateTime} from 'luxon';
+type SelectOption = {value: string, text: string};
 
-const convert = (utc: string): string => {
-    return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_SHORT);
-};
-
-export default convert;
+export default SelectOption;

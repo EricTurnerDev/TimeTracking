@@ -14,20 +14,26 @@ import {useField} from 'formik';
 import Label from './Label';
 import P from '../text/P';
 
-interface ISelectInputProps {
+export interface IBaseSelectProps {
     id?: string;
-    name: string;
     label?: string;
     required?: boolean;
     disabled?: boolean;
     className?: string;
     children?: ReactNode;
+    touched?: boolean;
+    error?: string;
+    value?: any;
+    onBlur?: (e:any) => void;
+    onChange?: (e:any) => void;
+    onKeyDown?: (e) => any;
+    autoFocus?: boolean;
 }
 
-const SelectInput = ({id, label, required, disabled, className, children, ...props}: ISelectInputProps) => {
+const BaseSelect = ({id, label, required, disabled, className, children, touched=false, error='', ...props}: IBaseSelectProps) => {
 
     const styles = {
-        base: 'text-gray-700 w-full',
+        base: 'text-gray-700 w-full rounded',
         state: {
             normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
             error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -37,28 +43,26 @@ const SelectInput = ({id, label, required, disabled, className, children, ...pro
         errorText: 'mt-2 text-sm text-red-600',
     };
 
-    const [field, meta] = useField(props);
     const inputId = useId();
 
     return (
-        <div className={classNames('select-input', className)} id={id}>
+        <div className={classNames('base-select', className)} id={id}>
             {label && <Label id={inputId}>{label}{required && '*'}</Label>}
 
             <select
                 className={classNames(
                     styles.base,
-                    meta.touched && meta.error ? styles.state.error : styles.state.normal,
+                    touched && error ? styles.state.error : styles.state.normal,
                     disabled && styles.state.disabled
                 )}
                 id={inputId}
-                {...field}
                 {...props}>
                 {children}
             </select>
 
-            {meta.touched && meta.error ? (<P className={classNames('error', styles.errorText)}>{meta.error}</P>) : null}
+            {touched && error ? (<P className={classNames('error', styles.errorText)}>{error}</P>) : null}
         </div>
     )
 };
 
-export default SelectInput;
+export default BaseSelect;

@@ -10,8 +10,10 @@
 import classNames from 'classnames';
 import {ReactNode} from 'react';
 
+import TextElement from '../../../lib/types/TextElement';
+
 export interface IBaseTextProps {
-    as?: 'p' | 'span' | 'cite' | 'abbr' | 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    as?: TextElement;
     size?: 'sm' | 'base' | 'lg';
     variant?: 'dark' | 'medium' | 'light';
     className?: string;

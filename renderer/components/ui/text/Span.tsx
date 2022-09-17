@@ -7,13 +7,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseEditableText, {IBaseEditableTextProps} from './BaseEditableText';
+import BaseText, {IBaseTextProps} from './BaseText';
 
-interface ISpanProps extends IBaseEditableTextProps {}
+interface ISpanProps extends IBaseTextProps {}
 
 const Span = ({className, children, ...props}: ISpanProps) => {
     return (
-        <BaseEditableText className={className} as='span' {...props}>{children}</BaseEditableText>
+        <BaseText className={className} as='span' {...props}>{children}</BaseText>
     )
 }
 

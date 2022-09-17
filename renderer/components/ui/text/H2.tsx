@@ -7,13 +7,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseEditableText, {IBaseEditableTextProps} from './BaseEditableText';
+import BaseText, {IBaseTextProps} from './BaseText';
 
-interface IH2Props extends IBaseEditableTextProps {}
+interface IH2Props extends IBaseTextProps {}
 
 const H2 = ({className, children, ...props}: IH2Props) => {
     return (
-        <BaseEditableText className={className} as='h2' {...props}>{children}</BaseEditableText>
+        <BaseText className={className} as='h2' {...props}>{children}</BaseText>
     )
 }
 

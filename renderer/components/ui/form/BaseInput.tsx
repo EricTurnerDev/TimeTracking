@@ -8,27 +8,30 @@
  */
 
 import classNames from 'classnames';
-import {useField} from 'formik';
 import {useId} from 'react';
 
+import InputElement from '../../../lib/types/InputElement';
 import Label from './Label';
 import P from '../text/P';
 
-export interface IBaseInput {
+export interface IBaseInputProps {
     id?: string;
-    type?: 'checkbox'|'datetime-local'|'hidden'|'number'|'text';
-    name: string;
+    type?: InputElement;
     label?: string;
     required?: boolean;
     disabled?: boolean;
     autoFocus?: boolean;
     className?: string;
     inputStyles?: string; // Additional styles applied directly to the <input> element
-    onBlur?: () => void;
     onKeyDown?: (e) => any;
+    touched?: boolean;
+    error?: string;
+    onBlur?: (any) => any;
+    onChange?: (any) => any;
+    value?: any;
 }
 
-const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, ...props}: IBaseInput) => {
+const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, touched=false, error='', value, ...props}: IBaseInputProps) => {
 
     const styles = {
         base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent rounded',
@@ -41,8 +44,9 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
         errorText: 'mt-2 text-sm text-red-600',
     };
 
-    const [field, meta] = useField(props);
     const inputId = useId();
+
+    const valueProp = type === 'checkbox' ? {checked: value} : {value};
 
     return (
         <div className={classNames('base-input', className)} id={id}>
@@ -52,16 +56,16 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
                 className={classNames(
                     styles.base,
                     inputStyles,
-                    meta.touched && meta.error ? styles.state.error : styles.state.normal,
+                    touched && error ? styles.state.error : styles.state.normal,
                     disabled && styles.state.disabled,
                 )}
                 type={type}
                 id={inputId}
-                {...field}
+                {...valueProp}
                 {...props}
             />
 
-            {meta.touched && meta.error ? (<P className={classNames('error', styles.errorText)}>{meta.error}</P>) : null}
+            {touched && error ? (<P className={classNames('error', styles.errorText)}>{error}</P>) : null}
         </div>
     )
 };

@@ -7,16 +7,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseInput, {IBaseInput} from './BaseInput';
 import classNames from 'classnames';
+import {useField} from 'formik';
 
-interface ITextInput extends IBaseInput {
+import BaseInput, {IBaseInputProps} from './BaseInput';
+
+export interface ITextInputProps extends IBaseInputProps {
+    name: string;
     placeholder?: string;
 }
 
-const TextInput = ({className, ...props}: ITextInput) => {
+const TextInput = ({className, ...props}: ITextInputProps) => {
+    const [field, meta] = useField(props);
+
     return (
-        <BaseInput type='text' className={classNames('text-input', className)} {...props} />
+        <BaseInput type='text' className={classNames('text-input', className)} touched={meta.touched} error={meta.error} {...field} {...props} />
     )
 };
 

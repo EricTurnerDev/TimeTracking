@@ -11,6 +11,8 @@ import {IpcChannels, Database} from "timetracking-common";
 
 import {send} from './ipc';
 
+// Clients
+
 /**
  * Requests the main process to create a client.
  * @returns a promise that resolves when the client is created, or rejects with an error.
@@ -52,6 +54,8 @@ export async function getClients(): Promise<Database.IClient[]> {
     return await send(IpcChannels.GetClients);
 }
 
+// Projects
+
 /**
  * Requests the main process to create a project.
  * @returns a promise that resolves when the project is created, or rejects with an error.
@@ -86,11 +90,11 @@ export async function updateProject(id: number, project: Database.IProject): Pro
 }
 
 /**
- * Requests a list of projects for a client from the main process.
+ * Requests a list of projects from the main process.
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */
-export async function getProjects(clientId:number): Promise<Database.IProject[]> {
-    return await send(IpcChannels.GetProjects, clientId);
+export async function getProjects(query:Database.IProjectsQuery): Promise<Database.IProject[]> {
+    return await send(IpcChannels.GetProjects, query);
 }
 
 // Time records

@@ -7,14 +7,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import BaseInput, {IBaseInput} from './BaseInput';
 import classNames from 'classnames';
+import {useField} from 'formik';
 
-interface ICheckboxInput extends IBaseInput {}
+import BaseInput, {IBaseInputProps} from './BaseInput';
 
-const CheckboxInput = ({className, ...props}: ICheckboxInput) => {
+interface ICheckboxInputProps extends IBaseInputProps {
+    name: string
+}
+
+const CheckboxInput = ({className, ...props}: ICheckboxInputProps) => {
+    const [field, meta] = useField(props);
+
     return (
-        <BaseInput type='checkbox' className={classNames('checkbox-input', className)} inputStyles='p-0' {...props} />
+        <BaseInput type='checkbox' className={classNames('checkbox-input', className)} touched={meta.touched} error={meta.error} inputStyles='p-0' {...field} {...props} />
     )
 };
 

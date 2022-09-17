@@ -11,6 +11,7 @@ import {ipcMain} from 'electron';
 import {IpcChannels, Database} from 'timetracking-common';
 
 import Knex from '../db/knex';
+import {ITimeRecordsQuery} from "timetracking-common/src/database";
 
 let knex;
 
@@ -62,8 +63,24 @@ export function listen() {
         return knex('projects').where('id', project.id).update(project);
     });
 
-    ipcMain.handle(IpcChannels.GetProjects, (event, clientId: number) => {
-        return knex.select().from('projects').where('client_id', clientId).orderByRaw('project_name COLLATE NOCASE');
+    ipcMain.handle(IpcChannels.GetProjects, (event, {clientId, projectId}: Database.IProjectsQuery) => {
+        const query: Database.IProject = {};
+        if (clientId) {
+            query.client_id = clientId;
+        }
+        if (projectId) {
+            query.id = projectId;
+        }
+        const columns = [
+            'projects.*',
+            'clients.id as client_id',
+        ]
+        return knex
+            .select(columns)
+            .from('projects')
+            .innerJoin('clients', 'clients.id', '=', 'projects.client_id')
+            .where(query)
+            .orderByRaw('project_name COLLATE NOCASE');
     });
 
     // Time records
