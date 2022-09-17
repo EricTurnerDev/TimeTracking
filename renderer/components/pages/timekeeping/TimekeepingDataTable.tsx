@@ -159,10 +159,12 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const startDateTimeChanged = async (row, utcDateTime) => {
         await db.updateTimeRecord({id: row.id, start_ts: utcDateTime});
+        await refreshTableData();
     }
 
     const endDateTimeChanged = async (row, utcDateTime) => {
         await db.updateTimeRecord({id: row.id, end_ts: utcDateTime});
+        await refreshTableData();
     }
 
     const billableChanged = async (row, billable) => {
