@@ -17,7 +17,7 @@ export interface IInlineEditToggle {
     as?: TextElement;
     onSave: (boolean) => Promise<void>;
     autoFocus?: boolean;
-    value?: boolean;
+    value?: boolean|string;
     formatter?: (boolean) => string;
     className?: string;
     children?: string;
@@ -26,7 +26,11 @@ export interface IInlineEditToggle {
 const InlineEditToggle = ({as = 'p', value=false, onSave, autoFocus = false,  formatter=(v) => v ? 'on' : 'off', className}: IInlineEditToggle) => {
     const Tag = as;
 
-    const [toggleState, setToggleState] = useState<boolean>(value);
+    // Sqlite stores booleans as either the strings 'true' and 'false', or as the numbers 1 and 0. Knex seems to convert
+    // the numbers to boolean true and false, but not the strings.
+    const initialValue:boolean = typeof value === 'string' ? (value === 'true') : value;
+
+    const [toggleState, setToggleState] = useState<boolean>(initialValue);
     const [editing, setEditing] = useState<boolean>(false);
 
     const keyDown = useCallback((e) => {
