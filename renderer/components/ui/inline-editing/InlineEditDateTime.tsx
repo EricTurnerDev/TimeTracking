@@ -13,7 +13,7 @@ import BaseInput from '../form/BaseInput';
 import {utcISOToLocalISO, isoToLocale, localISOToUTCISO} from '../../../lib/dateTimeConversion';
 import TextElement from '../../../lib/types/TextElement';
 
-export interface ISubtleDateTimeInputProps {
+export interface IInlineEditDateTimeProps {
     as?: TextElement;
     className?: string;
     children: string;
@@ -28,7 +28,7 @@ const InlineEditDateTime = ({
                                  onSave,
                                  autoFocus = false,
                                  ...props
-                             }: ISubtleDateTimeInputProps) => {
+                             }: IInlineEditDateTimeProps) => {
     const Tag = as;
 
     const [editing, setEditing] = useState<boolean>(false);
@@ -74,7 +74,7 @@ const InlineEditDateTime = ({
     };
 
     return (
-        <div className={classNames('subtle-datetime-input', 'z-50 hover:cursor-pointer', className)}>
+        <div className={classNames('inline-edit-datetime', 'hover:cursor-pointer', className)}>
             {!editing && <Tag onClick={dateClicked}>{isoToLocale(date)}</Tag>}
             {editing &&
                 <BaseInput

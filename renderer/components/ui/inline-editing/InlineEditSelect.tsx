@@ -7,7 +7,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import classNames from 'classnames';
 
 import BaseSelect from '../form/BaseSelect';
@@ -21,13 +21,14 @@ interface ISubtleSelectProps {
     options: NonEmptyArray<SelectOption>;
     value: string;
     allowBlank?: boolean;
-    className?: string;
     selectionChanged: (Option) => Promise<void>;
+    autoFocus?: boolean;
+    className?: string;
 }
 
 const emptyOption: SelectOption = {value: '', text: ''};
 
-const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionChanged, className}: ISubtleSelectProps) => {
+const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionChanged, autoFocus=false, className}: ISubtleSelectProps) => {
     const Tag = as;
 
     const initialOption: SelectOption = options?.find(option => {
@@ -37,6 +38,12 @@ const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionC
     const [editing, setEditing] = useState<boolean>(false);
     const [selectedValue, setSelectedValue] = useState<string>(initialOption.value);
     const [selectedText, setSelectedText] = useState<string>(initialOption.text);
+
+    const keyDown = useCallback((e) => {
+        if (e.key === 'Escape') {
+            revert();
+        }
+    }, []);
 
     const textClicked = () => {
         setEditing(true);
@@ -57,18 +64,23 @@ const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionC
     };
 
     const onBlur = (e) => {
-        setEditing(false);
+        revert()
     };
 
+    const revert = () => {
+        setEditing(false);
+    }
+
     return (
-        <div className={classNames('subtle-select', 'min-w-full hover:cursor-pointer', className)}>
+        <div className={classNames('inline-edit-select', 'min-w-full hover:cursor-pointer', className)}>
             {!editing && !selectedText && <Tag className='min-w-full h-6' onClick={textClicked}></Tag>}
             {!editing && selectedText && <Tag onClick={textClicked}>{selectedText}</Tag>}
             {editing && <BaseSelect
                 value={selectedValue}
                 onBlur={onBlur}
                 onChange={optionSelected}
-                autoFocus>
+                onKeyDown={keyDown}
+                autoFocus={autoFocus}>
                 {options.map(option => {
                     return <option key={option.value} value={option.value} disabled={!allowBlank && isBlank(option.value)}>{option.text}</option>
                 })}

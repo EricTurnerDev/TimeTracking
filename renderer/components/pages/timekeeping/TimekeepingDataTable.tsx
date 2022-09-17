@@ -21,6 +21,7 @@ import InlineEditDateTime from '../../ui/inline-editing/InlineEditDateTime';
 import InlineEditSelect from '../../ui/inline-editing/InlineEditSelect';
 import InlineEditText from '../../ui/inline-editing/InlineEditText';
 import SelectOption from '../../../lib/types/SelectOption';
+import InlineEditToggle from "../../ui/inline-editing/InlineEditToggle";
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];
@@ -86,6 +87,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         cell: row => <InlineEditSelect options={[emptyOption, ...clientSelectOptions]}
                                                        value={row.client_id.toString()}
                                                        allowBlank={false}
+                                                       autoFocus={true}
                                                        selectionChanged={async (option: SelectOption) => clientChanged(row, option)}/>
                     },
                     {
@@ -94,21 +96,25 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         grow: 1,
                         cell: row => <InlineEditSelect options={row.projectOptions}
                                                        value={row.project_id?.toString()}
+                                                       autoFocus={true}
                                                        selectionChanged={async (option: SelectOption) => projectChanged(row, option)}/>
                     },
                     {
                         name: 'Billable',
                         selector: row => row.billable,
-                        format: row => row.billable ? '$' : '',
                         width: '5rem',
                         center: true,
+                        cell: row => <InlineEditToggle value={row.billable}
+                                                       onSave={async (billable) => billableChanged(row, billable)}
+                                                       formatter={(v) => v ? '$' : ' '}
+                                                       autoFocus={true}/>
                     },
                     {
                         name: 'Start',
                         selector: row => row.start_ts,
                         format: row => isoToLocale(row.start_ts),
                         width: '10rem',
-                        cell: row => <InlineEditDateTime onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</InlineEditDateTime>
+                        cell: row => <InlineEditDateTime className='z-50' onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</InlineEditDateTime>
                     },
                     {
                         name: 'End',
@@ -157,6 +163,10 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const endDateTimeChanged = async (row, utcDateTime) => {
         await db.updateTimeRecord({id: row.id, end_ts: utcDateTime});
+    }
+
+    const billableChanged = async (row, billable) => {
+        await db.updateTimeRecord({id: row.id, billable});
     }
 
     const timeRecordDeleted = async (timeRecordId: number) => {

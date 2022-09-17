@@ -31,7 +31,7 @@ export interface IBaseInputProps {
     value?: any;
 }
 
-const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, touched=false, error='', ...props}: IBaseInputProps) => {
+const BaseInput = ({id, type='text', label, required=false, disabled=false, className, inputStyles, touched=false, error='', value, ...props}: IBaseInputProps) => {
 
     const styles = {
         base: 'appearance-none border bg-white text-gray-700 shadow-md text-base focus:outline-none focus:ring-2 focus:border-transparent rounded',
@@ -46,6 +46,8 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
 
     const inputId = useId();
 
+    const valueProp = type === 'checkbox' ? {checked: value} : {value};
+
     return (
         <div className={classNames('base-input', className)} id={id}>
             {label && <Label id={inputId}>{label}{required && '*'}</Label>}
@@ -59,6 +61,7 @@ const BaseInput = ({id, type='text', label, required=false, disabled=false, clas
                 )}
                 type={type}
                 id={inputId}
+                {...valueProp}
                 {...props}
             />
 

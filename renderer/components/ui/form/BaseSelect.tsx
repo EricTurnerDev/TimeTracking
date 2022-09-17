@@ -26,6 +26,7 @@ export interface IBaseSelectProps {
     value?: any;
     onBlur?: (e:any) => void;
     onChange?: (e:any) => void;
+    onKeyDown?: (e) => any;
     autoFocus?: boolean;
 }
 
