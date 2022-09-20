@@ -34,8 +34,8 @@ const InlineEditDateTime = ({
     const [editing, setEditing] = useState<boolean>(false);
 
     // Internally we keep track of it as an ISO date string in local time.
-    const [date, setDate] = useState<string>(utcISOToLocalISO(children));
-    const [editedDate, setEditedDate] = useState<string>(utcISOToLocalISO(children));
+    const [date, setDate] = useState<string>(children);
+    const [editedDate, setEditedDate] = useState<string>(children);
 
     const keyDown = useCallback((e) => {
         if (e.key === 'Escape') {
@@ -43,7 +43,7 @@ const InlineEditDateTime = ({
         }
         if (e.key === 'Enter') {
             setEditedDate(e.target.value);
-            onSave(localISOToUTCISO(e.target.value))
+            onSave(e.target.value)
                 .then(() => {
                     setDate(e.target.value);
                     setEditing(false);
@@ -74,8 +74,8 @@ const InlineEditDateTime = ({
     };
 
     return (
-        <div className={classNames('inline-edit-datetime', 'hover:cursor-pointer', className)}>
-            {!editing && <Tag onClick={dateClicked}>{isoToLocale(date)}</Tag>}
+        <div className={classNames('inline-edit-datetime', 'min-w-full hover:cursor-pointer', className)}>
+            {!editing && <Tag className='min-w-full h-5' onClick={dateClicked}>{isoToLocale(date)}</Tag>}
             {editing &&
                 <BaseInput
                     type='datetime-local'

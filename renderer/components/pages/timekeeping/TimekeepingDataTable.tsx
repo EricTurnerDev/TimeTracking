@@ -14,7 +14,7 @@ import {useEffect, useState} from 'react';
 import DataTable, {createTheme} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
-import {isoToLocale} from '../../../lib/dateTimeConversion';
+import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '../../../lib/dateTimeConversion';
 import * as db from '../../../lib/database';
 import {RowActions} from '../DataTableRowActions';
 import InlineEditDateTime from '../../ui/inline-editing/InlineEditDateTime';
@@ -114,19 +114,19 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         selector: row => row.start_ts,
                         format: row => isoToLocale(row.start_ts),
                         width: '10rem',
-                        cell: row => <InlineEditDateTime className='z-50' onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{row.start_ts}</InlineEditDateTime>
+                        cell: row => <InlineEditDateTime className='z-50' onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{utcISOToLocalISO(row.start_ts)}</InlineEditDateTime>
                     },
                     {
                         name: 'End',
                         selector: row => row.end_ts,
                         format: row => isoToLocale(row.end_ts),
                         width: '10rem',
-                        cell: row => <InlineEditDateTime className='z-40' onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{row.end_ts}</InlineEditDateTime>
+                        cell: row => <InlineEditDateTime className='z-40' onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{utcISOToLocalISO(row.end_ts)}</InlineEditDateTime>
                     },
                     {
                         name: 'Hours',
                         selector: row => row.hours,
-                        format: row => row.hours.toFixed(2),
+                        format: row => row.hours?.toFixed(2),
                         width: '5rem'
                     },
                     {
@@ -157,13 +157,13 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
         await db.updateTimeRecord({id: row.id, project_id: parseInt(option.value)});
     };
 
-    const startDateTimeChanged = async (row, utcDateTime) => {
-        await db.updateTimeRecord({id: row.id, start_ts: utcDateTime});
+    const startDateTimeChanged = async (row, localISODateTime) => {
+        await db.updateTimeRecord({id: row.id, start_ts: localISOToUTCISO(localISODateTime)});
         await refreshTableData();
     }
 
-    const endDateTimeChanged = async (row, utcDateTime) => {
-        await db.updateTimeRecord({id: row.id, end_ts: utcDateTime});
+    const endDateTimeChanged = async (row, localISODateTime) => {
+        await db.updateTimeRecord({id: row.id, end_ts: localISOToUTCISO(localISODateTime)});
         await refreshTableData();
     }
 
