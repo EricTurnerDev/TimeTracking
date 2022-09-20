@@ -10,13 +10,25 @@
 import {DateTime} from 'luxon';
 
 export const isoToLocale = (iso: string): string => {
-    return DateTime.fromISO(iso).toLocaleString(DateTime.DATETIME_SHORT);
+    if (iso) {
+        return DateTime.fromISO(iso).toLocaleString(DateTime.DATETIME_SHORT);
+    } else {
+        return '';
+    }
 };
 
 export const utcISOToLocalISO = (utc: string): string => {
-    return DateTime.fromISO(utc).toLocal().toFormat("yyyy-MM-dd'T'hh:mm");
+    if (utc) {
+        return DateTime.fromISO(utc).toLocal().toFormat("yyyy-MM-dd'T'hh:mm");
+    } else {
+        return '';
+    }
 }
 
 export const localISOToUTCISO = (local: string): string => {
-    return DateTime.fromISO(local).toUTC().toISO();
+    if (local) {
+        return DateTime.fromISO(local).toUTC().toISO();
+    } else {
+        return '';
+    }
 }

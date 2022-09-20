@@ -28,10 +28,9 @@ exports.up = function(knex) {
         table.increments('id').primary();
         table.boolean('billable').notNullable().defaultTo(false);
         table.timestamp('start_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ','now'))"));
-        table.timestamp('end_ts').notNullable().defaultTo(knex.raw("(strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))"));
+        table.timestamp('end_ts');
         table.decimal('adjustment', 2, 4).notNullable().defaultTo(0.0);
-        table.text('invoice_activity').notNullable();
-        table.text('work_description').notNullable();
+        table.text('description').notNullable();
         table.text('notes').nullable();
         table.integer('client_id')
             .references('clients.id')

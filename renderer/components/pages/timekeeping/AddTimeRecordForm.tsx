@@ -50,7 +50,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
         client_id: Yup.number().positive('Required').required('Required'),
         project_id: Yup.number(),
         start_ts: Yup.date().required('Required'),
-        end_ts: Yup.date().min(Yup.ref('start_ts'), 'End must be after start').required('Required'),
+        end_ts: Yup.date().min(Yup.ref('start_ts'), 'End must be after start'),
         adjustment: Yup.number(),
         billable: Yup.boolean(),
         notes: Yup.string(),
@@ -168,8 +168,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                         <DateTimeInput
                             name='end_ts'
                             className='mr-4'
-                            label='End'
-                            required />
+                            label='End'/>
 
                         <NumberInput
                             name='adjustment'
