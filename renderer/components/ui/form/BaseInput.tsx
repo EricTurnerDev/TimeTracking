@@ -10,9 +10,9 @@
 import classNames from 'classnames';
 import {useId} from 'react';
 
-import InputElement from '../../../lib/types/InputElement';
-import Label from './Label';
-import P from '../text/P';
+import InputElement from '@/lib/types/InputElement';
+import Label from '@/components/ui/form/Label';
+import P from '@/components/ui/text/P';
 
 export interface IBaseInputProps {
     id?: string;

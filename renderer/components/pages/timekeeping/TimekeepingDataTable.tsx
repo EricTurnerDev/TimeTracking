@@ -7,21 +7,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {darkTheme} from '../../../lib/dataTableThemes';
+import {darkTheme} from '@/lib/dataTableThemes';
 
 import classNames from 'classnames';
 import {useEffect, useState} from 'react';
 import DataTable, {createTheme} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
-import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '../../../lib/dateTimeConversion';
-import * as db from '../../../lib/database';
-import {RowActions} from '../DataTableRowActions';
-import InlineEditDateTime from '../../ui/inline-editing/InlineEditDateTime';
-import InlineEditSelect from '../../ui/inline-editing/InlineEditSelect';
-import InlineEditText from '../../ui/inline-editing/InlineEditText';
-import SelectOption from '../../../lib/types/SelectOption';
-import InlineEditToggle from "../../ui/inline-editing/InlineEditToggle";
+import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '@/lib/dateTimeConversion';
+import * as db from '@/lib/database';
+import {RowActions} from '@/components/pages/DataTableRowActions';
+import InlineEditDateTime from '@/components/ui/inline-editing/InlineEditDateTime';
+import InlineEditSelect from '@/components/ui/inline-editing/InlineEditSelect';
+import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
+import SelectOption from '@/lib/types/SelectOption';
+import InlineEditToggle from "@/components/ui/inline-editing/InlineEditToggle";
 
 interface ITimekeepingDataTableProps {
     timeRecords: Database.IDetailedTimeRecord[];

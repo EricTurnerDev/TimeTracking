@@ -11,10 +11,10 @@ import classNames from 'classnames';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
 
-import * as db from '../../../lib/database';
-import {darkTheme} from '../../../lib/dataTableThemes';
-import {RowActions} from '../DataTableRowActions';
-import InlineEditText from '../../ui/inline-editing/InlineEditText';
+import * as db from '@/lib/database';
+import {darkTheme} from '@/lib/dataTableThemes';
+import {RowActions} from '@/components/pages/DataTableRowActions';
+import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
 
 interface IProjectsDataTableProps {
     projects: Database.IProject[];

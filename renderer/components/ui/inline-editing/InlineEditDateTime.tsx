@@ -9,9 +9,9 @@
 import classNames from 'classnames';
 import {useCallback, useState} from 'react';
 
-import BaseInput from '../form/BaseInput';
-import {utcISOToLocalISO, isoToLocale, localISOToUTCISO} from '../../../lib/dateTimeConversion';
-import TextElement from '../../../lib/types/TextElement';
+import BaseInput from '@/components/ui/form/BaseInput';
+import {isoToLocale} from '@/lib/dateTimeConversion';
+import TextElement from '@/lib/types/TextElement';
 
 export interface IInlineEditDateTimeProps {
     as?: TextElement;

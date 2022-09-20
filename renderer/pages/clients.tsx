@@ -12,11 +12,11 @@ import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
-import * as db from '../lib/database';
-import AddClientForm from '../components/pages/clients/AddClientForm';
-import ClientCard from '../components/pages/clients/ClientCard';
-import Button from '../components/ui/Button';
-import {Icon, plus} from '../components/ui/Icon';
+import * as db from '@/lib/database';
+import AddClientForm from '@/components/pages/clients/AddClientForm';
+import ClientCard from '@/components/pages/clients/ClientCard';
+import Button from '@/components/ui/Button';
+import {Icon, plus} from '@/components/ui/Icon';
 
 export default function Clients(props) {
     const [clients, setClients] = useState<Database.IClient[]>([]);

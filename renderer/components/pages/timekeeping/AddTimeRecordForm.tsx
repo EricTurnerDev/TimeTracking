@@ -14,13 +14,13 @@ import {Database} from 'timetracking-common';
 import {DateTime} from 'luxon';
 import * as Yup from 'yup';
 
-import Button from '../../ui/Button';
-import {createTimeRecord, getClients, getProjects} from '../../../lib/database';
-import CheckboxInput from '../../ui/form/CheckboxInput';
-import DateTimeInput from '../../ui/form/DateTimeInput';
-import NumberInput from '../../ui/form/NumberInput';
-import Select from '../../ui/form/Select';
-import TextInput from '../../ui/form/TextInput';
+import Button from '@/components/ui/Button';
+import {createTimeRecord, getClients, getProjects} from '@/lib/database';
+import CheckboxInput from '@/components/ui/form/CheckboxInput';
+import DateTimeInput from '@/components/ui/form/DateTimeInput';
+import NumberInput from '@/components/ui/form/NumberInput';
+import Select from '@/components/ui/form/Select';
+import TextInput from '@/components/ui/form/TextInput';
 
 interface IAddTimeRecordFormProps {
     className?: string;

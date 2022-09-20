@@ -10,11 +10,11 @@
 import {useCallback, useState} from 'react';
 import classNames from 'classnames';
 
-import BaseSelect from '../form/BaseSelect';
-import isBlank from '../../../lib/isBlank';
-import NonEmptyArray from "../../../lib/types/NonEmptyArray";
-import SelectOption from "../../../lib/types/SelectOption";
-import TextElement from "../../../lib/types/TextElement";
+import BaseSelect from '@/components/ui/form/BaseSelect';
+import isBlank from '@/lib/isBlank';
+import NonEmptyArray from "@/lib/types/NonEmptyArray";
+import SelectOption from "@/lib/types/SelectOption";
+import TextElement from "@/lib/types/TextElement";
 
 interface ISubtleSelectProps {
     as?: TextElement;

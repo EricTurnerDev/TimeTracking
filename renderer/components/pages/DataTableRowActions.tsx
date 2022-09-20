@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import {ReactNode, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {Database} from 'timetracking-common';
 
-import {gear, Icon, trash} from '../ui/Icon';
+import {gear, Icon, trash} from '@/components/ui/Icon';
 
 interface IRowActionsProps {
     row: Database.IDetailedTimeRecord;

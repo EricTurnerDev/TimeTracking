@@ -12,11 +12,11 @@ import Head from 'next/head';
 import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
 
-import {getDetailedTimeRecords} from '../lib/database';
-import Button from '../components/ui/Button';
-import AddTimeRecordForm from '../components/pages/timekeeping/AddTimeRecordForm';
-import {Icon, plus} from '../components/ui/Icon';
-import TimekeepingDataTable from '../components/pages/timekeeping/TimekeepingDataTable';
+import {getDetailedTimeRecords} from '@/lib/database';
+import Button from '@/components/ui/Button';
+import AddTimeRecordForm from '@/components/pages/timekeeping/AddTimeRecordForm';
+import {Icon, plus} from '@/components/ui/Icon';
+import TimekeepingDataTable from '@/components/pages/timekeeping/TimekeepingDataTable';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();

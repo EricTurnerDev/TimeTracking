@@ -9,10 +9,9 @@
 
 import classNames from 'classnames';
 import {ReactNode,useId} from 'react';
-import {useField} from 'formik';
 
-import Label from './Label';
-import P from '../text/P';
+import Label from '@/components/ui/form/Label';
+import P from '@/components/ui/text/P';
 
 export interface IBaseSelectProps {
     id?: string;

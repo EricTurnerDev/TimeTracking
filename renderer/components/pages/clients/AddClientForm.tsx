@@ -13,9 +13,9 @@ import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import * as Yup from 'yup';
 
-import TextInput from '../../ui/form/TextInput';
-import Button from '../../ui/Button';
-import {createClient, getClients} from '../../../lib/database';
+import TextInput from '@/components/ui/form/TextInput';
+import Button from '@/components/ui/Button';
+import {createClient, getClients} from '@/lib/database';
 
 interface IAddTextFormProps {
     className?: string;

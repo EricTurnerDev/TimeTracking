@@ -10,8 +10,8 @@
 import classNames from 'classnames';
 import {ReactNode, useCallback, useState} from 'react';
 
-import BaseInput from '../form/BaseInput';
-import TextElement from "../../../lib/types/TextElement";
+import BaseInput from '@/components/ui/form/BaseInput';
+import TextElement from "@/lib/types/TextElement";
 
 export interface ISubtleTextInputProps {
     as?: TextElement;

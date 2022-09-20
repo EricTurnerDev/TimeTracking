@@ -8,7 +8,7 @@
  */
 
 import Head from 'next/head';
-import H1 from '../components/ui/text/H1';
+import H1 from '@/components/ui/text/H1';
 
 export default function Home() {
     return (

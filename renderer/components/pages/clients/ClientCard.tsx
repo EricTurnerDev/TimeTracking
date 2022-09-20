@@ -12,14 +12,13 @@ import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 
 import AddProjectForm from './AddProjectForm';
-import Button from '../../ui/Button';
-import Card from '../../ui/Card';
-import {deleteClient, getProjects} from '../../../lib/database';
-import H3 from '../../ui/text/H3';
-import {Icon, trash, plus} from '../../ui/Icon';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import {deleteClient, getProjects} from '@/lib/database';
+import {Icon, trash, plus} from '@/components/ui/Icon';
 import ProjectsDataTable from './ProjectsDataTable';
-import * as db from "../../../lib/database";
-import InlineEditText from '../../ui/inline-editing/InlineEditText';
+import * as db from "@/lib/database";
+import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
 
 export interface IClientCardProps {
     client: Database.IClient,

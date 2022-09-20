@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import {ReactNode} from 'react';
 
-import TextElement from '../../../lib/types/TextElement';
+import TextElement from '@/lib/types/TextElement';
 
 export interface IBaseTextProps {
     as?: TextElement;

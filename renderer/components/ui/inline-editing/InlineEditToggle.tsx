@@ -10,8 +10,8 @@
 import classNames from 'classnames';
 import {useCallback, useState} from 'react';
 
-import TextElement from '../../../lib/types/TextElement';
-import BaseInput from "../form/BaseInput";
+import TextElement from '@/lib/types/TextElement';
+import BaseInput from "@/components/ui/form/BaseInput";
 
 export interface IInlineEditToggle {
     as?: TextElement;

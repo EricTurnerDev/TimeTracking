@@ -13,10 +13,10 @@ import {useEffect, useState} from 'react';
 import {Database} from 'timetracking-common';
 import * as Yup from 'yup';
 
-import HiddenInput from '../../ui/form/HiddenInput';
-import TextInput from '../../ui/form/TextInput';
-import Button from '../../ui/Button';
-import {createProject, getProjects} from '../../../lib/database';
+import HiddenInput from '@/components/ui/form/HiddenInput';
+import TextInput from '@/components/ui/form/TextInput';
+import Button from '@/components/ui/Button';
+import {createProject, getProjects} from '@/lib/database';
 
 interface IAddProjectFormProps {
     client: Database.IClient;
