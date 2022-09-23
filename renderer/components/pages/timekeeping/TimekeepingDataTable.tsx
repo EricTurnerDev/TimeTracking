@@ -10,6 +10,7 @@
 import {darkTheme} from '@/lib/dataTableThemes';
 
 import classNames from 'classnames';
+import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
 import DataTable, {createTheme} from 'react-data-table-component';
 import {Database} from 'timetracking-common';
@@ -112,16 +113,18 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                     {
                         name: 'Start',
                         selector: row => row.start_ts,
-                        format: row => isoToLocale(row.start_ts),
                         width: '10rem',
-                        cell: row => <InlineEditDateTime className='z-50' onSave={async (utc: string) => startDateTimeChanged(row, utc)} autoFocus={true}>{utcISOToLocalISO(row.start_ts)}</InlineEditDateTime>
+                        cell: row => <InlineEditDateTime className='z-50'
+                                                         onSave={async (localISODateTime: string) => startDateTimeChanged(row, localISODateTime)}
+                                                         autoFocus={true}>{row.start_ts}</InlineEditDateTime>
                     },
                     {
                         name: 'End',
                         selector: row => row.end_ts,
-                        format: row => isoToLocale(row.end_ts),
                         width: '10rem',
-                        cell: row => <InlineEditDateTime className='z-40' onSave={async (utc: string) => endDateTimeChanged(row, utc)} autoFocus={true}>{utcISOToLocalISO(row.end_ts)}</InlineEditDateTime>
+                        cell: row => <InlineEditDateTime className='z-40'
+                                                         onSave={async (localISODateTime: string) => endDateTimeChanged(row, localISODateTime)}
+                                                         autoFocus={true}>{row.end_ts || ''}</InlineEditDateTime>
                     },
                     {
                         name: 'Hours',
@@ -134,7 +137,9 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                         sortable: false,
                         cell: (row) => <RowActions row={row}
                                                    deleteRow={timeRecordDeleted}
-                                                   onDelete={onDelete}/>,
+                                                   onDelete={onDelete}
+                                                   cloneRow={timeRecordCloned}
+                                                   onClone={() => console.log(`Clone completed`)}/>,
                         ignoreRowClick: true,
                         width: '3rem'
                     }
@@ -146,6 +151,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
+        await refreshTableData();
     };
 
     const clientChanged = async (row, option: SelectOption) => {
@@ -155,6 +161,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const projectChanged = async (row, option: SelectOption) => {
         await db.updateTimeRecord({id: row.id, project_id: parseInt(option.value)});
+        await refreshTableData();
     };
 
     const startDateTimeChanged = async (row, localISODateTime) => {
@@ -169,7 +176,32 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
     const billableChanged = async (row, billable) => {
         await db.updateTimeRecord({id: row.id, billable});
+        await refreshTableData();
     }
+
+    const timeRecordCloned = async (timeRecordId: number) => {
+        // Find the time record in tableData by the timeRecordId
+        const timeRecord = timeRecords.find(record => {
+            return record.id === timeRecordId;
+        });
+
+        if (timeRecord) {
+            // Create a new time record from the existing one
+            const record: Database.ITimeRecord = (({description, client_id, project_id, billable}) => ({
+                description,
+                client_id,
+                project_id,
+                billable,
+                start_ts: DateTime.utc().toISO(),
+            }))(timeRecord);
+
+            await db.createTimeRecord(record)
+
+            await refreshTableData();
+        } else {
+            throw new Error(`Unable to find time record ${timeRecordId} to clone it`);
+        }
+    };
 
     const timeRecordDeleted = async (timeRecordId: number) => {
         await db.deleteTimeRecord(timeRecordId);
@@ -179,6 +211,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
     const refreshTableData = async () => {
         setPending(true);
         const updatedTimeRecords = await db.getDetailedTimeRecords({});
+        // TODO: I think we need to re-create the project select options, because they disappear when this is called.
         setTableData(createTableData(updatedTimeRecords, projectSelectOptions));
         setPending(false);
     };

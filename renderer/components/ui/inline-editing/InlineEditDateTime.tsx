@@ -7,10 +7,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import classNames from 'classnames';
+import {DateTime} from 'luxon';
 import {useCallback, useState} from 'react';
 
 import BaseInput from '@/components/ui/form/BaseInput';
-import {isoToLocale} from '@/lib/dateTimeConversion';
+import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '@/lib/dateTimeConversion';
 import TextElement from '@/lib/types/TextElement';
 
 export interface IInlineEditDateTimeProps {
@@ -34,8 +35,8 @@ const InlineEditDateTime = ({
     const [editing, setEditing] = useState<boolean>(false);
 
     // Internally we keep track of it as an ISO date string in local time.
-    const [date, setDate] = useState<string>(children);
-    const [editedDate, setEditedDate] = useState<string>(children);
+    const [date, setDate] = useState<string>(utcISOToLocalISO(children));
+    const [editedDate, setEditedDate] = useState<string>(utcISOToLocalISO(children));
 
     const keyDown = useCallback((e) => {
         if (e.key === 'Escape') {
@@ -79,7 +80,7 @@ const InlineEditDateTime = ({
             {editing &&
                 <BaseInput
                     type='datetime-local'
-                    value={editedDate}
+                    value={DateTime.fromISO(editedDate).toFormat("yyyy-MM-dd'T'HH:mm")}
                     onChange={onChange}
                     onBlur={onBlur}
                     onKeyDown={keyDown}
