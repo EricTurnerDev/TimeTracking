@@ -19,10 +19,10 @@ import {clone, gear, Icon, trash} from '@/components/ui/Icon';
 
 interface IRowActionsProps {
     row: Database.IDetailedTimeRecord;
-    deleteRow: (number) => Promise<void>;
-    onDelete: () => any;
-    cloneRow: (number) => Promise<void>;
-    onClone: () => any;
+    deleteRow?: (number) => Promise<void>;
+    onDelete?: () => any;
+    cloneRow?: (number) => Promise<void>;
+    onClone?: () => any;
 }
 
 export const RowActions = ({row, deleteRow, onDelete, cloneRow, onClone}: IRowActionsProps) => {
@@ -70,13 +70,15 @@ export const RowActions = ({row, deleteRow, onDelete, cloneRow, onClone}: IRowAc
                 ref={menuRef}
                 style={{top: menuLocation.y + 8, left: menuLocation.x - menuWidth - 8}}>
                 <div>
-                    <RowAction row={row} action={cloneRow} actionSucceeded={onClone} actionCompleted={hideMenu}>
-                        <Icon icon={clone} className='mr-2'/> Clone
-                    </RowAction>
+                    {cloneRow && onClone &&
+                        <RowAction row={row} action={cloneRow} actionSucceeded={onClone} actionCompleted={hideMenu}>
+                            <Icon icon={clone} className='mr-2'/> Clone
+                        </RowAction>}
 
-                    <RowAction row={row} action={deleteRow} actionSucceeded={onDelete} actionCompleted={hideMenu}>
-                        <Icon icon={trash} className='mr-2'/> Delete
-                    </RowAction>
+                    {deleteRow && onDelete &&
+                        <RowAction row={row} action={deleteRow} actionSucceeded={onDelete} actionCompleted={hideMenu}>
+                            <Icon icon={trash} className='mr-2'/> Delete
+                        </RowAction>}
                 </div>
             </div>
 
