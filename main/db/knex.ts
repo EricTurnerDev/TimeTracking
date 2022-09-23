@@ -9,14 +9,10 @@
 
 import knex from 'knex';
 import knexConfig from '../knexfile';
-import path from "path";
-import {app} from "electron";
+import path from 'path';
+import {getDatabaseLocation} from '../lib/database';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
-
-export function getDatabaseLocation() {
-    return path.join(app.getPath('userData'), 'timetracking.sqlite');
-}
 
 export async function create() {
     const dbLocation = getDatabaseLocation();

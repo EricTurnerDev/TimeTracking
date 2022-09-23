@@ -154,3 +154,7 @@ export async function getTimeRecords(query: Database.ITimeRecordsQuery): Promise
 export async function getDetailedTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.IDetailedTimeRecord[]> {
     return await send(IpcChannels.GetDetailedTimeRecords, query);
 }
+
+export async function downloadDatabaseFile(): Promise<Buffer> {
+    return await send(IpcChannels.DownloadDatabaseFile);
+}
