@@ -46,39 +46,6 @@ anywhere from the command line.
 
 TODO
 
-## Usage
-
-### Add a client
-
-1. Select `Clients & Projects` from the sidebar
-2. Press the `New Client` button
-3. Enter the name of the client
-4. Press the `Add Client` button
-
-![Add client](./readme-images/create-client.png)
-
-### Edit a client
-
-### Delete a client
-
-WARNING: Deleting a client will delete all projects and time records associated
-with the client.
-
-### Add a project
-
-### Edit a project
-
-### Delete a project
-
-IMPORTANT: Time records associated with the project will not have the deleted
-project associated with them anymore.
-
-### Record time
-
-### Edit a time record
-
-### Delete a time record
-
 ## Contributing
 
 There are several ways you can contribute to TimeTracking development:
