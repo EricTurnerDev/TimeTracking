@@ -19,7 +19,7 @@ export const isoToLocale = (iso: string): string => {
 
 export const utcISOToLocalISO = (utc: string): string => {
     if (utc) {
-        return DateTime.fromISO(utc).toLocal().toFormat("yyyy-MM-dd'T'hh:mm");
+        return DateTime.fromISO(utc).toLocal().toISO();
     } else {
         return '';
     }

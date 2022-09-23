@@ -15,15 +15,17 @@ import classNames from 'classnames';
 import {ReactNode, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {Database} from 'timetracking-common';
 
-import {gear, Icon, trash} from '@/components/ui/Icon';
+import {clone, gear, Icon, trash} from '@/components/ui/Icon';
 
 interface IRowActionsProps {
     row: Database.IDetailedTimeRecord;
     deleteRow: (number) => Promise<void>;
     onDelete: () => any;
+    cloneRow: (number) => Promise<void>;
+    onClone: () => any;
 }
 
-export const RowActions = ({row, deleteRow, onDelete}: IRowActionsProps) => {
+export const RowActions = ({row, deleteRow, onDelete, cloneRow, onClone}: IRowActionsProps) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuLocation, setMenuLocation] = useState({x: 0, y: 0});
     const [menuWidth, setMenuWidth] = useState(0);
@@ -68,6 +70,10 @@ export const RowActions = ({row, deleteRow, onDelete}: IRowActionsProps) => {
                 ref={menuRef}
                 style={{top: menuLocation.y + 8, left: menuLocation.x - menuWidth - 8}}>
                 <div>
+                    <RowAction row={row} action={cloneRow} actionSucceeded={onClone} actionCompleted={hideMenu}>
+                        <Icon icon={clone} className='mr-2'/> Clone
+                    </RowAction>
+
                     <RowAction row={row} action={deleteRow} actionSucceeded={onDelete} actionCompleted={hideMenu}>
                         <Icon icon={trash} className='mr-2'/> Delete
                     </RowAction>

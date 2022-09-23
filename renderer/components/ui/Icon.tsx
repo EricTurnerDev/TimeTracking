@@ -8,7 +8,7 @@
  */
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faClock, faDollarSign, faGear, faHome, faPencil, faPeopleGroup, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faClock, faClone, faDollarSign, faGear, faHome, faPencil, faPeopleGroup, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 import classNames from 'classnames';
 
@@ -21,6 +21,7 @@ const styles = {
 // it everywhere icons are used in our code.
 interface IIconType extends IconDefinition {}
 export const clock:IIconType = faClock;
+export const clone:IIconType = faClone;
 export const dollarSign:IIconType = faDollarSign;
 export const gear:IIconType = faGear;
 export const home:IIconType = faHome;
