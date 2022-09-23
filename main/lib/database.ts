@@ -7,11 +7,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {ipcMain} from 'electron';
+import {app, ipcMain} from 'electron';
 import {IpcChannels, Database} from 'timetracking-common';
 
 import Knex from '../db/knex';
-import {ITimeRecordsQuery} from "timetracking-common/src/database";
+import path from "path";
 
 let knex;
 
@@ -20,6 +20,10 @@ export async function initialize() {
     await knex.migrate.latest()
         .then(() => console.log('database migration completed'))
         .catch(err => console.error(err));
+}
+
+export function getDatabaseLocation() {
+    return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }
 
 export function listen() {

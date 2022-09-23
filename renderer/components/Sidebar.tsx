@@ -11,7 +11,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Icon, clock, home, people} from './ui/Icon';
+import {Icon, clock, gear, home, people} from './ui/Icon';
 import Span from './ui/text/Span';
 
 interface ISidebarProps {
@@ -36,6 +36,10 @@ export default function Sidebar({className}: ISidebarProps) {
 
             <SidebarItem href='/clients'>
                 <Icon icon={people} className={styles.icon}/> <Span>Clients & Projects</Span>
+            </SidebarItem>
+
+            <SidebarItem href='/settings'>
+                <Icon icon={gear} className={styles.icon}/> <Span>Settings</Span>
             </SidebarItem>
         </aside>
     )

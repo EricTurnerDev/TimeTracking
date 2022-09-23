@@ -7,10 +7,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { app } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import {download} from 'electron-dl';
 import serve from 'electron-serve';
-import { createWindow } from './helpers';
+import {DateTime} from 'luxon';
+import {IpcChannels} from "timetracking-common";
+
 import * as db from './lib/database';
+import { createWindow } from './helpers';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
@@ -43,6 +47,25 @@ if (isProd) {
     await mainWindow.loadURL(`http://localhost:${port}/home`);
     mainWindow.webContents.openDevTools();
   }
+
+  // Handle requests to download the sqlite database file
+  ipcMain.handle(IpcChannels.DownloadDatabaseFile, (event) => {
+    const getDb = async () => {
+      const timestamp = DateTime.now().toFormat('yyyyLLddHHmmss');
+      const filename = `${timestamp}-timetracking.sqlite`;
+      const dl = await download(
+          BrowserWindow.getFocusedWindow(),
+          db.getDatabaseLocation(),
+          {
+            saveAs: true,
+            directory: app.getPath('downloads'),
+            filename
+          });
+      mainWindow.webContents.send("download complete", dl.getSavePath());
+    };
+
+    getDb().catch(err => console.error(err));
+  });
 })();
 
 app.on('window-all-closed', () => {
