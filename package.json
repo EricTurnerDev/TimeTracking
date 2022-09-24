@@ -31,6 +31,7 @@
     "sqlite3": "^5.0.11",
     "styled-components": "^5.3.5",
     "timetracking-common": "file:timetracking-common",
+    "xlsx": "^0.18.5",
     "yup": "^0.32.11"
   },
   "devDependencies": {

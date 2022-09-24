@@ -12,36 +12,48 @@ import Head from 'next/head';
 import {useState, useEffect} from 'react';
 import {Database} from 'timetracking-common';
 
-import {getDetailedTimeRecords} from '@/lib/database';
-import Button from '@/components/ui/Button';
 import AddTimeRecordForm from '@/components/pages/timekeeping/AddTimeRecordForm';
-import {Icon, plus} from '@/components/ui/Icon';
+import Button from '@/components/ui/Button';
+import {exportSpreadsheet, getDetailedTimeRecords} from '@/lib/database';
+import {Icon, plus, spreadsheet} from '@/components/ui/Icon';
 import TimekeepingDataTable from '@/components/pages/timekeeping/TimekeepingDataTable';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
     const [addingTimeRecord, setAddingTimeRecord] = useState<boolean>(false);
+    const [exportingTimeRecords, setExportingTimeRecords] = useState<boolean>(false);
 
-    const showTimeRecords = async () => {
+    // Fetches time records from the database, and saves them in this component's state.
+    const updateTimeRecords = async () => {
         const trs: Database.IDetailedTimeRecord[] = await getDetailedTimeRecords({});
         setTimeRecords(trs);
     }
 
+    // Initializes this component's state with time records.
     useEffect(() => {
-       showTimeRecords().catch(err => console.log(err));
+       updateTimeRecords().catch(err => console.log(err));
     }, []);
 
     const addTimeRecordButtonClicked = () => {
+        // This will cause the form for adding time records to be shown.
         setAddingTimeRecord(true);
+    };
+
+    const exportTimeRecordsButtonClicked = () => {
+        // TODO: Change this so shows a form that the user can use to filter records by date range, client, etc...
+        // similar to how we show a form to add a new time record.
+        setExportingTimeRecords(true);
+        exportSpreadsheet({}).catch(err => console.error(err));
+        setExportingTimeRecords(false);
     };
 
     const timeRecordAdded = () => {
         setAddingTimeRecord(false);
-        showTimeRecords().catch(err => console.error(err));
+        updateTimeRecords().catch(err => console.error(err));
     }
 
     const timeRecordDeleted = () => {
-        showTimeRecords().catch(err => console.error(err));
+        updateTimeRecords().catch(err => console.error(err));
     }
 
     const addingTimeRecordCanceled = () => {
@@ -54,9 +66,13 @@ export default function Timekeeping() {
                 <title>Timekeeping - TimeTracking</title>
             </Head>
 
-            <div className='mb-4 text-right'>
-                <Button onClick={addTimeRecordButtonClicked} disabled={addingTimeRecord}>
+            <div className='flex flex-row justify-end mb-4'>
+                <Button className='mr-2' onClick={addTimeRecordButtonClicked} disabled={addingTimeRecord}>
                     <Icon icon={plus} /> New Time Record
+                </Button>
+
+                <Button variant='secondary' onClick={exportTimeRecordsButtonClicked} disabled={exportingTimeRecords}>
+                    <Icon icon={spreadsheet} /> Export Time Records
                 </Button>
             </div>
 

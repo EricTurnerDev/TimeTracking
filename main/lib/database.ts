@@ -8,10 +8,10 @@
  */
 
 import {app, ipcMain} from 'electron';
+import path from 'path';
 import {IpcChannels, Database} from 'timetracking-common';
 
 import Knex from '../db/knex';
-import path from "path";
 
 let knex;
 
@@ -24,6 +24,36 @@ export async function initialize() {
 
 export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
+}
+
+export function getDetailedTimeRecords({clientId, projectId}: Database.ITimeRecordsQuery) {
+    // GetTimeRecords supports querying by client id, project id, or both. Build the query object
+    // based on the arguments received on the IPC channel.
+
+    const query: Database.ITimeRecord = {};
+
+    if (clientId) {
+        query.client_id = clientId;
+    }
+
+    if (projectId) {
+        query.project_id = projectId;
+    }
+
+    const columns = [
+        'time_records.*',
+        'projects.project_name AS project_name',
+        'clients.client_name AS client_name',
+        knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
+    ]
+
+    return knex
+        .select(columns)
+        .from('time_records')
+        .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
+        .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
+        .orderBy('time_records.end_ts', 'desc');
+    // TODO: Add a where clause with the query
 }
 
 export function listen() {
@@ -136,33 +166,7 @@ export function listen() {
         return knex.select().from('time_records').where(query);
     });
 
-    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
-        // GetTimeRecords supports querying by client id, project id, or both. Build the query object
-        // based on the arguments received on the IPC channel.
-
-        const query: Database.ITimeRecord = {};
-
-        if (clientId) {
-            query.client_id = clientId;
-        }
-
-        if (projectId) {
-            query.project_id = projectId;
-        }
-
-        const columns = [
-            'time_records.*',
-            'projects.project_name AS project_name',
-            'clients.client_name AS client_name',
-            knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
-        ]
-
-        return knex
-            .select(columns)
-            .from('time_records')
-            .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
-            .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
-            .orderBy('time_records.end_ts', 'desc');
-        // TODO: Add a where clause with the query
+    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, query: Database.ITimeRecordsQuery) => {
+        return getDetailedTimeRecords(query);
     });
 }

@@ -16,3 +16,4 @@ export declare const UpdateTimeRecord: string;
 export declare const GetTimeRecords: string;
 export declare const GetDetailedTimeRecords: string;
 export declare const DownloadDatabaseFile: string;
+export declare const ExportSpreadsheet: string;

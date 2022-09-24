@@ -7,7 +7,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {IpcChannels, Database} from "timetracking-common";
+import {IpcChannels, Database} from 'timetracking-common';
 
 import {send} from './ipc';
 
@@ -155,6 +155,16 @@ export async function getDetailedTimeRecords(query: Database.ITimeRecordsQuery):
     return await send(IpcChannels.GetDetailedTimeRecords, query);
 }
 
+/**
+ * Prompts the user to download the SQLite database
+ */
 export async function downloadDatabaseFile(): Promise<Buffer> {
     return await send(IpcChannels.DownloadDatabaseFile);
+}
+
+/**
+ * Prompts the user to download a spreadsheet of time records.
+ */
+export async function exportSpreadsheet(query={}): Promise<void> {
+    return await send(IpcChannels.ExportSpreadsheet, query);
 }

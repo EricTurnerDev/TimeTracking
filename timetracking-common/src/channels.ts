@@ -28,3 +28,4 @@ export const GetTimeRecords: string = 'time-records:get';
 export const GetDetailedTimeRecords: string = 'time-records:detailed:get';
 
 export const DownloadDatabaseFile: string = 'database:file:download';
+export const ExportSpreadsheet: string = 'spreadsheet:export';
