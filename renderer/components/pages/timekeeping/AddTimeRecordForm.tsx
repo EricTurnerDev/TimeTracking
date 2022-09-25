@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import {Formik, Form, useFormikContext} from 'formik';
 import {useEffect, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 import {DateTime} from 'luxon';
 import * as Yup from 'yup';
 
@@ -34,7 +34,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
         error: 'border-red-600 focus:ring-red-600 text-red-600',
     };
 
-    const initialFormState: Database.ITimeRecord = {
+    const initialFormState: DatabaseInterfaces.ITimeRecord = {
         description: '',
         client_id: 0,
         project_id: 0,
@@ -57,8 +57,8 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     });
 
     const [submitError, setSubmitError] = useState<string>('');
-    const [clients, setClients] = useState<Database.IClient[]>([{id: -1, client_name: ''}]);
-    const [projects, setProjects] = useState<Database.IProject[]>([{id: -1, project_name: ''}]);
+    const [clients, setClients] = useState<DatabaseInterfaces.IClient[]>([{id: -1, client_name: ''}]);
+    const [projects, setProjects] = useState<DatabaseInterfaces.IProject[]>([{id: -1, project_name: ''}]);
 
     // Versions of start_ts and end_ts converted to UTC ISO format for when we save the time record in the database.
     const [utcStartTs, setUtcStartTs] = useState<string>();
@@ -67,7 +67,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     // Get the clients for the select input once when the component mounts
     useEffect(() => {
         getClients()
-            .then((clients: Database.IClient[]) => {
+            .then((clients: DatabaseInterfaces.IClient[]) => {
                 setClients([{id: 0, client_name: ''}, ...clients]);
             })
             .catch(err => console.error(err));
@@ -105,7 +105,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
         // When a client is selected, get the client's projects.
         if (touched.client_id) {
             getProjects({clientId: values.client_id})
-                .then((projects: Database.IProject[]) => {
+                .then((projects: DatabaseInterfaces.IProject[]) => {
                     setProjects([{id: 0, project_name: ''}, ...projects]);
                 })
                 .catch(err => console.error(err));
@@ -145,7 +145,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                             label='Client'
                             className='w-1 grow mr-4'
                             required>
-                            {clients && clients.map((client: Database.IClient) => (
+                            {clients && clients.map((client: DatabaseInterfaces.IClient) => (
                                 <option key={client.id} value={client.id}>{client.client_name}</option>))}
                         </Select>
 
@@ -153,7 +153,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                             name='project_id'
                             className='w-1 grow'
                             label='Project'>
-                            {projects && projects.map((project: Database.IProject) => (
+                            {projects && projects.map((project: DatabaseInterfaces.IProject) => (
                                 <option key={project.id} value={project.id}>{project.project_name}</option>))}
                         </Select>
                     </div>

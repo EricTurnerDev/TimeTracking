@@ -11,7 +11,7 @@ import {app, BrowserWindow, ipcMain} from 'electron';
 import {download} from 'electron-dl';
 import serve from 'electron-serve';
 import {DateTime} from 'luxon';
-import {Database, IpcChannels} from "timetracking-common";
+import {DatabaseInterfaces, IpcChannels} from "timetracking-common";
 import XLSX from 'xlsx';
 
 import * as db from './lib/database';
@@ -66,8 +66,8 @@ if (isProd) {
     });
 
     // Handle requests to export a spreadsheet of time records.
-    ipcMain.handle(IpcChannels.ExportSpreadsheet, async (event, query: Database.ITimeRecordsQuery) => {
-        const originalRows: Database.IDetailedTimeRecord[] = await db.getDetailedTimeRecords(query);
+    ipcMain.handle(IpcChannels.ExportSpreadsheet, async (event, query: DatabaseInterfaces.ITimeRecordsQuery) => {
+        const originalRows: DatabaseInterfaces.IDetailedTimeRecord[] = await db.getDetailedTimeRecords(query);
 
         // Remove columns we don't want
         const rows = originalRows.map(({id, client_id, project_id, adjustment, ...rest}) => rest);

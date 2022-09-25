@@ -1,3 +1,3 @@
 import * as IpcChannels from './channels.js';
-import * as Database from './database';
-export { IpcChannels, Database, };
+import * as DatabaseInterfaces from './database-interfaces';
+export { IpcChannels, DatabaseInterfaces, };

@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import Head from 'next/head';
 import React, {useEffect, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import * as db from '@/lib/database';
 import AddClientForm from '@/components/pages/clients/AddClientForm';
@@ -19,11 +19,11 @@ import Button from '@/components/ui/Button';
 import {Icon, plus} from '@/components/ui/Icon';
 
 export default function Clients(props) {
-    const [clients, setClients] = useState<Database.IClient[]>([]);
+    const [clients, setClients] = useState<DatabaseInterfaces.IClient[]>([]);
     const [addingClient, setAddingClient] = useState<boolean>(false);
 
     const showClients = async () => {
-        const result: Database.IClient[] = await db.getClients();
+        const result: DatabaseInterfaces.IClient[] = await db.getClients();
         setClients(result);
     };
 
@@ -62,7 +62,7 @@ export default function Clients(props) {
 
             {addingClient && <AddClientForm className='mb-4' onClientAdded={clientAdded} onCancel={addingClientCanceled}/>}
 
-                {clients && clients.map((client: Database.IClient) => {
+                {clients && clients.map((client: DatabaseInterfaces.IClient) => {
                     return (
                         <ClientCard key={client.id} className='mb-8' client={client} onClientDeleted={clientDeleted} />
                     )

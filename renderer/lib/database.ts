@@ -7,7 +7,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {IpcChannels, Database} from 'timetracking-common';
+import {IpcChannels, DatabaseInterfaces} from 'timetracking-common';
 
 import {send} from './ipc';
 
@@ -17,7 +17,7 @@ import {send} from './ipc';
  * Requests the main process to create a client.
  * @returns a promise that resolves when the client is created, or rejects with an error.
  */
-export async function createClient(client: Database.IClient): Promise<void> {
+export async function createClient(client: DatabaseInterfaces.IClient): Promise<void> {
     return await send(IpcChannels.CreateClient, client);
 }
 
@@ -25,7 +25,7 @@ export async function createClient(client: Database.IClient): Promise<void> {
  * Requests the main process to get a client.
  * @returns a promise that resolves with the client, or rejects with an error.
  */
-export async function getClient(id:number): Promise<Database.IClient> {
+export async function getClient(id:number): Promise<DatabaseInterfaces.IClient> {
     return await send(IpcChannels.GetClient, id);
 }
 
@@ -41,7 +41,7 @@ export async function deleteClient(id:number): Promise<void> {
  * Requests the main process to update a client.
  * @returns a promise that resolves when the client is updated, or rejects with an error.
  */
-export async function updateClient(id: number, client: Database.IClient): Promise<void> {
+export async function updateClient(id: number, client: DatabaseInterfaces.IClient): Promise<void> {
     return await send(IpcChannels.UpdateClient, {...client, id});
 }
 
@@ -50,7 +50,7 @@ export async function updateClient(id: number, client: Database.IClient): Promis
  * Requests a list of all the clients from the main process.
  * @returns a promise that resolves with a list of clients, or rejects with an error.
  */
-export async function getClients(): Promise<Database.IClient[]> {
+export async function getClients(): Promise<DatabaseInterfaces.IClient[]> {
     return await send(IpcChannels.GetClients);
 }
 
@@ -60,7 +60,7 @@ export async function getClients(): Promise<Database.IClient[]> {
  * Requests the main process to create a project.
  * @returns a promise that resolves when the project is created, or rejects with an error.
  */
-export async function createProject(project: Database.IProject): Promise<void> {
+export async function createProject(project: DatabaseInterfaces.IProject): Promise<void> {
     return await send(IpcChannels.CreateProject, project);
 }
 
@@ -68,7 +68,7 @@ export async function createProject(project: Database.IProject): Promise<void> {
  * Requests the main process to get a project.
  * @returns a promise that resolves with the project, or rejects with an error.
  */
-export async function getProject(id:number): Promise<Database.IProject> {
+export async function getProject(id:number): Promise<DatabaseInterfaces.IProject> {
     return await send(IpcChannels.GetProject, id);
 }
 
@@ -85,7 +85,7 @@ export async function deleteProject(id:number): Promise<void> {
  * Requests the main process to update a project.
  * @returns a promise that resolves when the project is updated, or rejects with an error.
  */
-export async function updateProject(id: number, project: Database.IProject): Promise<void> {
+export async function updateProject(id: number, project: DatabaseInterfaces.IProject): Promise<void> {
     return await send(IpcChannels.UpdateProject, {...project, id});
 }
 
@@ -93,7 +93,7 @@ export async function updateProject(id: number, project: Database.IProject): Pro
  * Requests a list of projects from the main process.
  * @returns a promise that resolves with a list of projects, or rejects with an error.
  */
-export async function getProjects(query:Database.IProjectsQuery): Promise<Database.IProject[]> {
+export async function getProjects(query:DatabaseInterfaces.IProjectsQuery): Promise<DatabaseInterfaces.IProject[]> {
     return await send(IpcChannels.GetProjects, query);
 }
 
@@ -103,7 +103,7 @@ export async function getProjects(query:Database.IProjectsQuery): Promise<Databa
  * Requests the main process to create a time record.
  * @returns a promise that resolves when the time record is created, or rejects with an error.
  */
-export async function createTimeRecord(timeRecord: Database.ITimeRecord): Promise<void> {
+export async function createTimeRecord(timeRecord: DatabaseInterfaces.ITimeRecord): Promise<void> {
     return await send(IpcChannels.CreateTimeRecord, timeRecord);
 }
 
@@ -111,7 +111,7 @@ export async function createTimeRecord(timeRecord: Database.ITimeRecord): Promis
  * Requests the main process to get a time record.
  * @returns a promise that resolves with the time record, or rejects with an error.
  */
-export async function getTimeRecord(id: number): Promise<Database.ITimeRecord> {
+export async function getTimeRecord(id: number): Promise<DatabaseInterfaces.ITimeRecord> {
     return await send(IpcChannels.GetTimeRecord, id);
 }
 
@@ -119,7 +119,7 @@ export async function getTimeRecord(id: number): Promise<Database.ITimeRecord> {
  * Requests the main process to get a detailed time record.
  * @returns a promise that resolves with the detailed time record, or rejects with an error.
  */
-export async function getDetailedTimeRecord(id: number): Promise<Database.ITimeRecord> {
+export async function getDetailedTimeRecord(id: number): Promise<DatabaseInterfaces.ITimeRecord> {
     return await send(IpcChannels.GetDetailedTimeRecord, id);
 }
 
@@ -135,7 +135,7 @@ export async function deleteTimeRecord(id:number): Promise<void> {
  * Requests the main process to update a time record.
  * @returns a promise that resolves when the time record is updated, or rejects with an error.
  */
-export async function updateTimeRecord(timeRecord: Database.ITimeRecord): Promise<void> {
+export async function updateTimeRecord(timeRecord: DatabaseInterfaces.ITimeRecord): Promise<void> {
     return await send(IpcChannels.UpdateTimeRecord, timeRecord);
 }
 
@@ -143,7 +143,7 @@ export async function updateTimeRecord(timeRecord: Database.ITimeRecord): Promis
  * Request a list of time records for a client and/or project from the main process.
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */
-export async function getTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.ITimeRecord[]> {
+export async function getTimeRecords(query: DatabaseInterfaces.ITimeRecordsQuery): Promise<DatabaseInterfaces.ITimeRecord[]> {
     return await send(IpcChannels.GetTimeRecords, query);
 }
 
@@ -151,7 +151,7 @@ export async function getTimeRecords(query: Database.ITimeRecordsQuery): Promise
  * Request a list of time records for a client and/or project from the main process.
  * @returns a promise that resolves with a list of time records, or rejects with an error.
  */
-export async function getDetailedTimeRecords(query: Database.ITimeRecordsQuery): Promise<Database.IDetailedTimeRecord[]> {
+export async function getDetailedTimeRecords(query: DatabaseInterfaces.ITimeRecordsQuery): Promise<DatabaseInterfaces.IDetailedTimeRecord[]> {
     return await send(IpcChannels.GetDetailedTimeRecords, query);
 }
 

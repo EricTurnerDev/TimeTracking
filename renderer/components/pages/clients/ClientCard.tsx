@@ -9,7 +9,7 @@
 
 import classNames from 'classnames';
 import {useEffect, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import AddProjectForm from './AddProjectForm';
 import Button from '@/components/ui/Button';
@@ -21,19 +21,19 @@ import * as db from "@/lib/database";
 import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
 
 export interface IClientCardProps {
-    client: Database.IClient,
+    client: DatabaseInterfaces.IClient,
     onClientDeleted?: () => void;
     className?: string;
 }
 
 export default function ClientCard({client, onClientDeleted, className}: IClientCardProps) {
 
-    const [projects, setProjects] = useState<Database.IProject[]>([]);
+    const [projects, setProjects] = useState<DatabaseInterfaces.IProject[]>([]);
     const [addingProject, setAddingProject] = useState<boolean>(false);
 
     const updateProjects = async () => {
         if (client) {
-            const projs: Database.IProject[] = await getProjects({clientId: client.id});
+            const projs: DatabaseInterfaces.IProject[] = await getProjects({clientId: client.id});
             setProjects(projs);
         }
     }

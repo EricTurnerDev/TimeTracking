@@ -13,12 +13,12 @@
 
 import classNames from 'classnames';
 import {ReactNode, useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import {clone, gear, Icon, trash} from '@/components/ui/Icon';
 
 interface IRowActionsProps {
-    row: Database.IDetailedTimeRecord;
+    row: DatabaseInterfaces.IDetailedTimeRecord;
     deleteRow?: (number) => Promise<void>;
     onDelete?: () => any;
     cloneRow?: (number) => Promise<void>;
@@ -87,7 +87,7 @@ export const RowActions = ({row, deleteRow, onDelete, cloneRow, onClone}: IRowAc
 };
 
 interface IRowActionProps {
-    row: Database.IDatabaseEntity;
+    row: DatabaseInterfaces.IDatabaseEntity;
     action: (rowId: number) => Promise<void>;
     actionSucceeded?: () => void;
     actionCompleted?: () => void;

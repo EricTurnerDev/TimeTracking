@@ -9,7 +9,7 @@
 
 import {app, ipcMain} from 'electron';
 import path from 'path';
-import {IpcChannels, Database} from 'timetracking-common';
+import {IpcChannels, DatabaseInterfaces as dbi} from 'timetracking-common';
 
 import Knex from '../db/knex';
 
@@ -26,11 +26,11 @@ export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }
 
-export function getDetailedTimeRecords({clientId, projectId}: Database.ITimeRecordsQuery) {
+export function getDetailedTimeRecords({clientId, projectId}: dbi.ITimeRecordsQuery) {
     // GetTimeRecords supports querying by client id, project id, or both. Build the query object
     // based on the arguments received on the IPC channel.
 
-    const query: Database.ITimeRecord = {};
+    const query: dbi.ITimeRecord = {};
 
     if (clientId) {
         query.client_id = clientId;
@@ -59,7 +59,7 @@ export function getDetailedTimeRecords({clientId, projectId}: Database.ITimeReco
 export function listen() {
     // Clients
 
-    ipcMain.handle(IpcChannels.CreateClient, (event, client: Database.IClient) => {
+    ipcMain.handle(IpcChannels.CreateClient, (event, client: dbi.IClient) => {
         return knex.insert(client).into('clients');
     });
 
@@ -71,7 +71,7 @@ export function listen() {
         return knex('clients').where('id', clientId).del();
     });
 
-    ipcMain.handle(IpcChannels.UpdateClient, (event, client: Database.IClient) => {
+    ipcMain.handle(IpcChannels.UpdateClient, (event, client: dbi.IClient) => {
         return knex('clients').where('id', client.id).update(client);
     });
 
@@ -81,7 +81,7 @@ export function listen() {
 
     // Projects
 
-    ipcMain.handle(IpcChannels.CreateProject, (event, project: Database.IProject) => {
+    ipcMain.handle(IpcChannels.CreateProject, (event, project: dbi.IProject) => {
         return knex.insert(project).into('projects');
     });
 
@@ -93,12 +93,12 @@ export function listen() {
         return knex('projects').where('id', projectId).del();
     });
 
-    ipcMain.handle(IpcChannels.UpdateProject, (event, project: Database.IProject) => {
+    ipcMain.handle(IpcChannels.UpdateProject, (event, project: dbi.IProject) => {
         return knex('projects').where('id', project.id).update(project);
     });
 
-    ipcMain.handle(IpcChannels.GetProjects, (event, {clientId, projectId}: Database.IProjectsQuery) => {
-        const query: Database.IProject = {};
+    ipcMain.handle(IpcChannels.GetProjects, (event, {clientId, projectId}: dbi.IProjectsQuery) => {
+        const query: dbi.IProject = {};
         if (clientId) {
             query.client_id = clientId;
         }
@@ -119,7 +119,7 @@ export function listen() {
 
     // Time records
 
-    ipcMain.handle(IpcChannels.CreateTimeRecord, (event, timeRecord: Database.ITimeRecord) => {
+    ipcMain.handle(IpcChannels.CreateTimeRecord, (event, timeRecord: dbi.ITimeRecord) => {
         return knex.insert(timeRecord).into('time_records');
     });
 
@@ -148,15 +148,15 @@ export function listen() {
         return knex('time_records').where('id', timeRecordId).del();
     })
 
-    ipcMain.handle(IpcChannels.UpdateTimeRecord, (event, timeRecord: Database.ITimeRecord) => {
+    ipcMain.handle(IpcChannels.UpdateTimeRecord, (event, timeRecord: dbi.ITimeRecord) => {
         return knex('time_records').where('id', timeRecord.id).update(timeRecord);
     });
 
-    ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: Database.ITimeRecordsQuery) => {
+    ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: dbi.ITimeRecordsQuery) => {
         // GetTimeRecords supports querying by client id, project id, or both. Build the query object
         // based on the arguments received on the IPC channel.
 
-        const query: Database.ITimeRecord = {};
+        const query: dbi.ITimeRecord = {};
         if (clientId) {
             query.client_id = clientId;
         }
@@ -166,7 +166,7 @@ export function listen() {
         return knex.select().from('time_records').where(query);
     });
 
-    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, query: Database.ITimeRecordsQuery) => {
+    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, query: dbi.ITimeRecordsQuery) => {
         return getDetailedTimeRecords(query);
     });
 }

@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
 import DataTable, {createTheme} from 'react-data-table-component';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '@/lib/dateTimeConversion';
 import * as db from '@/lib/database';
@@ -25,7 +25,7 @@ import SelectOption from '@/lib/types/SelectOption';
 import InlineEditToggle from "@/components/ui/inline-editing/InlineEditToggle";
 
 interface ITimekeepingDataTableProps {
-    timeRecords: Database.IDetailedTimeRecord[];
+    timeRecords: DatabaseInterfaces.IDetailedTimeRecord[];
     onDelete?: () => any;
     className?: string;
 }
@@ -36,7 +36,7 @@ const emptyOption: SelectOption = {value: '', text: ''};
 
 const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDataTableProps) => {
 
-    interface IDataTableRecord extends Database.IDetailedTimeRecord {
+    interface IDataTableRecord extends DatabaseInterfaces.IDetailedTimeRecord {
         projectOptions: SelectOption[];
     }
 
@@ -45,7 +45,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
     const [pending, setPending] = useState<boolean>(true);
     const [projectSelectOptions, setProjectSelectOptions] = useState<{ [clientId: number]: SelectOption[] }>([]);
 
-    const createTableData = (timeRecords: Database.IDetailedTimeRecord[], projectSelectOptions): IDataTableRecord[] => {
+    const createTableData = (timeRecords: DatabaseInterfaces.IDetailedTimeRecord[], projectSelectOptions): IDataTableRecord[] => {
         return timeRecords.map(tr => {
             const opts = projectSelectOptions[tr.client_id] || [];
             return {...tr, projectOptions: [emptyOption, ...opts]}
@@ -149,7 +149,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
             .catch(err => console.error(err));
     }, [timeRecords]);
 
-    const descriptionChanged = async (row: Database.IDetailedTimeRecord, description) => {
+    const descriptionChanged = async (row: DatabaseInterfaces.IDetailedTimeRecord, description) => {
         await db.updateTimeRecord({id: row.id, description: description});
         await refreshTableData();
     };
@@ -187,7 +187,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
 
         if (timeRecord) {
             // Create a new time record from the existing one
-            const record: Database.ITimeRecord = (({description, client_id, project_id, billable}) => ({
+            const record: DatabaseInterfaces.ITimeRecord = (({description, client_id, project_id, billable}) => ({
                 description,
                 client_id,
                 project_id,

@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import Head from 'next/head';
 import {useState, useEffect} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import AddTimeRecordForm from '@/components/pages/timekeeping/AddTimeRecordForm';
 import Button from '@/components/ui/Button';
@@ -19,13 +19,13 @@ import {Icon, plus, spreadsheet} from '@/components/ui/Icon';
 import TimekeepingDataTable from '@/components/pages/timekeeping/TimekeepingDataTable';
 
 export default function Timekeeping() {
-    const [timeRecords, setTimeRecords] = useState<Database.IDetailedTimeRecord[]>();
+    const [timeRecords, setTimeRecords] = useState<DatabaseInterfaces.IDetailedTimeRecord[]>();
     const [addingTimeRecord, setAddingTimeRecord] = useState<boolean>(false);
     const [exportingTimeRecords, setExportingTimeRecords] = useState<boolean>(false);
 
     // Fetches time records from the database, and saves them in this component's state.
     const updateTimeRecords = async () => {
-        const trs: Database.IDetailedTimeRecord[] = await getDetailedTimeRecords({});
+        const trs: DatabaseInterfaces.IDetailedTimeRecord[] = await getDetailedTimeRecords({});
         setTimeRecords(trs);
     }
 
