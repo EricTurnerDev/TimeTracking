@@ -31,8 +31,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Database = exports.IpcChannels = void 0;
+exports.DatabaseInterfaces = exports.IpcChannels = void 0;
 var IpcChannels = __importStar(require("./channels.js"));
 exports.IpcChannels = IpcChannels;
-var Database = __importStar(require("./database"));
-exports.Database = Database;
+var DatabaseInterfaces = __importStar(require("./database-interfaces"));
+exports.DatabaseInterfaces = DatabaseInterfaces;

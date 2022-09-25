@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import {Formik, Form} from 'formik';
 import {useEffect, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 import * as Yup from 'yup';
 
 import TextInput from '@/components/ui/form/TextInput';
@@ -33,7 +33,7 @@ const AddClientForm = ({className, onClientAdded, onCancel}: IAddTextFormProps) 
         error: 'border-red-600 focus:ring-red-600 text-red-600',
     };
 
-    const initialFormState: Database.IClient = {
+    const initialFormState: DatabaseInterfaces.IClient = {
         client_name: '',
     };
 

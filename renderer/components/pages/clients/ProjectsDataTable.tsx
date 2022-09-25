@@ -9,7 +9,7 @@
 
 import classNames from 'classnames';
 import DataTable, {createTheme, TableColumn} from 'react-data-table-component';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 
 import * as db from '@/lib/database';
 import {darkTheme} from '@/lib/dataTableThemes';
@@ -17,7 +17,7 @@ import {RowActions} from '@/components/pages/DataTableRowActions';
 import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
 
 interface IProjectsDataTableProps {
-    projects: Database.IProject[];
+    projects: DatabaseInterfaces.IProject[];
     onDelete: () => any;
     className?: string;
 }
@@ -26,11 +26,11 @@ createTheme('timetrackingDark', darkTheme, 'dark');
 
 const ProjectsDataTable = ({projects, onDelete, className}: IProjectsDataTableProps) => {
 
-    const projectNameChanged = async (row: Database.IProject, projectName) => {
+    const projectNameChanged = async (row: DatabaseInterfaces.IProject, projectName) => {
         await db.updateProject(row.id, {id: row.id, project_name: projectName});
     };
 
-    const columns: TableColumn<Database.IProject>[] = [
+    const columns: TableColumn<DatabaseInterfaces.IProject>[] = [
         {
             name: 'Project Name',
             selector: row => row.project_name,

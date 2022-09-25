@@ -10,7 +10,7 @@
 import classNames from 'classnames';
 import {Formik, Form} from 'formik';
 import {useEffect, useState} from 'react';
-import {Database} from 'timetracking-common';
+import {DatabaseInterfaces} from 'timetracking-common';
 import * as Yup from 'yup';
 
 import HiddenInput from '@/components/ui/form/HiddenInput';
@@ -19,7 +19,7 @@ import Button from '@/components/ui/Button';
 import {createProject, getProjects} from '@/lib/database';
 
 interface IAddProjectFormProps {
-    client: Database.IClient;
+    client: DatabaseInterfaces.IClient;
     className?: string;
     onProjectAdded: () => void;
     onCancel: () => void;
@@ -35,7 +35,7 @@ const AddProjectForm = ({client, className, onProjectAdded, onCancel}: IAddProje
         error: 'border-red-600 focus:ring-red-600 text-red-600',
     };
 
-    const initialFormState: Database.IProject = {
+    const initialFormState: DatabaseInterfaces.IProject = {
         client_id: client.id,
         project_name: '',
     };
