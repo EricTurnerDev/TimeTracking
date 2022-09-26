@@ -52,7 +52,7 @@ export function getDetailedTimeRecords({clientId, projectId}: dbi.ITimeRecordsQu
         .from('time_records')
         .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
         .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
-        .orderBy('time_records.end_ts', 'desc');
+        .orderBy('time_records.start_ts', 'desc');
     // TODO: Add a where clause with the query
 }
 
