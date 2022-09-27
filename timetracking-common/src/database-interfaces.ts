@@ -40,6 +40,7 @@ export interface IDetailedTimeRecord extends ITimeRecord {
 export interface ITimeRecordsQuery {
     clientId?: number;
     projectId?: number;
+    startTs?: string;
 }
 
 export interface IProjectsQuery {
