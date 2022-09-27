@@ -23,5 +23,6 @@ export var DeleteTimeRecord = 'time-record:delete';
 export var UpdateTimeRecord = 'time-record:update';
 export var GetTimeRecords = 'time-records:get';
 export var GetDetailedTimeRecords = 'time-records:detailed:get';
+export var GetActivityMapValues = 'activity-map:values:get';
 export var DownloadDatabaseFile = 'database:file:download';
 export var ExportSpreadsheet = 'spreadsheet:export';

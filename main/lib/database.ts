@@ -26,19 +26,7 @@ export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }
 
-export function getDetailedTimeRecords({clientId, projectId}: dbi.ITimeRecordsQuery) {
-    // GetTimeRecords supports querying by client id, project id, or both. Build the query object
-    // based on the arguments received on the IPC channel.
-
-    const query: dbi.ITimeRecord = {};
-
-    if (clientId) {
-        query.client_id = clientId;
-    }
-
-    if (projectId) {
-        query.project_id = projectId;
-    }
+export function getDetailedTimeRecords({clientId, projectId, startTs}: dbi.ITimeRecordsQuery) {
 
     const columns = [
         'time_records.*',
@@ -47,13 +35,34 @@ export function getDetailedTimeRecords({clientId, projectId}: dbi.ITimeRecordsQu
         knex.raw('ROUND(((JULIANDAY(time_records.end_ts) - JULIANDAY(time_records.start_ts)) * 24)+time_records.adjustment, 2) AS hours')
     ]
 
-    return knex
+    let k = knex
         .select(columns)
         .from('time_records')
         .innerJoin('clients', 'time_records.client_id', '=', 'clients.id')
         .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
         .orderBy('time_records.start_ts', 'desc');
-    // TODO: Add a where clause with the query
+
+    let query;
+    if (clientId || projectId) {
+        query = {};
+        if (clientId) {
+            query.client_id = clientId;
+        }
+        if (projectId) {
+            query.project_id = projectId;
+        }
+        k = k.where(query);
+    }
+
+    if (startTs) {
+        if (query) {
+            k = k.andWhere('start_ts', '>=', 'startTs');
+        } else {
+            k = k.where('start_ts', '>=', startTs);
+        }
+    }
+
+    return k;
 }
 
 export function listen() {
@@ -150,6 +159,10 @@ export function listen() {
 
     ipcMain.handle(IpcChannels.UpdateTimeRecord, (event, timeRecord: dbi.ITimeRecord) => {
         return knex('time_records').where('id', timeRecord.id).update(timeRecord);
+    });
+
+    ipcMain.handle(IpcChannels.GetActivityMapValues, (event) => {
+        return knex.raw("SELECT strftime('%Y-%m-%d', start_ts) as date, SUM(ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2)) as count FROM time_records WHERE start_ts > date('now','-1 year') GROUP BY date ORDER BY date DESC");
     });
 
     ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: dbi.ITimeRecordsQuery) => {

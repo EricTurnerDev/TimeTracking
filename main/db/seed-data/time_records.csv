@@ -1,101 +1,101 @@
 id,billable,start_ts,end_ts,adjustment,description,notes,client_id,project_id
-1,false,2022-02-22T14:23:16Z,2022-02-22T15:08:51Z,,impactful,,44,
-2,true,2021-06-05T16:26:11Z,2021-06-05T17:40:14Z,,firmware,,49,119
-3,true,2022-05-18T08:15:01Z,2022-05-18T10:12:46Z,,Monitored,,42,149
-4,true,2021-06-08T21:12:39Z,2021-06-08T21:27:11Z,,User-friendly,,42,
-5,true,2021-11-08T13:14:52Z,2021-11-08T13:43:06Z,,Polarised,"Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam. Nam tristique tortor eu pede.",22,142
-6,true,2022-07-06T10:01:53Z,2022-07-06T12:01:37Z,,Down-sized,,26,188
-7,true,2021-11-22T04:08:58Z,2021-11-22T05:39:49Z,,directional,,7,75
-8,true,2022-06-22T09:35:23Z,2022-06-22T10:41:41Z,-0.2,Implemented,,3,55
-9,false,2021-07-17T19:59:34Z,2021-07-17T20:46:25Z,,frame,,43,33
-10,false,2021-12-01T02:24:19Z,2021-12-01T04:13:32Z,,Inverse,Proin eu mi. Nulla ac enim.,36,
-11,false,2022-08-13T16:50:36Z,2022-08-13T18:22:05Z,,fresh-thinking,,39,18
-12,true,2021-12-21T00:40:02Z,2021-12-21T01:17:20Z,,portal,,38,14
-13,true,2022-01-07T21:36:25Z,2022-01-07T22:01:09Z,,intermediate,,22,150
-14,false,2021-11-26T08:47:02Z,2021-11-26T09:10:29Z,,Sharable,,40,173
-15,false,2021-08-22T12:47:52Z,2021-08-22T14:11:30Z,,mobile,"In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.",31,22
-16,true,2022-05-24T03:39:10Z,2022-05-24T05:37:59Z,-0.3,success,,30,
-17,false,2022-02-18T05:48:52Z,2022-02-18T07:29:27Z,,array,,21,24
-18,false,2022-04-13T05:15:14Z,2022-04-13T07:14:16Z,,asymmetric,,29,10
-19,false,2022-04-08T14:42:35Z,2022-04-08T15:08:49Z,,Cross-group,,11,76
-20,true,2021-09-13T01:08:03Z,2021-09-13T03:03:15Z,,Organic,,15,7
-21,true,2021-08-26T09:44:07Z,2021-08-26T11:17:51Z,,Fundamental,,10,92
-22,true,2021-12-19T00:05:26Z,2021-12-19T01:20:36Z,,Ameliorated,,46,62
-23,false,2021-06-17T01:21:57Z,2021-06-17T02:41:25Z,,asynchronous,,7,98
-24,true,2021-12-02T20:47:21Z,2021-12-02T21:22:18Z,,Switchable,,32,157
-25,false,2021-09-16T01:30:55Z,2021-09-16T03:12:33Z,,model,"Sed ante. Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique.",43,
-26,false,2022-01-28T06:54:39Z,2022-01-28T08:43:20Z,,Mandatory,,33,122
-27,true,2021-10-07T03:10:09Z,2021-10-07T05:08:14Z,-0.57,methodology,,7,52
-28,true,2022-07-02T20:00:35Z,2022-07-02T21:35:21Z,,Fundamental,"In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",35,171
-29,true,2022-03-12T20:04:12Z,2022-03-12T20:38:47Z,,context-sensitive,,34,187
-30,false,2022-03-10T13:47:15Z,2022-03-10T14:28:08Z,-0.17,Multi-tiered,,37,51
-31,false,2022-07-18T10:02:11Z,2022-07-18T11:01:20Z,,Vision-oriented,,42,115
-32,false,2021-09-10T03:19:17Z,2021-09-10T04:02:24Z,,alliance,"Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.",5,21
-33,false,2022-01-23T09:50:06Z,2022-01-23T10:52:44Z,,Persistent,,35,64
-34,false,2021-12-19T23:39:49Z,2021-12-20T00:52:18Z,,Intuitive,,49,192
-35,true,2021-12-07T16:37:56Z,2021-12-07T17:48:41Z,,Multi-channelled,,38,49
-36,false,2022-08-07T04:27:17Z,2022-08-07T05:38:55Z,,Organic,,9,183
-37,false,2021-10-21T07:34:22Z,2021-10-21T09:06:48Z,,Reverse-engineered,,7,23
-38,false,2021-10-18T10:26:00Z,2021-10-18T11:41:13Z,,website,,9,
-39,true,2021-09-13T14:27:22Z,2021-09-13T14:40:26Z,,well-modulated,Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius.,42,115
-40,false,2022-08-30T14:14:35Z,2022-08-30T15:46:09Z,,Organic,,28,
-41,false,2022-03-10T19:23:35Z,2022-03-10T20:04:51Z,0,application,,1,13
-42,true,2022-04-27T22:03:15Z,2022-04-27T23:04:53Z,,flexibility,,20,152
-43,true,2021-12-27T21:23:50Z,2021-12-27T22:05:04Z,,Innovative,,10,9
-44,true,2022-01-01T20:53:45Z,2022-01-01T22:26:00Z,,exuding,,6,43
-45,true,2021-06-07T23:09:52Z,2021-06-07T23:25:25Z,,optimizing,,11,114
-46,false,2022-03-22T20:31:24Z,2022-03-22T20:52:18Z,,Diverse,,24,50
-47,true,2021-08-13T07:42:14Z,2021-08-13T08:25:22Z,,concept,,44,64
-48,false,2022-06-21T16:58:17Z,2022-06-21T17:42:17Z,-0.67,installation,Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.,7,44
-49,false,2022-07-03T04:35:28Z,2022-07-03T06:32:48Z,,Fundamental,,38,30
-50,false,2021-10-11T07:14:48Z,2021-10-11T07:53:46Z,,Profit-focused,,38,185
-51,true,2022-06-21T06:14:26Z,2022-06-21T06:52:40Z,-0.38,motivating,"In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices.",43,2
-52,true,2022-02-07T16:47:31Z,2022-02-07T17:21:50Z,-0.96,Seamless,,12,105
-53,true,2021-10-13T21:24:45Z,2021-10-13T23:23:45Z,,archive,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",27,80
-54,false,2021-12-23T08:18:34Z,2021-12-23T09:45:48Z,,model,,11,32
-55,true,2022-08-21T16:37:29Z,2022-08-21T17:41:31Z,,Total,,24,39
-56,true,2022-02-04T07:01:54Z,2022-02-04T09:01:20Z,,discrete,,38,67
-57,false,2021-11-24T14:59:37Z,2021-11-24T15:25:42Z,-0.1,array,,36,
-58,false,2021-07-03T19:09:09Z,2021-07-03T19:19:23Z,,Right-sized,,29,176
-59,false,2021-09-10T15:09:42Z,2021-09-10T16:22:48Z,,executive,,50,73
-60,true,2021-06-28T05:02:32Z,2021-06-28T06:30:45Z,,context-sensitive,,18,154
-61,true,2021-12-26T21:12:26Z,2021-12-26T22:02:30Z,,orchestration,"Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.",21,122
-62,true,2022-03-18T15:23:44Z,2022-03-18T16:48:59Z,,info-mediaries,Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus.,2,50
-63,false,2021-09-13T23:58:52Z,2021-09-14T01:34:25Z,,disintermediate,,31,183
-64,false,2021-07-08T09:25:35Z,2021-07-08T11:13:27Z,,Implemented,"Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam. Nam tristique tortor eu pede.",40,131
-65,false,2021-11-13T06:11:53Z,2021-11-13T06:45:02Z,,productivity,,36,88
-66,false,2022-08-31T06:52:48Z,2022-08-31T08:43:43Z,,implementation,,38,195
-67,true,2022-03-11T16:23:32Z,2022-03-11T16:56:48Z,,bottom-line,,23,198
-68,false,2022-04-22T00:44:46Z,2022-04-22T01:01:33Z,,Fully-configurable,,30,167
-69,true,2021-10-25T04:11:15Z,2021-10-25T04:34:19Z,,model,"Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet. Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam.",25,72
-70,true,2022-06-21T21:32:48Z,2022-06-21T22:48:34Z,,Innovative,,33,10
-71,true,2021-11-25T20:05:59Z,2021-11-25T21:58:45Z,,needs-based,,43,98
-72,true,2022-05-25T18:01:56Z,2022-05-25T18:25:04Z,,global,,47,92
-73,true,2021-12-30T17:35:18Z,2021-12-30T19:23:47Z,,Robust,,49,57
-74,true,2022-03-05T02:57:38Z,2022-03-05T03:56:59Z,,Organized,"Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.",20,153
-75,true,2022-05-03T19:50:38Z,2022-05-03T20:22:10Z,,incremental,,24,180
-76,false,2021-07-22T11:28:59Z,2021-07-22T12:02:36Z,,Reduced,,15,35
-77,true,2022-05-29T17:26:11Z,2022-05-29T19:20:51Z,,service-desk,Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi.,6,87
-78,true,2021-09-11T04:05:48Z,2021-09-11T05:47:02Z,,Balanced,,42,131
-79,true,2021-07-07T18:25:55Z,2021-07-07T18:44:51Z,-0.67,open architecture,,38,119
-80,false,2022-06-21T17:20:50Z,2022-06-21T18:27:39Z,,explicit,In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat.,32,54
-81,false,2021-08-08T06:38:57Z,2021-08-08T07:13:36Z,,infrastructure,,41,69
-82,false,2022-05-11T14:56:45Z,2022-05-11T16:31:10Z,,Compatible,,26,187
-83,true,2021-10-30T12:46:05Z,2021-10-30T14:34:23Z,,dedicated,,18,87
-84,false,2022-08-04T05:07:57Z,2022-08-04T06:07:34Z,,interface,,24,106
-85,false,2022-08-22T03:01:58Z,2022-08-22T03:17:25Z,,Profound,,44,170
-86,false,2021-08-06T06:26:23Z,2021-08-06T07:40:29Z,,Realigned,,29,21
-87,false,2022-01-09T09:38:30Z,2022-01-09T09:52:52Z,,core,,46,170
-88,false,2022-03-20T02:57:57Z,2022-03-20T04:42:50Z,,Multi-layered,"Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",30,58
-89,false,2021-06-20T22:47:24Z,2021-06-20T23:48:31Z,,protocol,"Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti. Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris. Morbi non lectus.",17,74
-90,true,2021-10-22T04:02:07Z,2021-10-22T05:56:45Z,,customer loyalty,,31,71
-91,false,2022-01-22T18:43:58Z,2022-01-22T19:44:39Z,,contingency,,2,
-92,false,2022-03-02T22:11:44Z,2022-03-02T22:26:57Z,,discrete,,31,
-93,false,2022-02-24T23:38:24Z,2022-02-25T00:25:02Z,,Progressive,"Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.",44,124
-94,false,2022-09-01T14:20:18Z,2022-09-01T15:45:51Z,,web-enabled,,36,169
-95,false,2022-07-11T07:07:18Z,2022-07-11T08:21:21Z,,mission-critical,,4,154
-96,false,2022-07-14T11:54:19Z,2022-07-14T13:39:38Z,,executive,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",41,61
-97,true,2022-05-04T21:33:20Z,2022-05-04T21:54:41Z,,Face to face,,9,110
-98,false,2021-09-18T21:54:14Z,2021-09-18T23:03:38Z,,tertiary,,4,69
-99,true,2022-03-11T07:18:23Z,2022-03-11T09:01:26Z,,firmware,,9,106
-100,true,2021-06-21T20:27:12Z,2021-06-21T21:22:22Z,,system engine,,41,75
+1,false,2021-08-27T03:24:04Z,2021-08-27T05:04:52Z,,Schkuhria Roth,,1,1
+2,false,2021-06-29T12:48:59Z,2021-06-29T14:02:37Z,-0.96,Leskea Hedw.,"In est risus, auctor sed, tristique in, tempus sit amet, sem.",1,
+3,false,2022-07-26T00:41:11Z,2022-07-26T02:24:25Z,,Ageratina rothrockii (A. Gray) R.M. King & H. Rob.,,1,1
+4,false,2022-04-06T10:31:19Z,2022-04-06T11:51:16Z,,Rubus arcticus L. ssp. stellatus (Sm.) B. Boivin,,1,2
+5,false,2022-03-02T21:34:03Z,2022-03-02T23:13:59Z,,Hymenachne P. Beauv.,,1,2
+6,true,2021-08-24T16:22:21Z,2021-08-24T17:47:18Z,,Collomia tracyi H. Mason,,2,3
+7,false,2021-11-14T00:50:30Z,2021-11-14T02:39:05Z,,Cucurbita foetidissima Kunth,,2,3
+8,true,2021-11-04T19:52:03Z,2021-11-04T20:57:03Z,,Heterotheca fulcrata (Greene) Shinners,,2,3
+9,false,2022-08-12T00:18:11Z,2022-08-12T01:39:11Z,,Puccinellia nutkaensis (J. Presl) Fernald & Weath.,,2,4
+10,true,2021-06-01T20:12:39Z,2021-06-01T21:57:11Z,-0.19,Lepidium montanum Nutt. var. claronense S.L. Welsh,,2,4
+11,true,2021-07-23T12:38:48Z,2021-07-23T13:10:45Z,,Usnea stuppea (Rasanen) Mot.,,3,6
+12,false,2022-03-27T07:49:54Z,2022-03-27T08:07:34Z,,Descurainia paradisa (A. Nelson & Kennedy) O.E. Schulz ssp. nevadensis Rollins,,3,5
+13,false,2022-07-18T01:31:22Z,2022-07-18T02:19:24Z,,Saxifraga stellaris L.,Duis aliquam convallis nunc.,3,6
+14,false,2021-10-24T13:35:37Z,2021-10-24T14:35:16Z,,Camissonia sierrae P.H. Raven ssp. alticola P.H. Raven,"Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.",3,5
+15,false,2021-10-16T02:58:28Z,2021-10-16T03:50:49Z,,Osmunda regalis L. var. spectabilis (Willd.) A. Gray,,3,6
+16,false,2022-08-08T09:57:59Z,2022-08-08T11:50:37Z,,Pyrrhopappus carolinianus (Walter) DC.,,4,7
+17,false,2021-06-16T02:44:38Z,2021-06-16T04:22:58Z,,Rhynchospora harveyi W. Boott var. harveyi,,4,7
+18,true,2022-08-23T21:07:00Z,2022-08-23T23:02:49Z,,Eleocharis pachystyla (C. Wright) C.B. Clarke,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis. Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.",4,8
+19,true,2021-09-05T15:00:57Z,2021-09-05T15:19:24Z,,Tridens ambiguus (Elliott) Schult.,,4,8
+20,false,2022-04-12T09:52:10Z,2022-04-12T10:53:29Z,,Leontodon taraxacoides (Vill.) Mérat ssp. taraxacoides,,4,7
+21,false,2021-10-24T06:04:01Z,2021-10-24T06:29:27Z,,Myrcia citrifolia (Aubl.) Urb. var. citrifolia,,5,9
+22,true,2021-11-06T08:04:33Z,2021-11-06T09:20:19Z,,Hebestigma Urb.,,5,9
+23,true,2022-01-12T18:13:59Z,2022-01-12T20:10:27Z,,Bolboschoenus maritimus (L.) Palla ssp. maritimus,,5,9
+24,false,2022-02-13T18:36:11Z,2022-02-13T20:00:24Z,,Monardella stebbinsii Hardham & Bartel,,5,10
+25,false,2022-02-05T04:50:14Z,2022-02-05T05:07:10Z,-0.39,Veronica filiformis Sm.,,5,9
+26,true,2021-07-14T21:55:27Z,2021-07-14T23:28:16Z,,Ipomopsis pumila (Nutt.) V.E. Grant,,6,11
+27,false,2022-03-19T16:43:42Z,2022-03-19T17:17:37Z,-0.13,Cyperus congestus Vahl,,6,11
+28,true,2022-04-02T10:41:58Z,2022-04-02T12:34:10Z,,Brodiaea jolonensis Eastw.,,6,12
+29,false,2021-09-20T07:42:31Z,2021-09-20T08:31:16Z,,Evax prolifera Nutt. ex DC.,,6,12
+30,true,2022-06-22T02:58:06Z,2022-06-22T03:45:18Z,,Lupinus nanus Douglas ex Benth. ssp. nanus,,6,11
+31,false,2022-03-27T23:02:38Z,2022-03-27T23:17:50Z,,Dictamnus L.,,7,13
+32,false,2021-06-29T10:17:30Z,2021-06-29T10:44:29Z,-0.25,Philadelphus inodorus L.,,7,13
+33,false,2022-01-30T06:45:47Z,2022-01-30T07:02:50Z,,Sclerocarpus Jacq.,,7,14
+34,true,2021-11-18T03:15:09Z,2021-11-18T05:04:25Z,,Cosmos sulphureus Cav.,"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",7,14
+35,true,2022-08-02T02:22:18Z,2022-08-02T03:39:04Z,,Salvia greatae Brandegee,,7,14
+36,false,2022-04-13T14:32:05Z,2022-04-13T16:31:36Z,,Cryptantha atwoodii Higgins,,8,15
+37,false,2021-10-25T07:36:41Z,2021-10-25T08:47:09Z,,Selaginella cordifolia (Desv. ex Poir.) Spring,"Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.",8,16
+38,true,2022-04-07T22:42:59Z,2022-04-07T23:01:16Z,,Codariocalyx Hassk.,,8,15
+39,false,2022-07-04T19:53:44Z,2022-07-04T21:32:39Z,,Potentilla glandulosa Lindl. ssp. globosa D.D. Keck,,8,16
+40,false,2022-06-22T12:09:21Z,2022-06-22T14:08:50Z,,Epilobium luteum Pursh,,8,
+41,true,2022-05-24T20:14:26Z,2022-05-24T20:59:08Z,,Rudbeckia grandiflora (D. Don) J.F. Gmel. ex DC. var. alismifolia (Torr. & A. Gray) Cronquist,,9,17
+42,true,2021-09-21T16:34:52Z,2021-09-21T18:04:30Z,,Hirschfeldia incana (L.) Lagr.-Foss.,,9,18
+43,true,2022-08-15T02:19:35Z,2022-08-15T03:37:01Z,,Lotus heermannii (Durand & Hilg.) Greene var. orbicularis (A. Gray) Isely,"Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl.",9,17
+44,true,2021-09-16T02:52:42Z,2021-09-16T03:58:54Z,,Cassiope mertensiana (Bong.) G. Don var. mertensiana,,9,18
+45,false,2021-08-25T07:53:50Z,2021-08-25T08:14:53Z,,Brachythecium oxycladon (Brid.) A. Jaeger,"Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl.",9,
+46,true,2022-06-18T23:52:36Z,2022-06-19T01:47:02Z,,Eriogonum tripodum Greene,,10,19
+47,false,2021-12-21T18:30:53Z,2021-12-21T19:54:17Z,,Cyrtandra macraei A. Gray,,10,20
+48,true,2021-07-10T19:35:13Z,2021-07-10T21:03:04Z,,Woodwardia areolata (L.) T. Moore,,10,19
+49,true,2022-06-11T22:37:06Z,2022-06-11T23:51:22Z,,Eriastrum sapphirinum (Eastw.) H. Mason ssp. dasyanthum (Brand) H. Mason,,10,20
+50,true,2022-03-02T01:09:10Z,2022-03-02T02:05:11Z,-0.15,Hyptis spicigera Lam.,,10,
+51,true,2022-07-31T22:08:57Z,2022-07-31T22:34:26Z,,Parmelina Hale,,10,20
+52,true,2022-02-12T14:00:49Z,2022-02-12T14:59:45Z,,Sidalcea oregana (Nutt. ex Torr. & A. Gray) A. Gray ssp. spicata (Regel) C.L. Hitchc.,Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum.,10,20
+53,true,2021-09-27T02:33:40Z,2021-09-27T03:51:53Z,,Amorpha ouachitensis Wilbur,,10,20
+54,false,2022-08-03T08:30:21Z,2022-08-03T10:20:04Z,,Xylopia aethiopica (Dunal) A. Rich.,,10,20
+55,true,2022-07-14T21:39:18Z,2022-07-14T21:51:35Z,,"Bidens laevis (L.) Britton, Sterns & Poggenb.",,10,20
+56,false,2022-04-22T07:07:36Z,2022-04-22T09:07:29Z,,Vitis cinerea (Engelm.) Engelm. ex Millard var. baileyana (Munson) Comeaux,"Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante.",10,20
+57,false,2022-04-18T07:40:40Z,2022-04-18T09:09:32Z,,Escobaria robbinsiorum (W.H. Earle) D.R. Hunt,Donec quis orci eget orci vehicula condimentum.,10,20
+58,false,2021-12-01T18:21:58Z,2021-12-01T19:24:07Z,,Axonopus aureus P. Beauv.,,10,20
+59,true,2022-07-28T14:43:46Z,2022-07-28T16:11:57Z,,Lythrum maritimum Kunth,,10,20
+60,true,2022-06-13T10:33:38Z,2022-06-13T10:57:45Z,,Cyrto-hypnum pygmaeum (Schimp.) W.R. Buck & H.A. Crum,,10,20
+61,true,2021-11-08T10:39:47Z,2021-11-08T11:16:47Z,,Arnoglossum plantagineum Raf.,"Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.",10,20
+62,false,2021-07-13T09:00:19Z,2021-07-13T10:26:14Z,-0.42,Erigeron acris L. ssp. kamtschaticus (DC.) H. Hara,,10,20
+63,false,2021-06-30T13:33:49Z,2021-06-30T14:22:50Z,,Cyperus refractus Engelm. ex Boeckeler,,10,20
+64,false,2021-08-04T18:51:28Z,2021-08-04T20:20:43Z,,Phyllopsora furfuracea (Pers.) Zahlbr.,,10,20
+65,false,2022-03-04T09:31:38Z,2022-03-04T10:01:51Z,,Potentilla nivea L. var. nivea,Curabitur convallis. Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus.,10,20
+66,true,2022-05-15T07:03:06Z,2022-05-15T07:23:37Z,,Vernonia gigantea (Walter) Trel.,"Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.",10,20
+67,true,2022-08-02T10:49:32Z,2022-08-02T11:44:05Z,,Epixiphium (A. Gray) Munz,Morbi vel lectus in quam fringilla rhoncus.,10,20
+68,true,2022-03-30T14:37:19Z,2022-03-30T16:19:31Z,,Aletris bracteata Northrop,"Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",10,20
+69,false,2022-01-22T07:31:40Z,2022-01-22T08:03:53Z,,Scutellaria galericulata L.,,10,20
+70,false,2021-06-10T23:49:11Z,2021-06-11T01:46:29Z,,Diplacus clevelandii (Brandegee) Greene,,10,20
+71,false,2021-06-26T13:19:33Z,2021-06-26T14:57:45Z,,Dicranum viride (Sull. & Lesq.) Lindb.,"Sed sagittis. Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus. Pellentesque at nulla.",10,20
+72,false,2022-03-13T16:02:04Z,2022-03-13T17:37:42Z,,Doellingeria umbellata (Mill.) Nees,"Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc.",10,20
+73,false,2022-02-01T14:33:32Z,2022-02-01T16:09:50Z,,Spermacoce ovalifolia (M. Martens & Galeotti) Hemsl.,,10,20
+74,false,2022-08-10T05:39:39Z,2022-08-10T07:19:57Z,,Andromeda ×jamesiana Lepage,"Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",10,20
+75,true,2022-05-10T13:52:52Z,2022-05-10T14:34:54Z,,Plagiobothrys canescens Benth. var. canescens,"Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis. Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat.",10,20
+76,true,2021-08-21T15:47:23Z,2021-08-21T16:35:20Z,,Scopelophila ligulata (Spruce) Spruce,In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst.,10,20
+77,true,2021-10-10T04:18:42Z,2021-10-10T05:49:28Z,,Lecidea atromarginata H. Magn.,,10,20
+78,true,2022-06-12T22:24:27Z,2022-06-12T23:39:37Z,,Cylindropuntia davisii (Engelm. & J.M. Bigelow) F.M. Knuth,,10,20
+79,false,2021-10-05T19:41:10Z,2021-10-05T19:58:33Z,,Ophioglossum nudicaule L. f.,,10,20
+80,false,2021-11-27T03:31:06Z,2021-11-27T05:28:49Z,,Wallenia yunquensis (Urb.) Mez,,10,20
+81,true,2022-07-18T14:24:58Z,2022-07-18T15:00:55Z,,Hymenoxys helenioides (Rydb.) Cockerell,,10,20
+82,true,2021-11-18T12:26:08Z,2021-11-18T14:06:34Z,,Lupinus sulphureus Douglas ex Hook.,,10,20
+83,false,2021-11-27T23:01:40Z,2021-11-28T00:48:15Z,,Calamovilfa longifolia (Hook.) Scribn.,"Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus.",10,20
+84,true,2022-02-27T11:51:07Z,2022-02-27T12:31:04Z,,Saxifraga hirculus L. ssp. compacta K.O. Hedb.,,10,20
+85,true,2022-04-06T22:24:34Z,2022-04-06T23:07:34Z,,Orbignya cohune (Mart.) Dahlgren ex Standl.,,10,20
+86,true,2021-10-26T05:14:52Z,2021-10-26T05:36:49Z,,Onopordum tauricum Willd.,,10,20
+87,false,2021-09-18T07:02:17Z,2021-09-18T07:32:14Z,,Chamaecrista serpens (L.) Greene,,10,20
+88,false,2022-02-22T12:35:48Z,2022-02-22T12:45:50Z,,Pandanus furcatus Roxb.,,10,20
+89,false,2022-05-16T15:32:42Z,2022-05-16T15:56:38Z,,Astragalus musiniensis M.E. Jones,,10,20
+90,false,2022-05-16T09:38:02Z,2022-05-16T11:22:01Z,,Lupinus ludovicianus Greene,"Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",10,20
+91,true,2021-06-13T09:00:46Z,2021-06-13T10:14:18Z,,Carex blanda Dewey,"In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis.",10,20
+92,true,2021-09-30T01:43:49Z,2021-09-30T02:24:37Z,,Psydrax Gaertn.,,10,20
+93,false,2021-09-27T08:38:44Z,2021-09-27T10:21:57Z,,Xanthoparmelia dierythra (Hale) Hale,,10,20
+94,true,2021-07-31T07:19:01Z,2021-07-31T09:17:03Z,,Euphrasia micrantha Rchb.,,10,20
+95,true,2022-02-25T10:57:40Z,2022-02-25T11:59:03Z,,Ceanothus sonomensis J.T. Howell,Vivamus vestibulum sagittis sapien.,10,20
+96,false,2021-10-06T07:56:21Z,2021-10-06T09:18:57Z,,Pedicularis parviflora Sm. ex Rees ssp. pennellii (Hultén) Hultén,,10,20
+97,false,2021-09-04T05:15:31Z,2021-09-04T07:14:19Z,,Camissonia boothii (Douglas ex Lehm.) P.H. Raven ssp. decorticans (Hook. & Arn.) P.H. Raven,,10,20
+98,false,2022-01-13T23:50:11Z,2022-01-14T00:31:56Z,,Pediomelum argophyllum (Pursh) J. Grimes,,10,20
+99,false,2021-12-04T12:57:19Z,2021-12-04T13:25:18Z,,Byrsonima spicata (Cav.) Kunth,,10,20
+100,true,2022-03-06T08:20:26Z,2022-03-06T10:13:29Z,,Castilleja nana Eastw.,,10,20
