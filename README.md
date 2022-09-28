@@ -53,3 +53,11 @@ There are several ways you can contribute to TimeTracking development:
 * Use it, and let us know if you like it, problems you run into, and changes you would like us to make
 * Create issues in Github for bugs and feature requests
 * Work on Gitlab issues. Fork the Github repository, make changes, and submit pull requests to have your changes added to TimeTracking
+
+## Technologies Used
+
+Some of the more important technologies used in TimeTracking are:
+
+* Nextron: a framework that combines Electron and Next.js for creating cross-platform applications using web technologies
+* SQLite: a lightweight file-based relational database
+* TailwindCSS: a class-based CSS (styling) framework
