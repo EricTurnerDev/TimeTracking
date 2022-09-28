@@ -28,6 +28,7 @@ export const GetTimeRecords: string = 'time-records:get';
 export const GetDetailedTimeRecords: string = 'time-records:detailed:get';
 
 export const GetActivityMapValues: string = 'activity-map:values:get';
+export const GetActivitySummaryValues: string = 'activity-summary:values:get';
 
 export const DownloadDatabaseFile: string = 'database:file:download';
 export const ExportSpreadsheet: string = 'spreadsheet:export';

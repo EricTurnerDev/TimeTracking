@@ -26,7 +26,7 @@ export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }
 
-export function getDetailedTimeRecords({clientId, projectId, startTs}: dbi.ITimeRecordsQuery) {
+export function getDetailedTimeRecords(query: dbi.ITimeRecordsQuery) {
 
     const columns = [
         'time_records.*',
@@ -42,25 +42,7 @@ export function getDetailedTimeRecords({clientId, projectId, startTs}: dbi.ITime
         .leftJoin('projects', 'time_records.project_id', '=', 'projects.id')
         .orderBy('time_records.start_ts', 'desc');
 
-    let query;
-    if (clientId || projectId) {
-        query = {};
-        if (clientId) {
-            query.client_id = clientId;
-        }
-        if (projectId) {
-            query.project_id = projectId;
-        }
-        k = k.where(query);
-    }
-
-    if (startTs) {
-        if (query) {
-            k = k.andWhere('start_ts', '>=', 'startTs');
-        } else {
-            k = k.where('start_ts', '>=', startTs);
-        }
-    }
+    k = addTimeRecordsWhereClause(k, query);
 
     return k;
 }
@@ -161,25 +143,57 @@ export function listen() {
         return knex('time_records').where('id', timeRecord.id).update(timeRecord);
     });
 
-    ipcMain.handle(IpcChannels.GetActivityMapValues, (event) => {
-        return knex.raw("SELECT strftime('%Y-%m-%d', start_ts) as date, SUM(ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2)) as count FROM time_records WHERE start_ts > date('now','-1 year') GROUP BY date ORDER BY date DESC");
+    ipcMain.handle(IpcChannels.GetTimeRecords, (event, query: dbi.ITimeRecordsQuery) => {
+        let k = knex.select().from('time_records');
+        k = addTimeRecordsWhereClause(k, query);
+        return k
     });
 
-    ipcMain.handle(IpcChannels.GetTimeRecords, (event, {clientId, projectId}: dbi.ITimeRecordsQuery) => {
-        // GetTimeRecords supports querying by client id, project id, or both. Build the query object
-        // based on the arguments received on the IPC channel.
+    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, query: dbi.ITimeRecordsQuery) => {
+        return getDetailedTimeRecords(query);
+    });
 
-        const query: dbi.ITimeRecord = {};
+    ipcMain.handle(IpcChannels.GetActivityMapValues, (event) => {
+        return knex.raw(`SELECT strftime('%Y-%m-%d', start_ts) as date,
+                                SUM(ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2)) as count
+                         FROM time_records
+                         WHERE start_ts > date('now','-1 year')
+                         GROUP BY date
+                         ORDER BY date DESC`);
+    });
+
+    ipcMain.handle(IpcChannels.GetActivitySummaryValues, (event, query: dbi.ITimeRecordsQuery) => {
+        let k = knex.from('time_records')
+                    .select(knex.raw(`COUNT(distinct client_id) as num_clients,
+                                      COUNT(distinct project_id) as num_projects,
+                                      SUM(ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2)) as total_hours,
+                                      SUM(CASE WHEN (billable='true' or billable=1) THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as billable_hours,
+                                      SUM(CASE WHEN (billable='false' or billable=0) THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as non_billable_hours`));
+        k = addTimeRecordsWhereClause(k, query);
+        return k;
+    });
+}
+
+function addTimeRecordsWhereClause(k, {clientId, projectId, startTs}: dbi.ITimeRecordsQuery) {
+    let query;
+    if (clientId || projectId) {
+        query = {};
         if (clientId) {
             query.client_id = clientId;
         }
         if (projectId) {
             query.project_id = projectId;
         }
-        return knex.select().from('time_records').where(query);
-    });
+        k = k.where(query);
+    }
 
-    ipcMain.handle(IpcChannels.GetDetailedTimeRecords, (event, query: dbi.ITimeRecordsQuery) => {
-        return getDetailedTimeRecords(query);
-    });
+    if (startTs) {
+        if (query) {
+            k = k.andWhere('start_ts', '>=', 'startTs');
+        } else {
+            k = k.where('start_ts', '>=', startTs);
+        }
+    }
+
+    return k;
 }

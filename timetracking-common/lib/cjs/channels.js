@@ -8,7 +8,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExportSpreadsheet = exports.DownloadDatabaseFile = exports.GetActivityMapValues = exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.UpdateTimeRecord = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
+exports.ExportSpreadsheet = exports.DownloadDatabaseFile = exports.GetActivitySummaryValues = exports.GetActivityMapValues = exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.UpdateTimeRecord = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
 exports.CreateClient = "client:create";
 exports.GetClient = 'client:get';
 exports.DeleteClient = 'client:delete';
@@ -27,5 +27,6 @@ exports.UpdateTimeRecord = 'time-record:update';
 exports.GetTimeRecords = 'time-records:get';
 exports.GetDetailedTimeRecords = 'time-records:detailed:get';
 exports.GetActivityMapValues = 'activity-map:values:get';
+exports.GetActivitySummaryValues = 'activity-summary:values:get';
 exports.DownloadDatabaseFile = 'database:file:download';
 exports.ExportSpreadsheet = 'spreadsheet:export';
