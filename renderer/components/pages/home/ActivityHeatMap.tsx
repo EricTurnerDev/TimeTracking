@@ -7,31 +7,28 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import CalendarHeatmap from 'react-calendar-heatmap';
+import classNames from 'classnames';
 import {DateTime} from 'luxon';
+import CalendarHeatmap from 'react-calendar-heatmap';
 
 import 'react-calendar-heatmap/dist/styles.css';
 
 export interface IActivityHeatMapValue {
-    date: string,
-    count: number
+    date: string;
+    count: number;
 }
 
 interface IActivityHeatMapProps {
-    values: IActivityHeatMapValue[]
+    values: IActivityHeatMapValue[];
+    className?: string;
 }
 
-
-const ActivityHeatMap = ({values}: IActivityHeatMapProps) => {
-    const totalHours = values.reduce((accum, value) => accum + value.count, 0);
-
+const ActivityHeatMap = ({values, className}: IActivityHeatMapProps) => {
     const now = DateTime.now();
     const lastYear = now.minus({years: 1});
 
-
     return (
-        <div className='activity-heat-map'>
-            <p className='mb-2'>{totalHours.toFixed(2)} hours in the last year</p>
+        <div className={classNames('activity-heat-map', className)}>
             <CalendarHeatmap
                 startDate={lastYear.toJSDate()}
                 endDate={now.toJSDate()}

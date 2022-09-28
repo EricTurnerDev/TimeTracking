@@ -159,6 +159,10 @@ export async function getActivityMapValues() {
     return await send(IpcChannels.GetActivityMapValues);
 }
 
+export async function getActivitySummaryValues(query: DatabaseInterfaces.ITimeRecordsQuery) {
+    return await send(IpcChannels.GetActivitySummaryValues, query);
+}
+
 /**
  * Prompts the user to download the SQLite database
  */
