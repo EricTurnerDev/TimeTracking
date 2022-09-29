@@ -7,9 +7,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {app, BrowserWindow, ipcMain} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain} from 'electron';
 import {download} from 'electron-dl';
 import serve from 'electron-serve';
+import fs from 'node:fs/promises';
 import {DateTime} from 'luxon';
 import {DatabaseInterfaces, IpcChannels} from "timetracking-common";
 import XLSX from 'xlsx';
@@ -65,12 +66,33 @@ if (isProd) {
         mainWindow.webContents.send("download complete", dl.getSavePath());
     });
 
+    // Handle requests to upload a replacement copy of the sqlite database file
+    ipcMain.handle(IpcChannels.UploadDatabaseFile, async (event) => {
+        const result = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), {
+            filters: [{
+                name: 'SQLite',
+                extensions: ['sqlite']
+            }], properties: ['openFile']
+        });
+        if (!result.canceled) {
+            const source = result.filePaths[0];
+            await fs.copyFile(source, db.getDatabaseLocation());
+            try {
+                // Close the old connection and create a new one. Migrations have to be run if the user is restoring an
+                // old database to a newer version of TimeTracking.
+                await db.reInitialize();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    });
+
     // Handle requests to export a spreadsheet of time records.
     ipcMain.handle(IpcChannels.ExportSpreadsheet, async (event, query: DatabaseInterfaces.ITimeRecordsQuery) => {
         const originalRows: DatabaseInterfaces.IDetailedTimeRecord[] = await db.getDetailedTimeRecords(query);
 
         // Remove columns we don't want
-        const rows = originalRows.map(({id, client_id, project_id, adjustment, ...rest}) => rest);
+        const rows = originalRows.map(({id, client_id, project_id, ...rest}) => rest);
 
         // Generate worksheet and workbook
         const worksheet = XLSX.utils.json_to_sheet(rows);

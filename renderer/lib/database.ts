@@ -170,6 +170,10 @@ export async function downloadDatabaseFile(): Promise<Buffer> {
     return await send(IpcChannels.DownloadDatabaseFile);
 }
 
+export async function uploadDatabaseFile(): Promise<void> {
+    return await send(IpcChannels.UploadDatabaseFile);
+}
+
 /**
  * Prompts the user to download a spreadsheet of time records.
  */

@@ -11,7 +11,7 @@ import {app, ipcMain} from 'electron';
 import path from 'path';
 import {IpcChannels, DatabaseInterfaces as dbi} from 'timetracking-common';
 
-import Knex from '../db/knex';
+import Knex from '../db/Knex';
 
 let knex;
 
@@ -20,6 +20,11 @@ export async function initialize() {
     await knex.migrate.latest()
         .then(() => console.log('database migration completed'))
         .catch(err => console.error(err));
+}
+
+export async function reInitialize() {
+    await knex.destroy()
+    await initialize();
 }
 
 export function getDatabaseLocation() {
