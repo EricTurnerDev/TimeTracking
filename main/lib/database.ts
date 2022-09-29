@@ -11,7 +11,7 @@ import {app, ipcMain} from 'electron';
 import path from 'path';
 import {IpcChannels, DatabaseInterfaces as dbi} from 'timetracking-common';
 
-import Knex from '../db/knex';
+import Knex from '../db/Knex';
 
 let knex;
 

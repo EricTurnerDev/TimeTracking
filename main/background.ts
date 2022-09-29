@@ -70,7 +70,7 @@ if (isProd) {
         const originalRows: DatabaseInterfaces.IDetailedTimeRecord[] = await db.getDetailedTimeRecords(query);
 
         // Remove columns we don't want
-        const rows = originalRows.map(({id, client_id, project_id, adjustment, ...rest}) => rest);
+        const rows = originalRows.map(({id, client_id, project_id, ...rest}) => rest);
 
         // Generate worksheet and workbook
         const worksheet = XLSX.utils.json_to_sheet(rows);
