@@ -22,6 +22,11 @@ export async function initialize() {
         .catch(err => console.error(err));
 }
 
+export async function reInitialize() {
+    await knex.destroy()
+    await initialize();
+}
+
 export function getDatabaseLocation() {
     return path.join(app.getPath('userData'), 'timetracking.sqlite');
 }

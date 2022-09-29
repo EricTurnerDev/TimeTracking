@@ -16,13 +16,23 @@ const Settings = () => {
         db.downloadDatabaseFile().catch(err => console.error(err));
     };
 
+    const restoreDbButtonClicked = () => {
+        db.uploadDatabaseFile().catch(err => console.error(err));
+    };
+
     return (
         <div className='settings'>
-            <h1 className='mb-4'>Settings</h1>
+            <div className='flex flex-col'>
+                <h2 className='mb-4'>Backup and Restore the Database:</h2>
 
-            <Button variant='secondary' onClick={saveDbButtonClicked}>
-                <Icon icon={database}/> Save a copy of the database
-            </Button>
+                <Button className='mb-2' variant='secondary' onClick={saveDbButtonClicked}>
+                    <Icon icon={database}/> Create a Backup
+                </Button>
+
+                <Button variant='secondary' onClick={restoreDbButtonClicked}>
+                    <Icon icon={database}/> Restore from a Backup
+                </Button>
+            </div>
         </div>
     )
 };

@@ -18,4 +18,5 @@ export declare const GetDetailedTimeRecords: string;
 export declare const GetActivityMapValues: string;
 export declare const GetActivitySummaryValues: string;
 export declare const DownloadDatabaseFile: string;
+export declare const UploadDatabaseFile: string;
 export declare const ExportSpreadsheet: string;
