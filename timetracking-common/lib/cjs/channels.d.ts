@@ -20,3 +20,4 @@ export declare const GetActivitySummaryValues: string;
 export declare const DownloadDatabaseFile: string;
 export declare const UploadDatabaseFile: string;
 export declare const ExportSpreadsheet: string;
+export declare const GetHours: string;

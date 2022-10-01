@@ -14,14 +14,16 @@ import {DatabaseInterfaces} from 'timetracking-common';
 
 import AddTimeRecordForm from '@/components/pages/timekeeping/AddTimeRecordForm';
 import Button from '@/components/ui/Button';
-import {exportSpreadsheet, getDetailedTimeRecords} from '@/lib/database';
+import {exportSpreadsheet, getClients, getDetailedTimeRecords} from '@/lib/database';
 import {Icon, plus, spreadsheet} from '@/components/ui/Icon';
 import TimekeepingDataTable from '@/components/pages/timekeeping/TimekeepingDataTable';
+import TimekeepingRecord from '@/components/pages/timekeeping/TimekeepingRecord';
 
 export default function Timekeeping() {
     const [timeRecords, setTimeRecords] = useState<DatabaseInterfaces.IDetailedTimeRecord[]>();
     const [addingTimeRecord, setAddingTimeRecord] = useState<boolean>(false);
     const [exportingTimeRecords, setExportingTimeRecords] = useState<boolean>(false);
+    const [clients, setClients] = useState<DatabaseInterfaces.IClient[]>([]);
 
     // Fetches time records from the database, and saves them in this component's state.
     const updateTimeRecords = async () => {
@@ -29,9 +31,15 @@ export default function Timekeeping() {
         setTimeRecords(trs);
     }
 
-    // Initializes this component's state with time records.
+    // Initializes this component's state.
     useEffect(() => {
-       updateTimeRecords().catch(err => console.log(err));
+        const initState = async () => {
+            const c = await getClients();
+            setClients(c);
+            await updateTimeRecords();
+        };
+
+       initState().catch(err => console.log(err));
     }, []);
 
     const addTimeRecordButtonClicked = () => {
@@ -78,7 +86,7 @@ export default function Timekeeping() {
 
             {addingTimeRecord && <AddTimeRecordForm className='mb-4' onTimeRecordAdded={timeRecordAdded} onCancel={addingTimeRecordCanceled}/>}
 
-            {timeRecords && <TimekeepingDataTable timeRecords={timeRecords} onDelete={timeRecordDeleted} />}
+            {timeRecords && timeRecords.map(record => <TimekeepingRecord className='mb-4' record={record} clients={clients} key={record.id}/>)}
         </div>
     )
 }

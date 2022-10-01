@@ -27,15 +27,15 @@ const ActivitySummary = ({hours=0, billableHours=0, nonBillableHours=0, numClien
             <div className='flex flex-row justify-between'>
                 <div className='p-4'>
                     <h2 className='mb-4'>Billable Hours</h2>
-                    <p className='text-green-500'>{billableHours}</p>
+                    <p className='text-green-500'>{billableHours.toFixed(2)}</p>
                 </div>
                 <div className='p-4'>
                     <h2 className='mb-4'>Non-Billable Hours:</h2>
-                    <p className='text-green-500'>{nonBillableHours}</p>
+                    <p className='text-green-500'>{nonBillableHours.toFixed(2)}</p>
                 </div>
                 <div className='p-4'>
                     <h2 className='mb-4'>Total Hours:</h2>
-                    <p className='text-green-500'>{hours}</p>
+                    <p className='text-green-500'>{hours.toFixed(2)}</p>
                 </div>
                 <div className='p-4'>
                     <h2 className='mb-4'>Clients:</h2>

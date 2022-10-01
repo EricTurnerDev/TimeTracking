@@ -11,26 +11,20 @@ import classNames from 'classnames';
 import {useCallback, useState} from 'react';
 
 import TextElement from '@/lib/types/TextElement';
-import BaseInput from "@/components/ui/form/BaseInput";
+import BaseInput, {IBaseInputProps} from "@/components/ui/form/BaseInput";
 
-export interface IInlineEditToggle {
+export interface IInlineEditToggle extends IBaseInputProps {
     as?: TextElement;
     onSave: (boolean) => Promise<void>;
-    autoFocus?: boolean;
-    value?: boolean|string;
-    formatter?: (boolean) => string;
-    className?: string;
+    value?: 0|1;
+    formatter?: (number) => string;
     children?: string;
 }
 
-const InlineEditToggle = ({as = 'p', value=false, onSave, autoFocus = false,  formatter=(v) => v ? 'on' : 'off', className}: IInlineEditToggle) => {
+const InlineEditToggle = ({as = 'p', value=0, onSave, formatter=(v) => v ? 'on' : 'off', className, ...props}: IInlineEditToggle) => {
     const Tag = as;
 
-    // Sqlite stores booleans as either the strings 'true' and 'false', or as the numbers 1 and 0. Knex seems to convert
-    // the numbers to boolean true and false, but not the strings.
-    const initialValue:boolean = typeof value === 'string' ? (value === 'true') : value;
-
-    const [toggleState, setToggleState] = useState<boolean>(initialValue);
+    const [toggleState, setToggleState] = useState<0|1>(value);
     const [editing, setEditing] = useState<boolean>(false);
 
     const keyDown = useCallback((e) => {
@@ -52,8 +46,8 @@ const InlineEditToggle = ({as = 'p', value=false, onSave, autoFocus = false,  fo
     }
 
     const onChange = (e) => {
-        setToggleState(e.target.checked);
-        onSave(e.target.checked)
+        setToggleState(e.target.checked ? 1 : 0);
+        onSave(e.target.checked ? 1 : 0)
             .then(() => {
                 setEditing(false)
             })
@@ -62,8 +56,8 @@ const InlineEditToggle = ({as = 'p', value=false, onSave, autoFocus = false,  fo
     }
 
     return (
-        <div className={classNames('inline-edit-checkbox', 'min-w-full hover:cursor-pointer', className)}>
-            {!editing && <Tag className='min-w-full h-5' onClick={textClicked}>{formatter(toggleState)}</Tag>}
+        <div className={classNames('inline-edit-checkbox', 'hover:cursor-pointer', className)}>
+            {!editing && <Tag className='h-6 w-6 text-center' onClick={textClicked}>{formatter(toggleState)}</Tag>}
             {editing &&
                 <BaseInput
                     type='checkbox'
@@ -71,7 +65,7 @@ const InlineEditToggle = ({as = 'p', value=false, onSave, autoFocus = false,  fo
                     onChange={onChange}
                     onBlur={onBlur}
                     onKeyDown={keyDown}
-                    autoFocus={autoFocus}/>}
+                    {...props} />}
         </div>
     )
 };

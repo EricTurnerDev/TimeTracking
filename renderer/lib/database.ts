@@ -180,3 +180,7 @@ export async function uploadDatabaseFile(): Promise<void> {
 export async function exportSpreadsheet(query={}): Promise<void> {
     return await send(IpcChannels.ExportSpreadsheet, query);
 }
+
+export async function getHours(startTs, endTs, adjustment=0) {
+    return await send(IpcChannels.GetHours, {startTs, endTs, adjustment});
+}
