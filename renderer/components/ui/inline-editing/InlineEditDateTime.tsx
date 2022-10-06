@@ -73,7 +73,8 @@ const InlineEditDateTime = ({
 
     return (
         <div className={classNames('inline-edit-datetime', 'hover:cursor-pointer', className)}>
-            {!editing && <Tag onClick={dateClicked}>{isoToLocale(date)}</Tag>}
+            {!editing && !date && <Tag className='h-6 w-30' onClick={dateClicked}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Tag>}
+            {!editing && date && <Tag className='h-6 w-30' onClick={dateClicked}>{isoToLocale(date)}</Tag>}
             {editing &&
                 <BaseInput
                     type='datetime-local'

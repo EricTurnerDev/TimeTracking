@@ -76,8 +76,8 @@ const InlineEditSelect = ({as = 'p', options, value, allowBlank=true, selectionC
 
     return (
         <div className={classNames('inline-edit-select', 'hover:cursor-pointer', className)}>
-            {!editing && !selectedText && <Tag className='h-6 w-8' onClick={textClicked}></Tag>}
-            {!editing && selectedText && <Tag onClick={textClicked}>{selectedText}</Tag>}
+            {!editing && !selectedText && <Tag className='h-6 width-full' onClick={textClicked}></Tag>}
+            {!editing && selectedText && <Tag className='width-full' onClick={textClicked}>{selectedText}</Tag>}
             {editing && <BaseSelect
                 value={selectedValue}
                 onBlur={onBlur}

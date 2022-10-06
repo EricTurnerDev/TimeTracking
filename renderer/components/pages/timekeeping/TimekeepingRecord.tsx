@@ -10,10 +10,11 @@
 import classNames from 'classnames';
 import {DatabaseInterfaces} from 'timetracking-common';
 import {useEffect, useState} from 'react';
+import {DateTime} from 'luxon';
 
 import * as db from '@/lib/database';
 import {localISOToUTCISO} from '@/lib/dateTimeConversion';
-import {Icon, trash} from '@/components/ui/Icon';
+import {Icon, clone, trash} from '@/components/ui/Icon';
 import InlineEditDateTime from '@/components/ui/inline-editing/InlineEditDateTime';
 import InlineEditSelect from '@/components/ui/inline-editing/InlineEditSelect';
 import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
@@ -27,12 +28,13 @@ interface ITimekeepingRecordProps {
     record: DatabaseInterfaces.IDetailedTimeRecord;
     clients: DatabaseInterfaces.IClient[];
     recordDeleted: (number) => void;
+    recordCloned: (number) => void;
     className?: string;
 }
 
 const emptyOption: SelectOption = {value: '', text: ''};
 
-const TimekeepingRecord = ({record, clients, recordDeleted, className}: ITimekeepingRecordProps) => {
+const TimekeepingRecord = ({record, clients, recordDeleted, recordCloned, className}: ITimekeepingRecordProps) => {
     const [timeRecord, setTimeRecord] = useState<DatabaseInterfaces.IDetailedTimeRecord>(record);
     const [clientSelectOptions, setClientSelectOptions] = useState<NonEmptyArray<SelectOption>>([emptyOption]);
     const [projectSelectOptions, setProjectSelectOptions] = useState<NonEmptyArray<SelectOption>>([emptyOption]);
@@ -139,16 +141,34 @@ const TimekeepingRecord = ({record, clients, recordDeleted, className}: ITimekee
             .catch(err => console.error(err));
     };
 
+    const cloneRecord = () => {
+        // Create a new time record from the existing one
+        const rec: DatabaseInterfaces.ITimeRecord = (({description, client_id, project_id, billable}) => ({
+            description,
+            client_id,
+            project_id,
+            billable,
+            start_ts: DateTime.utc().toISO(),
+        }))(record);
+
+        db.createTimeRecord(rec)
+            .then(() => recordCloned(record.id))
+            .catch(err => console.error(err));
+    }
+
     return (
         <div className={classNames('timekeeping-record flex flex-col', '', styles.base, className)}>
             <div className='flex flex-row justify-between'>
-                <InlineEditText className='description mb-2' autoFocus={true} inputStyles='w-full'
+                <InlineEditText className='description flex-grow mb-2 mr-4' autoFocus={true} inputStyles='w-full'
                                 onSave={descriptionChanged}>{timeRecord.description}</InlineEditText>
-                <Icon icon={trash} className='hover:cursor-pointer' onClick={deleteRecord} />
+                <div>
+                    <Icon icon={clone} className='hover:cursor-pointer mr-2' onClick={cloneRecord} />
+                    <Icon icon={trash} className='hover:cursor-pointer' onClick={deleteRecord} />
+                </div>
             </div>
-            <div className='flex flex-row'>
+            <div className='flex flex-row justify-evenly mb-2'>
                 <InlineEditSelect
-                    className='client mr-4'
+                    className='client flex-grow mr-4'
                     options={clientSelectOptions}
                     value={timeRecord.client_id.toString()}
                     allowBlank={false}
@@ -156,14 +176,14 @@ const TimekeepingRecord = ({record, clients, recordDeleted, className}: ITimekee
                     selectionChanged={clientChanged}/>
 
                 <InlineEditSelect
-                    className='project mr-4'
-                    selectStyles='flex-grow'
+                    className='project flex-grow mr-4'
                     options={projectSelectOptions}
                     value={timeRecord.project_id?.toString() || ''}
                     allowBlank={true}
                     autoFocus={true}
                     selectionChanged={projectChanged}/>
-
+            </div>
+            <div className='flex flex-row'>
                 <InlineEditToggle
                     className='billable mr-4'
                     inputStyles='flex-grow'
