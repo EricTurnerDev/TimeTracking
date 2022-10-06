@@ -166,7 +166,7 @@ const TimekeepingRecord = ({record, clients, recordDeleted, recordCloned, classN
                     <Icon icon={trash} className='hover:cursor-pointer' onClick={deleteRecord} />
                 </div>
             </div>
-            <div className='flex flex-row justify-evenly mb-2'>
+            <div className='flex flex-row mb-2'>
                 <InlineEditSelect
                     className='client flex-grow mr-4'
                     options={clientSelectOptions}
@@ -174,7 +174,8 @@ const TimekeepingRecord = ({record, clients, recordDeleted, recordCloned, classN
                     allowBlank={false}
                     autoFocus={true}
                     selectionChanged={clientChanged}/>
-
+            </div>
+            <div className='flex flex-row mb-2'>
                 <InlineEditSelect
                     className='project flex-grow mr-4'
                     options={projectSelectOptions}
