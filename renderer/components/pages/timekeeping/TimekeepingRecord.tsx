@@ -13,6 +13,7 @@ import {useEffect, useState} from 'react';
 
 import * as db from '@/lib/database';
 import {localISOToUTCISO} from '@/lib/dateTimeConversion';
+import {Icon, trash} from '@/components/ui/Icon';
 import InlineEditDateTime from '@/components/ui/inline-editing/InlineEditDateTime';
 import InlineEditSelect from '@/components/ui/inline-editing/InlineEditSelect';
 import InlineEditText from '@/components/ui/inline-editing/InlineEditText';
@@ -25,12 +26,13 @@ import SelectOption from '@/lib/types/SelectOption';
 interface ITimekeepingRecordProps {
     record: DatabaseInterfaces.IDetailedTimeRecord;
     clients: DatabaseInterfaces.IClient[];
+    recordDeleted: (number) => void;
     className?: string;
 }
 
 const emptyOption: SelectOption = {value: '', text: ''};
 
-const TimekeepingRecord = ({record, clients, className}: ITimekeepingRecordProps) => {
+const TimekeepingRecord = ({record, clients, recordDeleted, className}: ITimekeepingRecordProps) => {
     const [timeRecord, setTimeRecord] = useState<DatabaseInterfaces.IDetailedTimeRecord>(record);
     const [clientSelectOptions, setClientSelectOptions] = useState<NonEmptyArray<SelectOption>>([emptyOption]);
     const [projectSelectOptions, setProjectSelectOptions] = useState<NonEmptyArray<SelectOption>>([emptyOption]);
@@ -48,7 +50,7 @@ const TimekeepingRecord = ({record, clients, className}: ITimekeepingRecordProps
             setProjectSelectOptions(opts);
         }
         fn().catch(err => console.error(err));
-    }, [timeRecord.client_id])
+    }, [timeRecord.client_id]);
 
     const styles = {
         base: 'border border-gray-500 rounded p-4'
@@ -131,10 +133,19 @@ const TimekeepingRecord = ({record, clients, className}: ITimekeepingRecordProps
         return [emptyOption, ...p];
     };
 
+    const deleteRecord = () => {
+        db.deleteTimeRecord(record.id)
+            .then(() => recordDeleted(record.id))
+            .catch(err => console.error(err));
+    };
+
     return (
         <div className={classNames('timekeeping-record flex flex-col', '', styles.base, className)}>
-            <InlineEditText className='description mb-2' autoFocus={true} inputStyles='w-full'
-                            onSave={descriptionChanged}>{timeRecord.description}</InlineEditText>
+            <div className='flex flex-row justify-between'>
+                <InlineEditText className='description mb-2' autoFocus={true} inputStyles='w-full'
+                                onSave={descriptionChanged}>{timeRecord.description}</InlineEditText>
+                <Icon icon={trash} className='hover:cursor-pointer' onClick={deleteRecord} />
+            </div>
             <div className='flex flex-row'>
                 <InlineEditSelect
                     className='client mr-4'

@@ -60,7 +60,7 @@ export default function Timekeeping() {
         updateTimeRecords().catch(err => console.error(err));
     }
 
-    const timeRecordDeleted = () => {
+    const timeRecordDeleted = (id: number) => {
         updateTimeRecords().catch(err => console.error(err));
     }
 
@@ -86,7 +86,7 @@ export default function Timekeeping() {
 
             {addingTimeRecord && <AddTimeRecordForm className='mb-4' onTimeRecordAdded={timeRecordAdded} onCancel={addingTimeRecordCanceled}/>}
 
-            {timeRecords && timeRecords.map(record => <TimekeepingRecord className='mb-4' record={record} clients={clients} key={record.id}/>)}
+            {timeRecords && timeRecords.map(record => <TimekeepingRecord className='mb-4' record={record} recordDeleted={timeRecordDeleted} clients={clients} key={record.id}/>)}
         </div>
     )
 }
