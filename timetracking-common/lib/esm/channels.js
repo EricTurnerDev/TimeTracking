@@ -28,3 +28,4 @@ export var GetActivitySummaryValues = 'activity-summary:values:get';
 export var DownloadDatabaseFile = 'database:file:download';
 export var UploadDatabaseFile = 'database:file:upload';
 export var ExportSpreadsheet = 'spreadsheet:export';
+export var GetHours = 'hours:get';

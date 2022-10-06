@@ -10,16 +10,14 @@ import classNames from 'classnames';
 import {DateTime} from 'luxon';
 import {useCallback, useState} from 'react';
 
-import BaseInput from '@/components/ui/form/BaseInput';
+import BaseInput, {IBaseInputProps} from '@/components/ui/form/BaseInput';
 import {isoToLocale, localISOToUTCISO, utcISOToLocalISO} from '@/lib/dateTimeConversion';
 import TextElement from '@/lib/types/TextElement';
 
-export interface IInlineEditDateTimeProps {
+export interface IInlineEditDateTimeProps extends IBaseInputProps {
     as?: TextElement;
-    className?: string;
     children: string;
     onSave: (string) => Promise<void>;
-    autoFocus?: boolean;
 }
 
 const InlineEditDateTime = ({
@@ -27,7 +25,6 @@ const InlineEditDateTime = ({
                                  className,
                                  children,
                                  onSave,
-                                 autoFocus = false,
                                  ...props
                              }: IInlineEditDateTimeProps) => {
     const Tag = as;
@@ -75,8 +72,9 @@ const InlineEditDateTime = ({
     };
 
     return (
-        <div className={classNames('inline-edit-datetime', 'min-w-full hover:cursor-pointer', className)}>
-            {!editing && <Tag className='min-w-full h-5' onClick={dateClicked}>{isoToLocale(date)}</Tag>}
+        <div className={classNames('inline-edit-datetime', 'hover:cursor-pointer', className)}>
+            {!editing && !date && <Tag className='h-6 w-30' onClick={dateClicked}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Tag>}
+            {!editing && date && <Tag className='h-6 w-30' onClick={dateClicked}>{isoToLocale(date)}</Tag>}
             {editing &&
                 <BaseInput
                     type='datetime-local'
@@ -84,7 +82,7 @@ const InlineEditDateTime = ({
                     onChange={onChange}
                     onBlur={onBlur}
                     onKeyDown={keyDown}
-                    autoFocus={autoFocus}
+                    {...props}
                 />}
         </div>
     )

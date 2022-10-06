@@ -33,3 +33,5 @@ export const GetActivitySummaryValues: string = 'activity-summary:values:get';
 export const DownloadDatabaseFile: string = 'database:file:download';
 export const UploadDatabaseFile: string = 'database:file:upload';
 export const ExportSpreadsheet: string = 'spreadsheet:export';
+
+export const GetHours: string = 'hours:get';

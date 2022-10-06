@@ -19,6 +19,7 @@ export interface IBaseSelectProps {
     required?: boolean;
     disabled?: boolean;
     className?: string;
+    selectStyles?: string; // Additional styles applied directly to the <select> element
     children?: ReactNode;
     touched?: boolean;
     error?: string;
@@ -29,10 +30,10 @@ export interface IBaseSelectProps {
     autoFocus?: boolean;
 }
 
-const BaseSelect = ({id, label, required, disabled, className, children, touched=false, error='', ...props}: IBaseSelectProps) => {
+const BaseSelect = ({id, label, required, disabled, className, selectStyles, children, touched=false, error='', ...props}: IBaseSelectProps) => {
 
     const styles = {
-        base: 'text-gray-700 w-full rounded',
+        base: 'text-gray-700 rounded',
         state: {
             normal: 'placeholder-gray-400 border-gray-300 focus:ring-purple-600',
             error: 'border-red-600 focus:ring-red-600 text-red-600',
@@ -51,6 +52,7 @@ const BaseSelect = ({id, label, required, disabled, className, children, touched
             <select
                 className={classNames(
                     styles.base,
+                    selectStyles,
                     touched && error ? styles.state.error : styles.state.normal,
                     disabled && styles.state.disabled
                 )}

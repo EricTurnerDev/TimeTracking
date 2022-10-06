@@ -10,15 +10,13 @@
 import classNames from 'classnames';
 import {ReactNode, useCallback, useState} from 'react';
 
-import BaseInput from '@/components/ui/form/BaseInput';
+import BaseInput, {IBaseInputProps} from '@/components/ui/form/BaseInput';
 import TextElement from "@/lib/types/TextElement";
 
-export interface ISubtleTextInputProps {
+export interface IInlineEditTextProps extends IBaseInputProps {
     as?: TextElement;
-    className?: string;
     children?: ReactNode;
     onSave?: (string) => Promise<void>;
-    autoFocus?: boolean;
 }
 
 const InlineEditText = ({
@@ -26,12 +24,12 @@ const InlineEditText = ({
                              className,
                              children,
                              onSave,
-                             autoFocus = false,
                              ...props
-                         }: ISubtleTextInputProps) => {
+                         }: IInlineEditTextProps) => {
     const Tag = as;
 
     const [text, setText] = useState<ReactNode>(children);
+    const [editedText, setEditedText] = useState<ReactNode>();
     const [editing, setEditing] = useState<boolean>(false);
 
     const keyDown = useCallback((e) => {
@@ -40,6 +38,7 @@ const InlineEditText = ({
         } else if (e.key === 'Enter') {
             onSave(e.target.value)
                 .then(() => {
+                    setText(e.target.value);
                     setEditing(false);
                 })
                 .catch(err => console.error(err))
@@ -47,11 +46,12 @@ const InlineEditText = ({
     }, []);
 
     const textClicked = () => {
+        setEditedText(text);
         setEditing(true);
     }
 
     const onChange = (e) => {
-        setText(e.target.value);
+        setEditedText(e.target.value);
     }
 
     const onBlur = (e) => {
@@ -64,11 +64,12 @@ const InlineEditText = ({
             {editing && canEdit(children) &&
                 <BaseInput
                     type='text'
-                    value={text}
+                    value={editedText}
                     onChange={onChange}
                     onBlur={onBlur}
                     onKeyDown={keyDown}
-                    autoFocus={autoFocus}/>}
+                    {...props}
+                />}
         </div>
     )
 };
@@ -76,19 +77,6 @@ const InlineEditText = ({
 function canEdit(children: any): boolean {
     // Only a strings can be edited.
     return typeof children === 'string';
-}
-
-function isInline(element: string = '', className: string = ''): boolean {
-    const blockRegex = /(^|\s)block(\s|$)/g;
-    const inlineRegex = /(^|\s)inline(\s|$)/g
-
-    // Element is inline and hasn't been overridden with the 'block' tailwind class.
-    if ((element === 'span' || element === 'cite' || element === 'abbr') && !className.match(blockRegex)) {
-        return true;
-    }
-
-    // Element is block, but has been overridden with the 'inline' tailwind class.
-    return !!className.match(inlineRegex);
 }
 
 export default InlineEditText;

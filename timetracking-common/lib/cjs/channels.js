@@ -8,7 +8,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExportSpreadsheet = exports.UploadDatabaseFile = exports.DownloadDatabaseFile = exports.GetActivitySummaryValues = exports.GetActivityMapValues = exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.UpdateTimeRecord = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
+exports.GetHours = exports.ExportSpreadsheet = exports.UploadDatabaseFile = exports.DownloadDatabaseFile = exports.GetActivitySummaryValues = exports.GetActivityMapValues = exports.GetDetailedTimeRecords = exports.GetTimeRecords = exports.UpdateTimeRecord = exports.DeleteTimeRecord = exports.GetDetailedTimeRecord = exports.GetTimeRecord = exports.CreateTimeRecord = exports.GetProjects = exports.UpdateProject = exports.DeleteProject = exports.GetProject = exports.CreateProject = exports.GetClients = exports.UpdateClient = exports.DeleteClient = exports.GetClient = exports.CreateClient = void 0;
 exports.CreateClient = "client:create";
 exports.GetClient = 'client:get';
 exports.DeleteClient = 'client:delete';
@@ -31,3 +31,4 @@ exports.GetActivitySummaryValues = 'activity-summary:values:get';
 exports.DownloadDatabaseFile = 'database:file:download';
 exports.UploadDatabaseFile = 'database:file:upload';
 exports.ExportSpreadsheet = 'spreadsheet:export';
+exports.GetHours = 'hours:get';

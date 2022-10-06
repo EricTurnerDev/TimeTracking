@@ -34,7 +34,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
         error: 'border-red-600 focus:ring-red-600 text-red-600',
     };
 
-    const initialFormState: DatabaseInterfaces.ITimeRecord = {
+    const initialFormState = {
         description: '',
         client_id: 0,
         project_id: 0,
@@ -76,8 +76,9 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
     const submitForm = (values, {setSubmitting}) => {
         setSubmitError('');
 
-        // Use the ISO start and end timestamps from state in the database since they're in UTC.
-        let record = {...values, start_ts: utcStartTs, end_ts: utcEndTs}
+        // Use the ISO start and end timestamps from state in the database since they're in UTC. Use 0 or 1 for billable
+        // since SQLite doesn't support native boolean values.
+        let record = {...values, start_ts: utcStartTs, end_ts: utcEndTs, billable: values.billable ? 1 : 0}
 
         // If no project ID was selected, remove it from the values.
         if (record.project_id <= 0) {
@@ -144,6 +145,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                             name='client_id'
                             label='Client'
                             className='w-1 grow mr-4'
+                            selectStyles='w-full'
                             required>
                             {clients && clients.map((client: DatabaseInterfaces.IClient) => (
                                 <option key={client.id} value={client.id}>{client.client_name}</option>))}
@@ -152,6 +154,7 @@ export default function AddTimeRecordForm({onTimeRecordAdded, onCancel, classNam
                         <Select
                             name='project_id'
                             className='w-1 grow'
+                            selectStyles='w-full'
                             label='Project'>
                             {projects && projects.map((project: DatabaseInterfaces.IProject) => (
                                 <option key={project.id} value={project.id}>{project.project_name}</option>))}

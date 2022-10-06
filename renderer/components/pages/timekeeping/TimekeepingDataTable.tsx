@@ -109,7 +109,7 @@ const TimekeepingDataTable = ({timeRecords, onDelete, className}: ITimekeepingDa
                     center: true,
                     cell: row => <InlineEditToggle value={row.billable}
                                                    onSave={async (billable) => billableChanged(row, billable)}
-                                                   formatter={(v) => v ? '$' : ' '}
+                                                   formatter={(v) => v === 1 ? '$' : ' '}
                                                    autoFocus={true}/>
                 },
                 {

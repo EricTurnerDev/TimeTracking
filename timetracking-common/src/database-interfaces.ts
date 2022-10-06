@@ -21,7 +21,7 @@ export interface IProject extends IDatabaseEntity {
 }
 
 export interface ITimeRecord extends IDatabaseEntity {
-    billable?: boolean|number;
+    billable?: 0|1;
     start_ts?: string;
     end_ts?: string;
     adjustment?: number;

@@ -172,10 +172,17 @@ export function listen() {
                     .select(knex.raw(`COUNT(distinct client_id) as num_clients,
                                       COUNT(distinct project_id) as num_projects,
                                       SUM(ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2)) as total_hours,
-                                      SUM(CASE WHEN (billable='true' or billable=1) THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as billable_hours,
-                                      SUM(CASE WHEN (billable='false' or billable=0) THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as non_billable_hours`));
+                                      SUM(CASE WHEN billable=1 THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as billable_hours,
+                                      SUM(CASE WHEN billable=0 THEN ROUND(((JULIANDAY(end_ts) - JULIANDAY(start_ts)) * 24)+adjustment, 2) ELSE 0 END) as non_billable_hours`));
         k = addTimeRecordsWhereClause(k, query);
         return k;
+    });
+
+    /**
+     * Use the database to calculate the number of hours between two times.
+     */
+    ipcMain.handle(IpcChannels.GetHours, (event, {startTs, endTs, adjustment=0}) => {
+        return knex.raw(`SELECT ROUND(((JULIANDAY('${endTs}') - JULIANDAY('${startTs}')) * 24)+${adjustment}, 2) AS hours`);
     });
 }
 
